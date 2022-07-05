@@ -1,0 +1,67 @@
+.select-inner-container {
+  font-size: 16px;
+  position: relative;
+  display: block;
+  border-radius: 4px;
+
+  &:focus-within {
+    box-shadow: 0 0 0 2px #8200d1, 0 0 0 6px #f0f05a;
+
+    .select-inner-container-border {
+      .arrow {
+        svg {
+          padding-left: 2px;
+        }
+      }
+    }
+  }
+
+  .select-inner-container-border {
+    select {
+      width: 100%;
+      border-radius: 4px;
+      outline: none;
+      -webkit-appearance: none;
+      display: block;
+      margin: 0;
+      border-radius: 4px;
+      border: 1px solid #60637e;
+      border-right: none;
+
+      padding-top: 12px;
+      padding-right: 60px;
+      padding-bottom: 12px;
+      padding-left: 12px;
+
+      background: #fff;
+      color: #555;
+
+      &:focus {
+        border-color: #fff;
+      }
+    }
+
+    .arrow {
+      display: flex;
+      position: absolute;
+      pointer-events: none;
+      box-shadow: 0 3px 0 0 rgba(0, 14, 60, 0.25);
+
+      top: 0px;
+      bottom: 0px;
+      right: 0px;
+      width: 40px;
+
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+
+      background-color: #c82a87;
+
+      svg {
+        stroke: white;
+        fill: white;
+        margin: auto;
+      }
+    }
+  }
+}
