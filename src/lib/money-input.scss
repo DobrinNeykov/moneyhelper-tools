@@ -1,0 +1,129 @@
+@import "./variables.scss";
+
+.cmp-form-text {
+  display: flex;
+  flex-direction: column;
+  margin-top: 35px;
+
+  &--error {
+    display: flex;
+    flex-direction: column;
+    margin-top: 35px;
+    border-left: 4px solid $color-red;
+    padding-left: 13px;
+  }
+
+  &__container {
+    display: flex;
+    flex-direction: row;
+
+    &--prefix {
+      padding: 0px 15px 0px 15px;
+      margin-top: 10px;
+      // .line-height-px(20);
+      line-height: 20px;
+      color: $color-dark-blue-secondary;
+      background-color: $color-light-grey-supporting;
+      border: 1px solid $color-grey-secondary;
+      border-right: 0;
+      border-radius: 4px 0px 0px 4px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    &--input-box {
+      display: flex;
+      flex: 1;
+      font-size: 16px;
+      border: 1px solid $color-grey-secondary;
+      border-radius: 0px 4px 4px 0px;
+      padding: 9px 12px;
+      margin-top: 10px;
+      // .line-height-px(20);
+      line-height: 20px;
+      overflow: hidden;
+
+      &:focus {
+        outline: 1px solid $color-violet-primary;
+        // .prefixed(box-shadow, 0 0 0 4px $color-yellow-secondary);
+        border-radius: 0px 4px 4px 0px;
+      }
+
+      &:focus-visible {
+        outline: 1px solid $color-violet-primary;
+        // .prefixed(box-shadow, 0 0 0 4px $color-yellow-secondary);
+        border-radius: 0px 4px 4px 0px;
+      }
+
+      &--error {
+        display: flex;
+        flex: 1;
+        border: 2px solid $color-red;
+        border-radius: 0px 4px 4px 0px;
+        padding: 9px 12px;
+        margin-top: 10px;
+        // .line-height-px(20);
+        line-height: 20px;
+        overflow: hidden;
+
+        &:focus {
+          outline: none !important;
+          // .prefixed(box-shadow, 0 0 0 4px $color-yellow-secondary);
+          border: 2px solid $color-violet-primary;
+          border-radius: 0px 4px 4px 0px;
+        }
+
+        &:focus-visible {
+          outline: none !important;
+          // .prefixed(box-shadow, 0 0 0 4px $color-yellow-secondary);
+          border: 2px solid $color-violet-primary;
+          border-radius: 0px 4px 4px 0px;
+        }
+      }
+    }
+  }
+
+  &--label {
+    display: absolute;
+    font-style: normal;
+    font-weight: normal;
+    // .font-size-px(18);
+    font-size: 18px;
+    // .line-height-px(26);
+    line-height: 20px;
+    color: $color-dark-blue-secondary;
+
+    &-hidden {
+      display: none;
+    }
+
+    &-error {
+      display: absolute;
+      font-style: normal;
+      font-weight: normal;
+      // .font-size-px(16);
+      font-size: 16px;
+      // .line-height-px(26);
+      line-height: 20px;
+      color: $color-red;
+    }
+  }
+
+  .text-help-msg {
+    order: -1;
+  }
+
+  .text-label {
+    order: -2;
+  }
+
+  textarea {
+    width: 479px;
+    height: 176px;
+    margin-top: 13px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}

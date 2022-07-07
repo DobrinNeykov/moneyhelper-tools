@@ -1,0 +1,81 @@
+// Colors
+$warm-light: #fff3e0;
+
+$universal-blue: #1119a5;
+$universal-blue-80: #4147b7;
+$universal-blue-60: #7075c9;
+$universal-blue-40: #a0a3db;
+$universal-blue-20: #cfd1ed;
+$universal-blue-10: #e8e8f6;
+
+$red: #e63a6b;
+$amber: #f1dd57;
+$magenta: #c7307e;
+$green: #74c4bb;
+$green-2: #74d6d2;
+$green-support: #74d6d2;
+$white: #ffffff;
+$black: #000000;
+$cherry: #b33481;
+$pink: #e8dde8;
+$pink-light: #f6eff3;
+$disabled: #b7b7b7;
+
+$grey: #bbbbbb;
+$grey-2: #e5e5e5;
+$grey-3: #eeeeee;
+$grey-4: #f2f2f2;
+$grey-5: #c4c4c4;
+
+$black-10: #e6e6e6;
+
+$roobert-font: "Roobert", sans-serif;
+$roboto-font: "Roboto Slab", serif;
+$caveat-font: "Caveat", cursive;
+
+$radius: 4px;
+
+$max-width: 1272px;
+
+// New colours based on the design
+$color-blue-primary: #0f19a0;
+$color-magenta-primary: #c82a87;
+$color-magenta-light-primary: #db7bb4;
+$color-magenta-dark-primary: #ae0060;
+$color-magenta-active-dark-primary: #9c0052;
+
+$color-violet-dark: #792b9e;
+$color-violet-primary: #8200d1;
+$color-violet-secondary: #8e2b9e;
+$color-grey: #e5e5e5;
+$color-green: #008021;
+$color-red: #d00000;
+$color-brown: #1e1103;
+
+$color-yellow-secondary: #f0f05a;
+$color-teal-light-secondary: #6fd8d8;
+$color-teal-dark-secondary: #00788f;
+$color-dark-blue-secondary: #000b3b;
+$color-grey-secondary: #60637e;
+
+$color-white-supporting: #ffffff;
+$color-grey-blue-supporting: #9da1ca;
+$color-light-grey-supporting: #f3f1f3;
+$color-grey-white-supporting: #fbfafb;
+$color-white-smoke-supporting: #eeebee;
+
+$color-violet-supporting: linear-gradient(0deg, #8800d1, #8800d1), #ffffff;
+
+$color-focus-style: $color-violet-supporting;
+$color-card-focus-state: $color-white-smoke-supporting;
+$color-card-hover-state: $color-grey-white-supporting;
+$color-light-grey-background: $color-light-grey-supporting;
+$color-form-outline: $color-grey-blue-supporting;
+$color-page-background: $color-white-supporting;
+$color-form-font-placeholder: $color-grey-secondary;
+$color-text: $color-dark-blue-secondary;
+$color-support-active: $color-magenta-active-dark-primary;
+$color-hover-over: $color-magenta-dark-primary;
+
+$base-font-size: 16;
+$base-line-height: 23;
