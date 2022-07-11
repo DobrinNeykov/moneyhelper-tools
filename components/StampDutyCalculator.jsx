@@ -10,40 +10,30 @@ import { useRouter } from "next/router";
 /**
  * Stamp Duty Calculator Component
  */
-export const StampDutyCalculator = () => {
+export const StampDutyCalculator = ({ serverQuery }) => {
   const router = useRouter();
 
-  const [buyerType, setBuyerType] = React.useState();
-  const [price, setPrice] = React.useState();
+  const [price, setPrice] = React.useState(serverQuery.price);
+  const [buyerType, setBuyerType] = React.useState(serverQuery.buyerType);
 
   let result;
   if (price && buyerType) {
     result = new StampDuty(price * 100, buyerType).calculate();
   }
 
-  React.useEffect(() => {
-    if (router.query.price && !price) {
-      setPrice(router.query.price);
-    }
-    if (router.query.buyerType && !buyerType) {
-      setBuyerType(router.query.buyerType);
-    }
-  });
-  console.log(buyerType);
-
   return (
     <form
       method="get"
       action={
-        typeof window !== "undefined" &&
-        window.location.pathname + window.location.search
+        typeof window === "undefined"
+          ? null
+          : window.location.pathname + window.location.search
       }
       onSubmit={(e) => {
-        const qs = queryString.parse(location.search);
+        const qs = router.query;
         qs.price = price;
         qs.buyerType = buyerType;
-
-        window.location.search = queryString.stringify(qs);
+        router.push("/stamp-duty-calculator/?" + queryString.stringify(qs));
 
         e.preventDefault();
       }}
