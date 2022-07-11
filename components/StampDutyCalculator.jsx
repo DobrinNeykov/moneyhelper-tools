@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { Button } from "./Button";
 import { MoneyInput } from "./MoneyInput";
 import { Select } from "./Select";
-import "./stamp-duty-calculator.scss";
 import StampDuty from "./stamp-duty";
 import numeral from "numeral";
 import queryString from "query-string";
@@ -21,7 +20,7 @@ export const StampDutyCalculator = () => {
   }
 
   React.useEffect(() => {
-    const qs = queryString.parse(window.location.search);
+    const qs = queryString.parse(location.search);
     console.log(qs);
     if (qs.price && !price) {
       setPrice(qs.price);
@@ -35,9 +34,12 @@ export const StampDutyCalculator = () => {
   return (
     <form
       method="get"
-      action={window.location.pathname + window.location.search}
+      action={
+        typeof window !== "undefined" &&
+        window.location.pathname + window.location.search
+      }
       onSubmit={(e) => {
-        const qs = queryString.parse(window.location.search);
+        const qs = queryString.parse(location.search);
         qs.price = price;
         qs.buyerType = buyerType;
 

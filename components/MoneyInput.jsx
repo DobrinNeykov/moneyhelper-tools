@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import NumberFormat from "react-number-format";
-import "./money-input.scss";
 
 /**
  * Money Input Component

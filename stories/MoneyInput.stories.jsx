@@ -1,6 +1,6 @@
 import React from "react";
 
-import { MoneyInput } from "../lib/MoneyInput";
+import { MoneyInput } from "../components/MoneyInput";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {

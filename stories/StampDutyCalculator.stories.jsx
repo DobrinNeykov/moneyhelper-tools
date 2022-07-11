@@ -1,6 +1,6 @@
 import React from "react";
 
-import { StampDutyCalculator } from "../lib/StampDutyCalculator";
+import { StampDutyCalculator } from "../components/StampDutyCalculator";
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
