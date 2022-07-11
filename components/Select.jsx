@@ -30,7 +30,9 @@ export const Select = ({
     >
       {label && <label htmlFor={id}>{label}</label>}
       {errors.map((error) => (
-        <div className="error">Error: {error}</div>
+        <div key={error} className="error">
+          Error: {error}
+        </div>
       ))}
 
       <div className="select-inner-container">

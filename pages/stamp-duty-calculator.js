@@ -1,4 +1,7 @@
 import { StampDutyCalculator } from "../components/StampDutyCalculator";
-export default function () {
+
+const SDC = () => {
   return <StampDutyCalculator />;
-}
+};
+
+export default SDC;
