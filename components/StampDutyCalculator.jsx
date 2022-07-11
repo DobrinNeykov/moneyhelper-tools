@@ -6,6 +6,7 @@ import { Select } from "./Select";
 import StampDuty from "./stamp-duty";
 import numeral from "numeral";
 import { useRouter } from "next/router";
+import queryString from "query-string";
 
 /**
  * Stamp Duty Calculator Component
@@ -13,29 +14,57 @@ import { useRouter } from "next/router";
 export const StampDutyCalculator = ({ serverQuery }) => {
   const router = useRouter();
 
-  const [price, setPrice] = React.useState(serverQuery.price);
-  const [buyerType, setBuyerType] = React.useState(serverQuery.buyerType);
+  const retrievePrice = () => {
+    if (serverQuery && serverQuery.price) {
+      return serverQuery.price.replaceAll(",", "");
+    } else if (window) {
+      const qs = queryString.parse(window.location.search);
+      return qs.price;
+    }
+  };
+
+  const retrieveBuyerType = () => {
+    if (serverQuery && serverQuery.buyerType) {
+      return serverQuery.buyerType;
+    } else if (window) {
+      const qs = queryString.parse(window.location.search);
+      return qs.buyerType;
+    }
+  };
+
+  const [price, setPrice] = React.useState(retrievePrice());
+  const [buyerType, setBuyerType] = React.useState(retrieveBuyerType());
 
   let result;
   if (price && buyerType) {
     result = new StampDuty(price * 100, buyerType).calculate();
   }
 
+  const [formAttributes, setFormAttributes] = React.useState({});
+
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      setFormAttributes(
+        Object.assign(formAttributes, {
+          action: window.location.pathname + window.location.search,
+        })
+      );
+    }
+  }, []);
+
   return (
     <form
       method="get"
-      action={
-        typeof window === "undefined"
-          ? null
-          : window.location.pathname + window.location.search
-      }
+      {...formAttributes}
       onSubmit={(e) => {
-        const qs = router.query;
-        qs.price = price;
-        qs.buyerType = buyerType;
-        router.push("/stamp-duty-calculator/?" + queryString.stringify(qs));
+        if (window) {
+          e.preventDefault();
 
-        e.preventDefault();
+          const qs = queryString.parse(window.location.search);
+          qs.price = price;
+          qs.buyerType = buyerType;
+          window.location.search = queryString.stringify(qs);
+        }
       }}
     >
       <div className="stamp-duty-calculator-container">
