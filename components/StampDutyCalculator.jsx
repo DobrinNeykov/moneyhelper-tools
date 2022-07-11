@@ -5,12 +5,14 @@ import { MoneyInput } from "./MoneyInput";
 import { Select } from "./Select";
 import StampDuty from "./stamp-duty";
 import numeral from "numeral";
-import queryString from "query-string";
+import { useRouter } from "next/router";
 
 /**
  * Stamp Duty Calculator Component
  */
 export const StampDutyCalculator = () => {
+  const router = useRouter();
+
   const [buyerType, setBuyerType] = React.useState();
   const [price, setPrice] = React.useState();
 
@@ -20,13 +22,11 @@ export const StampDutyCalculator = () => {
   }
 
   React.useEffect(() => {
-    const qs = queryString.parse(location.search);
-    console.log(qs);
-    if (qs.price && !price) {
-      setPrice(qs.price);
+    if (router.query.price && !price) {
+      setPrice(router.query.price);
     }
-    if (qs.buyerType && !buyerType) {
-      setBuyerType(qs.buyerType);
+    if (router.query.buyerType && !buyerType) {
+      setBuyerType(router.query.buyerType);
     }
   });
   console.log(buyerType);
