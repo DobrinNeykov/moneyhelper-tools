@@ -9,7 +9,7 @@ import classNames from "classnames";
 export const Select = ({
   id,
   name,
-  defaultValue,
+  value,
   label,
   emptyItemText,
   required,
@@ -17,11 +17,6 @@ export const Select = ({
   onChange,
   location,
 }) => {
-  const search = location && location.search ? location.search : "?";
-  const valueSetInSearch = new URLSearchParams(search).get(name);
-
-  const [value, setValue] = React.useState(valueSetInSearch || defaultValue);
-
   let errors = [];
   if (required && !value) {
     errors = ["is required"];
@@ -63,10 +58,9 @@ export const Select = ({
           <select
             id={id}
             name={name}
-            defaultValue={defaultValue}
+            value={value}
             required={required}
             onChange={(e) => {
-              setValue(e.target.value);
               if (onChange) {
                 onChange(e.target.value);
               }
@@ -89,7 +83,7 @@ Select.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
-  defaultValue: PropTypes.string,
+  value: PropTypes.string,
   emptyItemText: PropTypes.string.isRequired,
   required: PropTypes.bool,
   options: PropTypes.object,
@@ -99,23 +93,23 @@ Select.propTypes = {
   /**
    * The id
    */
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   /**
    * The name
    */
-  name: PropTypes.string.isRequired,
+  name: PropTypes.string,
   /**
    * The label
    */
-  label: PropTypes.string.isRequired,
+  label: PropTypes.string,
   /**
-   * The default selected value
+   * The selected value
    */
-  defaultValue: PropTypes.string,
+  value: PropTypes.string,
   /**
    * Text for the first empty item
    */
-  emptyItemText: PropTypes.string.isRequired,
+  emptyItemText: PropTypes.string,
   /**
    * Is the select optional or required?
    */
@@ -123,7 +117,7 @@ Select.propTypes = {
   /**
    * The options
    */
-  options: PropTypes.object,
+  options: PropTypes.array,
 };
 
 Select.defaultProps = {};

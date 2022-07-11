@@ -6,7 +6,7 @@ import "./money-input.scss";
 /**
  * Money Input Component
  */
-export const MoneyInput = ({ id, defaultValue, label, onChange }) => {
+export const MoneyInput = ({ id, name, defaultValue, label, onChange }) => {
   const minMaxNumberCheck = (input) => {
     const MAX_MONEY_VALUE = 999999999999;
 
@@ -22,10 +22,11 @@ export const MoneyInput = ({ id, defaultValue, label, onChange }) => {
   return (
     <div>
       {label && <label className="cmp-form-text--label">{label}</label>}
-      <div class="cmp-form-text__container">
-        <span class="cmp-form-text__container--prefix">£</span>
+      <div className="cmp-form-text__container">
+        <span className="cmp-form-text__container--prefix">£</span>
         <NumberFormat
           id={id}
+          name={name}
           className="cmp-form-text__container--input-box"
           value={defaultValue}
           thousandSeparator={true}
@@ -46,6 +47,10 @@ MoneyInput.propTypes = {
    * The input id
    */
   id: PropTypes.string,
+  /**
+   * The input name
+   */
+  name: PropTypes.string,
   /**
    * The label text
    */
