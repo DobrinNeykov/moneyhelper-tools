@@ -1,6 +1,6 @@
 export default class StampDuty {
   // price: the price in *pence* of the house
-  // buyerType: the type of buyer: ["firstTimeBuyer", "secondHome", "additionalHome"]
+  // buyerType: the type of buyer: ["firstTimeBuyer", "nextHome", "additionalHome"]
 
   constructor(price, buyerType) {
     this.FIRST_TIME_BUYER_THRESHOLD = 50000000;

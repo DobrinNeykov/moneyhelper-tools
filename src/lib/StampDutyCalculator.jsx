@@ -33,7 +33,7 @@ export const StampDutyCalculator = () => {
           emptyItemText="Select an option..."
           options={[
             { text: "First-time buyer", value: "firstTimeBuyer" },
-            { text: "Second home", value: "secondHome" },
+            { text: "Next home", value: "nextHome" },
             { text: "Additional or second home", value: "additionalHome" },
           ]}
           onChange={(value) => {
