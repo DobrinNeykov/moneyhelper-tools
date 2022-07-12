@@ -15,4 +15,12 @@ const Template = (args) => <MoneyInput {...args} />;
 
 export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Default.args = {};
+Default.args = {
+  label: "Label",
+};
+
+export const Error = Template.bind({});
+Error.args = {
+  label: "Label",
+  errors: ["There is an error"],
+};

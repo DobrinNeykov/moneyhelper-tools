@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useId } from "react";
 import PropTypes from "prop-types";
 import NumberFormat from "react-number-format";
+import styles from "./MoneyInput.module.css";
+import classNames from "classnames";
 
 /**
  * Money Input Component
  */
-export const MoneyInput = ({ id, name, defaultValue, label, onChange }) => {
+export const MoneyInput = ({
+  id,
+  name,
+  defaultValue,
+  label,
+  onChange,
+  errors,
+}) => {
+  id = id || useId();
+
   const minMaxNumberCheck = (input) => {
     const MAX_MONEY_VALUE = 999999999999;
 
@@ -18,24 +29,40 @@ export const MoneyInput = ({ id, name, defaultValue, label, onChange }) => {
     }
   };
 
+  const hasErrors = errors && errors.length;
+
   return (
-    <div>
-      {label && <label className="cmp-form-text--label">{label}</label>}
-      <div className="cmp-form-text__container">
-        <span className="cmp-form-text__container--prefix">£</span>
-        <NumberFormat
-          id={id}
-          name={name}
-          className="cmp-form-text__container--input-box"
-          value={defaultValue}
-          thousandSeparator={true}
-          decimalSeparator="."
-          decimalScale={3}
-          isAllowed={minMaxNumberCheck}
-          onValueChange={(values) => {
-            onChange && onChange(values.value);
-          }}
-        />
+    <div className={styles.container}>
+      <div className={hasErrors && styles.error_border}>
+        {label && (
+          <div>
+            <label htmlFor={id} className={styles.label}>
+              {label}
+            </label>
+          </div>
+        )}
+        {hasErrors &&
+          errors.map((e) => (
+            <label htmlFor={id} key={e} className={styles.error_message}>
+              {e}
+            </label>
+          ))}
+        <div className={styles.input_container}>
+          <span className={styles.prefix}>£</span>
+          <NumberFormat
+            id={id}
+            name={name}
+            className={styles.input}
+            value={defaultValue}
+            thousandSeparator={true}
+            decimalSeparator="."
+            decimalScale={3}
+            isAllowed={minMaxNumberCheck}
+            onValueChange={(values) => {
+              onChange && onChange(values.value);
+            }}
+          />
+        </div>
       </div>
     </div>
   );
@@ -53,11 +80,15 @@ MoneyInput.propTypes = {
   /**
    * The label text
    */
-  label: PropTypes.string,
+  label: PropTypes.string.isRequired,
   /**
    * Gets fired when a value changes
    */
   onChange: PropTypes.func,
+  /**
+   * Errors
+   */
+  errors: PropTypes.array,
 };
 
 MoneyInput.defaultProps = {};
