@@ -17,7 +17,7 @@ export const StampDutyCalculator = ({ serverQuery }) => {
   const retrievePrice = () => {
     if (serverQuery && serverQuery.price) {
       return serverQuery.price.replaceAll(",", "");
-    } else if (window) {
+    } else if (typeof window !== "undefined") {
       const qs = queryString.parse(window.location.search);
       return qs.price;
     }
@@ -26,7 +26,7 @@ export const StampDutyCalculator = ({ serverQuery }) => {
   const retrieveBuyerType = () => {
     if (serverQuery && serverQuery.buyerType) {
       return serverQuery.buyerType;
-    } else if (window) {
+    } else if (typeof window !== "undefined") {
       const qs = queryString.parse(window.location.search);
       return qs.buyerType;
     }
