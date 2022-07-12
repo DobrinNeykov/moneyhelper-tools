@@ -19,8 +19,8 @@ Default.args = {
   label: "Label",
 };
 
-export const Error = Template.bind({});
-Error.args = {
+export const Errors = Template.bind({});
+Errors.args = {
   label: "Label",
   errors: ["There is an error"],
 };

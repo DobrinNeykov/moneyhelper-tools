@@ -19,7 +19,6 @@ Required.args = {
   label: "The Label",
   id: "id1",
   name: "name1",
-  // defaultValue,
   emptyItemText: "Please choose an item",
   required: true,
   options: [{ text: "Some text", value: "Some value" }],
@@ -31,7 +30,6 @@ Optional.args = {
   label: "The Label",
   id: "id1",
   name: "name1",
-  // defaultValue,
   emptyItemText: "Please choose an item",
   options: [{ text: "Some text", value: "Some value" }],
 };
@@ -42,6 +40,12 @@ NoEmptyItem.args = {
   label: "The Label",
   id: "id1",
   name: "name1",
-  // defaultValue,
+  options: [{ text: "Some text", value: "Some value" }],
+};
+
+export const Errors = Template.bind({});
+Errors.args = {
+  label: "Label",
+  errors: ["There is an error"],
   options: [{ text: "Some text", value: "Some value" }],
 };

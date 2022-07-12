@@ -3,10 +3,12 @@ import PropTypes from "prop-types";
 import { Button } from "./Button";
 import { MoneyInput } from "./MoneyInput";
 import { Select } from "./Select";
+import classNames from "classnames";
 import StampDuty from "./stamp-duty";
 import numeral from "numeral";
 import { useRouter } from "next/router";
 import queryString from "query-string";
+import styles from "./StampDutyCalculator.module.css";
 
 /**
  * Stamp Duty Calculator Component
@@ -67,8 +69,8 @@ export const StampDutyCalculator = ({ serverQuery }) => {
         }
       }}
     >
-      <div className="stamp-duty-calculator-container">
-        <div className="box">
+      <div className={styles.container}>
+        <div className={styles.box}>
           <MoneyInput
             label="Property Price"
             name="price"
@@ -93,7 +95,7 @@ export const StampDutyCalculator = ({ serverQuery }) => {
           />
           <Button label="Calculate" />
         </div>
-        <div className="box results">
+        <div className={classNames(styles.box, styles.results)}>
           <div>Stamp duty is:</div>
           {result && (
             <>
