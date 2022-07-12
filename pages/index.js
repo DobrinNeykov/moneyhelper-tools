@@ -1,6 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -13,13 +14,11 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>Welcome to MoneyHelper Tools!</h1>
-
-        <div className={styles.grid}>
-          <a href="/stamp-duty-calculator" className={styles.card}>
-            <h2>Stamp Duty Calculator</h2>
-            <p>Calculate Stamp Duty</p>
-          </a>
-        </div>
+        <ul className={styles.grid}>
+          <li>
+            <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link>
+          </li>
+        </ul>
       </main>
     </div>
   );
