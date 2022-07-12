@@ -1,25 +1,36 @@
 import React from "react";
 import PropTypes from "prop-types";
+import styles from "./Button.module.css";
 
 /**
  * Primary UI component for user interaction
  */
-export const Button = ({ primary, backgroundColor, size, label, ...props }) => {
-  const mode = primary
-    ? "storybook-button--primary"
-    : "storybook-button--secondary";
-  return (
-    <button
-      type="submit"
-      className={["storybook-button", `storybook-button--${size}`, mode].join(
-        " "
-      )}
-      style={backgroundColor && { backgroundColor }}
-      {...props}
-    >
-      {label}
-    </button>
-  );
+export const Button = ({ primary, disabled, label, autoFocus, ...props }) => {
+  if (primary) {
+    return (
+      <button
+        disabled={disabled}
+        className={styles.primary}
+        autoFocus={autoFocus}
+        type="submit"
+        {...props}
+      >
+        <div className={styles.content}>{label}</div>
+      </button>
+    );
+  } else {
+    return (
+      <button
+        disabled={disabled}
+        className={styles.secondary}
+        autoFocus={autoFocus}
+        type="submit"
+        {...props}
+      >
+        <div className={styles.content}>{label}</div>
+      </button>
+    );
+  }
 };
 
 Button.propTypes = {
@@ -28,17 +39,13 @@ Button.propTypes = {
    */
   primary: PropTypes.bool,
   /**
-   * What background color to use
-   */
-  backgroundColor: PropTypes.string,
-  /**
-   * How large should the button be?
-   */
-  size: PropTypes.oneOf(["small", "medium", "large"]),
-  /**
    * Button contents
    */
   label: PropTypes.string.isRequired,
+  /**
+   * Disabled
+   */
+  disabled: PropTypes.bool,
   /**
    * Optional click handler
    */
@@ -46,8 +53,7 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-  backgroundColor: null,
-  primary: false,
-  size: "medium",
+  primary: true,
   onClick: undefined,
+  disabled: false,
 };
