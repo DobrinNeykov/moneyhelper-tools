@@ -8,6 +8,18 @@ module.exports = {
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
     "storybook-addon-pseudo-states",
+    {
+      name: "storybook-addon-sass-postcss",
+      options: {
+        loadSassAfterPostCSS: true,
+        postcssLoaderOptions: {
+          implementation: require("postcss"),
+        },
+        rule: {
+          test: /\.(scss|sass)$/i,
+        },
+      },
+    },
   ],
   framework: "@storybook/react",
   core: {
