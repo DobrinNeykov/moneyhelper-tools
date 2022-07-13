@@ -15,7 +15,8 @@ export const MoneyInput = ({
   onChange,
   errors,
 }) => {
-  id = id || useId();
+  const generatedId = useId();
+  id = id || generatedId;
 
   const minMaxNumberCheck = (input) => {
     const MAX_MONEY_VALUE = 999999999999;
