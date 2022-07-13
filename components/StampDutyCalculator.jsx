@@ -45,9 +45,11 @@ export const StampDutyCalculator = ({ serverQuery }) => {
   const [formAttributes, setFormAttributes] = React.useState({});
 
   React.useEffect(() => {
+    // we only need to keep form attributes around so that
+    // storybook iframe rendering of this component doesn't break.
     if (typeof window !== "undefined") {
-      setFormAttributes(
-        Object.assign(formAttributes, {
+      setFormAttributes((f) =>
+        Object.assign(f, {
           action: window.location.pathname + window.location.search,
         })
       );
