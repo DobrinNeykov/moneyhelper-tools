@@ -70,8 +70,8 @@ export const StampDutyCalculator = ({ serverQuery }) => {
         }
       }}
     >
-      <div className="flex space-x-8">
-        <div className="w-1/2">
+      <div className="lg:space-x-8 lg:flex">
+        <div className="sm:w-full lg:w-1/2 mb-8">
           <div className="mb-3">
             <MoneyInput
               label="Property Price"
@@ -82,7 +82,7 @@ export const StampDutyCalculator = ({ serverQuery }) => {
               }}
             />
           </div>
-          <div className="mb-3">
+          <div className="mb-8">
             <Select
               label="Buyer type"
               name="buyerType"
@@ -104,7 +104,7 @@ export const StampDutyCalculator = ({ serverQuery }) => {
           <Button label="Calculate stamp duty" />
         </div>
 
-        <div className="w-1/2 border-solid p-8 border border-gray-900 rounded-bl-3xl">
+        <div className="w-1/2 border-solid p-3 lg:p-8 w-full lg:w-1/2 border border-gray-900 rounded-bl-3xl">
           <div className="text-2xl text-gray-700 font-bold mb-8">
             Calculate how much stamp duty you will pay:
           </div>
