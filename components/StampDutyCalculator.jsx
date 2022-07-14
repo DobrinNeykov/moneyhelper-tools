@@ -134,7 +134,7 @@ export const StampDutyCalculator = ({ serverQuery }) => {
             <ol>
               <li className="mb-3">Select property type</li>
               <li className="mb-3">Enter purchase price</li>
-              <li className="mb-3">Press "Calculate stamp duty"</li>
+              <li className="mb-3">Press &quot;Calculate stamp duty&quot;</li>
             </ol>
           )}
         </div>
