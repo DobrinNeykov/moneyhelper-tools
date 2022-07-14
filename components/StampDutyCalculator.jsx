@@ -8,7 +8,6 @@ import StampDuty from "./stamp-duty";
 import numeral from "numeral";
 import { useRouter } from "next/router";
 import queryString from "query-string";
-import styles from "./StampDutyCalculator.module.css";
 
 /**
  * Stamp Duty Calculator Component
@@ -71,8 +70,8 @@ export const StampDutyCalculator = ({ serverQuery }) => {
         }
       }}
     >
-      <div className={styles.container}>
-        <div className={styles.box}>
+      <div className="flex space-x-8">
+        <div className="w-1/2">
           <div className="mb-3">
             <MoneyInput
               label="Property Price"
@@ -92,22 +91,35 @@ export const StampDutyCalculator = ({ serverQuery }) => {
               options={[
                 { text: "First-time buyer", value: "firstTimeBuyer" },
                 { text: "Next home", value: "nextHome" },
-                { text: "Additional or second home", value: "additionalHome" },
+                {
+                  text: "Additional or second home",
+                  value: "additionalHome",
+                },
               ]}
               onChange={(value) => {
                 setBuyerType(value);
               }}
             />
           </div>
-          <Button label="Calculate" />
+          <Button label="Calculate stamp duty" />
         </div>
-        <div className={classNames(styles.box, styles.results)}>
-          <div>Stamp duty is:</div>
+
+        <div className="w-1/2 border-solid p-8 border border-gray-900 rounded-bl-3xl">
+          <div className="text-2xl text-gray-700 font-bold mb-8">
+            Calculate how much stamp duty you will pay:
+          </div>
           {result && (
             <>
               <div>£{numeral(result.tax / 100).format("0,0")}</div>
               <div>{result.percentage.toPrecision(3)}%</div>
             </>
+          )}
+          {result || (
+            <ol>
+              <li className="mb-3">Select property type</li>
+              <li className="mb-3">Enter purchase price</li>
+              <li className="mb-3">Press "Calculate stamp duty"</li>
+            </ol>
           )}
         </div>
       </div>

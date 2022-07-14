@@ -7,7 +7,6 @@ import classNames from "classnames";
  */
 export const Button = ({ primary, disabled, label, autoFocus, ...props }) => {
   const commonClasses = [
-    "t2",
     "cursor-pointer",
     "p-3",
     "font-bold",

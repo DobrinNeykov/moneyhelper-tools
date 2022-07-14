@@ -33,51 +33,52 @@ export const MoneyInput = ({
   const hasErrors = errors && errors.length;
 
   return (
-    <div className="t2">
-      <div>
-        <div className={hasErrors && "border-l-4 pl-2 border-red-700"}>
-          {label && (
-            <label htmlFor={id} className="inline-block text-gray-800 mb-2">
-              {label}
+    <div>
+      <div
+        className={
+          hasErrors && "border-0 border-l-4 pl-2 border-red-700 border-solid"
+        }
+      >
+        {label && (
+          <label htmlFor={id} className="inline-block text-gray-800 mb-2">
+            {label}
+          </label>
+        )}
+        {hasErrors &&
+          errors.map((e) => (
+            <label htmlFor={id} key={e} className="block text-red-700 mb-2">
+              {e}
             </label>
-          )}
-          {hasErrors &&
-            errors.map((e) => (
-              <label htmlFor={id} key={e} className="block text-red-700 mb-2">
-                {e}
-              </label>
-            ))}
-          <div className="flex">
-            <span className="bg-gray-100 py-2 px-3 rounded-l-lg border-gray-800 border">
-              £
-            </span>
-            <div className="">
-              <NumberFormat
-                id={id}
-                name={name}
-                className={classNames(
-                  "border-gray-800",
-                  "border-t",
-                  "border-b",
-                  "border-r",
-                  "rounded-r-lg",
-                  "pl-2",
-                  "ml-2",
-                  "h-full",
-                  "focus:outline-purple-700",
-                  styles.outline
-                )}
-                value={defaultValue}
-                thousandSeparator={true}
-                decimalSeparator="."
-                decimalScale={3}
-                isAllowed={minMaxNumberCheck}
-                onValueChange={(values) => {
-                  onChange && onChange(values.value);
-                }}
-              />
-            </div>
-          </div>
+          ))}
+        <div className="flex">
+          <span className="bg-gray-100 py-2 px-3 rounded-l-lg border-gray-800 border border-solid">
+            £
+          </span>
+          <NumberFormat
+            id={id}
+            name={name}
+            className={classNames(
+              "border-gray-800",
+              "border-t",
+              "border-b",
+              "border-r",
+              "border-l-0",
+              "rounded-r-lg",
+              "pl-2",
+              "ml-0",
+              "h-auto",
+              "focus:outline-purple-700",
+              styles.outline
+            )}
+            value={defaultValue}
+            thousandSeparator={true}
+            decimalSeparator="."
+            decimalScale={3}
+            isAllowed={minMaxNumberCheck}
+            onValueChange={(values) => {
+              onChange && onChange(values.value);
+            }}
+          />
         </div>
       </div>
     </div>
