@@ -73,28 +73,32 @@ export const StampDutyCalculator = ({ serverQuery }) => {
     >
       <div className={styles.container}>
         <div className={styles.box}>
-          <MoneyInput
-            label="Property Price"
-            name="price"
-            defaultValue={price}
-            onChange={(value) => {
-              setPrice(value);
-            }}
-          />
-          <Select
-            label="Buyer type"
-            name="buyerType"
-            emptyItemText="Select an option..."
-            value={buyerType}
-            options={[
-              { text: "First-time buyer", value: "firstTimeBuyer" },
-              { text: "Next home", value: "nextHome" },
-              { text: "Additional or second home", value: "additionalHome" },
-            ]}
-            onChange={(value) => {
-              setBuyerType(value);
-            }}
-          />
+          <div className="mb-3">
+            <MoneyInput
+              label="Property Price"
+              name="price"
+              defaultValue={price}
+              onChange={(value) => {
+                setPrice(value);
+              }}
+            />
+          </div>
+          <div className="mb-3">
+            <Select
+              label="Buyer type"
+              name="buyerType"
+              emptyItemText="Select an option..."
+              value={buyerType}
+              options={[
+                { text: "First-time buyer", value: "firstTimeBuyer" },
+                { text: "Next home", value: "nextHome" },
+                { text: "Additional or second home", value: "additionalHome" },
+              ]}
+              onChange={(value) => {
+                setBuyerType(value);
+              }}
+            />
+          </div>
           <Button label="Calculate" />
         </div>
         <div className={classNames(styles.box, styles.results)}>
