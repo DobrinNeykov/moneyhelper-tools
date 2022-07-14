@@ -55,6 +55,16 @@ export const StampDutyCalculator = ({ serverQuery }) => {
     }
   }, []);
 
+  const propertyDescriptor = () => {
+    if (buyerType === "additionalHome") {
+      return "Stamp Duty on your additional property is";
+    } else if (buyerType === "firstTimeBuyer") {
+      return "Stamp Duty on your first property is";
+    } else if (buyerType === "nextHome") {
+      return "Stamp Duty on your next home is";
+    }
+  };
+
   return (
     <form
       method="get"
@@ -108,13 +118,19 @@ export const StampDutyCalculator = ({ serverQuery }) => {
           <div className="text-2xl text-gray-700 font-bold mb-8">
             Calculate how much stamp duty you will pay:
           </div>
-          {result && (
+          {result ? (
             <>
-              <div>£{numeral(result.tax / 100).format("0,0")}</div>
-              <div>{result.percentage.toPrecision(3)}%</div>
+              <div className="text-xl text-gray-700 font-bold mb-4">
+                {propertyDescriptor()}
+              </div>
+              <div className="text-5xl text-gray-700 font-bold mb-4">
+                £{numeral(result.tax / 100).format("0,0")}
+              </div>
+              <div className="text-xl text-gray-700 font-bold">
+                The effective tax rate is {result.percentage.toPrecision(3)}%
+              </div>
             </>
-          )}
-          {result || (
+          ) : (
             <ol>
               <li className="mb-3">Select property type</li>
               <li className="mb-3">Enter purchase price</li>
