@@ -83,31 +83,19 @@ export const StampDutyCalculator = ({ serverQuery }) => {
       <div className="lg:space-x-8 lg:flex">
         <div className="sm:w-full lg:w-1/2 mb-8">
           <div className="mb-3">
-            <MoneyInput
-              label="Property Price"
-              name="price"
-              defaultValue={price || ""}
-              onChange={(value) => {
-                setPrice(value);
-              }}
-              errors={
-                price === ""
-                  ? ["Enter a property price, for example £200,000"]
-                  : []
-              }
-            />
-          </div>
-          <div className="mb-8">
             <Select
-              label="Buyer type"
+              label="I am buying"
               name="buyerType"
               emptyItemText="Select an option..."
               value={buyerType}
               options={[
-                { text: "First-time buyer", value: "firstTimeBuyer" },
-                { text: "Next home", value: "nextHome" },
                 {
-                  text: "Additional or second home",
+                  text: "first property (first-time buyer)",
+                  value: "firstTimeBuyer",
+                },
+                { text: "my next home", value: "nextHome" },
+                {
+                  text: "an additional property or second home",
                   value: "additionalHome",
                 },
               ]}
@@ -117,6 +105,21 @@ export const StampDutyCalculator = ({ serverQuery }) => {
               errors={
                 buyerType === ""
                   ? ["Select the type of property you are buying"]
+                  : []
+              }
+            />
+          </div>
+          <div className="mb-8">
+            <MoneyInput
+              label="Property price"
+              name="price"
+              defaultValue={price || ""}
+              onChange={(value) => {
+                setPrice(value);
+              }}
+              errors={
+                price === ""
+                  ? ["Enter a property price, for example £200,000"]
                   : []
               }
             />

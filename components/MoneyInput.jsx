@@ -58,6 +58,7 @@ export const MoneyInput = ({
             id={id}
             name={name}
             className={classNames(
+              "w-full",
               "border-gray-800",
               "border-t",
               "border-b",
