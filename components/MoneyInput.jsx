@@ -30,7 +30,7 @@ export const MoneyInput = ({
     }
   };
 
-  const hasErrors = errors && errors.length;
+  const hasErrors = errors && errors.length > 0;
 
   return (
     <div>
@@ -46,7 +46,7 @@ export const MoneyInput = ({
         )}
         {hasErrors &&
           errors.map((e) => (
-            <label htmlFor={id} key={e} className="block text-red-700 mb-2">
+            <label key={e} htmlFor={id} className="block text-red-700 mb-2">
               {e}
             </label>
           ))}

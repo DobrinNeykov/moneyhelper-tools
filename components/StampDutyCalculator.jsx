@@ -74,8 +74,8 @@ export const StampDutyCalculator = ({ serverQuery }) => {
           e.preventDefault();
 
           const qs = queryString.parse(window.location.search);
-          qs.price = price;
-          qs.buyerType = buyerType;
+          qs.price = price || "";
+          qs.buyerType = buyerType || "";
           window.location.search = queryString.stringify(qs);
         }
       }}
@@ -86,10 +86,15 @@ export const StampDutyCalculator = ({ serverQuery }) => {
             <MoneyInput
               label="Property Price"
               name="price"
-              defaultValue={price}
+              defaultValue={price || ""}
               onChange={(value) => {
                 setPrice(value);
               }}
+              errors={
+                price === ""
+                  ? ["Enter a property price, for example £200,000"]
+                  : []
+              }
             />
           </div>
           <div className="mb-8">
@@ -109,6 +114,11 @@ export const StampDutyCalculator = ({ serverQuery }) => {
               onChange={(value) => {
                 setBuyerType(value);
               }}
+              errors={
+                buyerType === ""
+                  ? ["Select the type of property you are buying"]
+                  : []
+              }
             />
           </div>
           <Button label="Calculate stamp duty" />

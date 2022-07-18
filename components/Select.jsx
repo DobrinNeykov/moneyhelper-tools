@@ -18,7 +18,7 @@ export const Select = ({
   errors,
   required,
 }) => {
-  const hasErrors = errors && errors.length;
+  const hasErrors = errors && errors.length > 0;
 
   return (
     <div className={styles.container}>
