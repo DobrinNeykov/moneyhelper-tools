@@ -35,9 +35,9 @@ export const MoneyInput = ({
   return (
     <div>
       <div
-        className={
-          hasErrors && "border-0 border-l-4 pl-2 border-red-700 border-solid"
-        }
+        className={classNames({
+          "border-0 border-l-4 pl-2 border-red-700 border-solid": hasErrors,
+        })}
       >
         {label && (
           <label htmlFor={id} className="inline-block text-gray-800 mb-2">

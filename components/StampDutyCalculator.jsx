@@ -15,23 +15,19 @@ import queryString from "query-string";
 export const StampDutyCalculator = ({ serverQuery }) => {
   const router = useRouter();
 
-  const retrievePrice = () => {
-    if (serverQuery && serverQuery.price) {
-      return serverQuery.price.replaceAll(",", "");
+  const retrievePrice = () => retrieveQueryValue("price");
+  const retrieveBuyerType = () => retrieveQueryValue("buyerType");
+
+  const retrieveQueryValue = (name) => {
+    if (serverQuery && serverQuery[name]) {
+      return serverQuery[name];
     } else if (typeof window !== "undefined") {
       const qs = queryString.parse(window.location.search);
-      return qs.price;
+      return qs[name];
     }
   };
 
-  const retrieveBuyerType = () => {
-    if (serverQuery && serverQuery.buyerType) {
-      return serverQuery.buyerType;
-    } else if (typeof window !== "undefined") {
-      const qs = queryString.parse(window.location.search);
-      return qs.buyerType;
-    }
-  };
+  const calculated = !!retrieveQueryValue("calculated");
 
   const [price, setPrice] = React.useState(retrievePrice());
   const [buyerType, setBuyerType] = React.useState(retrieveBuyerType());
@@ -76,12 +72,14 @@ export const StampDutyCalculator = ({ serverQuery }) => {
           const qs = queryString.parse(window.location.search);
           qs.price = price || "";
           qs.buyerType = buyerType || "";
+          qs.calculated = true;
           window.location.search = queryString.stringify(qs);
         }
       }}
     >
       <div className="lg:space-x-8 lg:flex">
         <div className="sm:w-full lg:w-1/2 mb-8">
+          <input type="hidden" name="calculated" value="true" />
           <div className="mb-3">
             <Select
               label="I am buying"
@@ -103,7 +101,7 @@ export const StampDutyCalculator = ({ serverQuery }) => {
                 setBuyerType(value);
               }}
               errors={
-                buyerType === ""
+                calculated && !buyerType
                   ? ["Select the type of property you are buying"]
                   : []
               }
@@ -118,7 +116,7 @@ export const StampDutyCalculator = ({ serverQuery }) => {
                 setPrice(value);
               }}
               errors={
-                price === ""
+                calculated && !price
                   ? ["Enter a property price, for example £200,000"]
                   : []
               }

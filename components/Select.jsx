@@ -70,7 +70,7 @@ export const Select = ({
                 }
               }}
             >
-              <option>{emptyItemText}</option>
+              <option value="">{emptyItemText}</option>
               {options.map(({ text, value }) => (
                 <option key={value} value={value}>
                   {text}
