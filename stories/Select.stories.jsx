@@ -42,10 +42,3 @@ NoEmptyItem.args = {
   name: "name1",
   options: [{ text: "Some text", value: "Some value" }],
 };
-
-export const Errors = Template.bind({});
-Errors.args = {
-  label: "Label",
-  errors: ["There is an error"],
-  options: [{ text: "Some text", value: "Some value" }],
-};

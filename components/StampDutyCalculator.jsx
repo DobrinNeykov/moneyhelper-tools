@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "./Button";
+import { Errors } from "./Errors";
 import { MoneyInput } from "./MoneyInput";
 import { Select } from "./Select";
 import classNames from "classnames";
@@ -81,48 +82,54 @@ export const StampDutyCalculator = ({ serverQuery }) => {
         <div className="sm:w-full lg:w-1/2 mb-8">
           <input type="hidden" name="calculated" value="true" />
           <div className="mb-3">
-            <Select
+            <Errors
               label="I am buying"
-              name="buyerType"
-              emptyItemText="Select an option..."
-              value={buyerType}
-              options={[
-                {
-                  text: "first property (first-time buyer)",
-                  value: "firstTimeBuyer",
-                },
-                { text: "my next home", value: "nextHome" },
-                {
-                  text: "an additional property or second home",
-                  value: "additionalHome",
-                },
-              ]}
-              onChange={(value) => {
-                setBuyerType(value);
-              }}
               errors={
                 calculated && !buyerType
                   ? ["Select the type of property you are buying"]
                   : []
               }
-            />
+            >
+              <Select
+                name="buyerType"
+                emptyItemText="Select an option..."
+                value={buyerType}
+                options={[
+                  {
+                    text: "first property (first-time buyer)",
+                    value: "firstTimeBuyer",
+                  },
+                  { text: "my next home", value: "nextHome" },
+                  {
+                    text: "an additional property or second home",
+                    value: "additionalHome",
+                  },
+                ]}
+                onChange={(value) => {
+                  setBuyerType(value);
+                }}
+              />
+            </Errors>
           </div>
           <div className="mb-8">
-            <MoneyInput
-              label="Property price"
-              name="price"
-              defaultValue={price || ""}
-              onChange={(value) => {
-                setPrice(value);
-              }}
+            <Errors
               errors={
                 calculated && !price
                   ? ["Enter a property price, for example £200,000"]
                   : []
               }
-            />
+            >
+              <MoneyInput
+                label="Property price"
+                name="price"
+                defaultValue={price || ""}
+                onChange={(value) => {
+                  setPrice(value);
+                }}
+              />
+            </Errors>
           </div>
-          <Button label="Calculate stamp duty" />
+          <Button title="Calculate stamp duty" />
         </div>
 
         <div className="w-1/2 border-solid p-3 lg:p-8 w-full lg:w-1/2 border border-gray-900 rounded-bl-3xl">

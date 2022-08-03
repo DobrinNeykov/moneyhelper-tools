@@ -33,55 +33,36 @@ export const MoneyInput = ({
   const hasErrors = errors && errors.length > 0;
 
   return (
-    <div>
-      <div
-        className={classNames({
-          "border-0 border-l-4 pl-2 border-red-700 border-solid": hasErrors,
-        })}
-      >
-        {label && (
-          <label htmlFor={id} className="inline-block text-gray-800 mb-2">
-            {label}
-          </label>
+    <div className="flex">
+      <span className="bg-gray-100 py-2 px-3 rounded-l-lg border-gray-800 border border-solid">
+        £
+      </span>
+      <NumberFormat
+        id={id}
+        name={name}
+        className={classNames(
+          "w-full",
+          "border-gray-800",
+          "border-t",
+          "border-b",
+          "border-r",
+          "border-l-0",
+          "rounded-r-lg",
+          "pl-2",
+          "ml-0",
+          "h-auto",
+          "focus:outline-purple-700",
+          styles.outline
         )}
-        {hasErrors &&
-          errors.map((e) => (
-            <label key={e} htmlFor={id} className="block text-red-700 mb-2">
-              {e}
-            </label>
-          ))}
-        <div className="flex">
-          <span className="bg-gray-100 py-2 px-3 rounded-l-lg border-gray-800 border border-solid">
-            £
-          </span>
-          <NumberFormat
-            id={id}
-            name={name}
-            className={classNames(
-              "w-full",
-              "border-gray-800",
-              "border-t",
-              "border-b",
-              "border-r",
-              "border-l-0",
-              "rounded-r-lg",
-              "pl-2",
-              "ml-0",
-              "h-auto",
-              "focus:outline-purple-700",
-              styles.outline
-            )}
-            value={defaultValue}
-            thousandSeparator={true}
-            decimalSeparator="."
-            decimalScale={3}
-            isAllowed={minMaxNumberCheck}
-            onValueChange={(values) => {
-              onChange && onChange(values.value);
-            }}
-          />
-        </div>
-      </div>
+        value={defaultValue}
+        thousandSeparator={true}
+        decimalSeparator="."
+        decimalScale={3}
+        isAllowed={minMaxNumberCheck}
+        onValueChange={(values) => {
+          onChange && onChange(values.value);
+        }}
+      />
     </div>
   );
 };
@@ -96,17 +77,9 @@ MoneyInput.propTypes = {
    */
   name: PropTypes.string,
   /**
-   * The label text
-   */
-  label: PropTypes.string.isRequired,
-  /**
    * Gets fired when a value changes
    */
   onChange: PropTypes.func,
-  /**
-   * Errors
-   */
-  errors: PropTypes.array,
 };
 
 MoneyInput.defaultProps = {};

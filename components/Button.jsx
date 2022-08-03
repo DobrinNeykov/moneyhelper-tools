@@ -5,7 +5,7 @@ import classNames from "classnames";
 /**
  * Primary UI component for user interaction
  */
-export const Button = ({ primary, disabled, label, autoFocus, ...props }) => {
+export const Button = ({ primary, disabled, title, autoFocus, ...props }) => {
   const commonClasses = [
     "cursor-pointer",
     "p-3",
@@ -73,7 +73,7 @@ export const Button = ({ primary, disabled, label, autoFocus, ...props }) => {
       type="submit"
       {...props}
     >
-      {label}
+      {title}
     </button>
   );
 };
@@ -86,7 +86,7 @@ Button.propTypes = {
   /**
    * Button contents
    */
-  label: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   /**
    * Disabled
    */
