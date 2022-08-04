@@ -1,10 +1,10 @@
 import { StampDutyCalculator } from "../components/StampDutyCalculator";
 
-const SDC = ({ serverQuery }) => {
+const StampDutyCalculatorPage = ({ serverQuery }) => {
   return <StampDutyCalculator serverQuery={serverQuery} />;
 };
 
-export default SDC;
+export default StampDutyCalculatorPage;
 
 export const getServerSideProps = (context) => {
   return {

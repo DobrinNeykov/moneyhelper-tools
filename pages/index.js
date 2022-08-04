@@ -12,11 +12,27 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>Welcome to MoneyHelper Tools!</h1>
-        <ul className={styles.grid}>
+      <main className="container mx-auto">
+        <h1 className="text-4xl font-bold mb-3">
+          Welcome to MoneyHelper Tools!
+        </h1>
+        <ul className="">
           <li>
-            <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link>
+            <Link href="/stamp-duty-calculator">
+              <a className="text-lg text-gray-700 underline">
+                Stamp Duty Calculator
+              </a>
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/compare-accounts"
+              className="text-lg text-gray-700 underline"
+            >
+              <a className="text-lg text-gray-700 underline">
+                Compare Accounts
+              </a>
+            </Link>
           </li>
         </ul>
       </main>
