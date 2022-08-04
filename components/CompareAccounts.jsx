@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import queryString from "query-string";
-// import { usePagination } from "react-use-pagination";
 
 import { Button } from "./Button";
 import { Errors } from "./Errors";
@@ -29,15 +28,53 @@ const usePagination = ({ currentPage, pageSize, totalItems }) => {
   };
 };
 
+const TextInput = ({ id, value, className, onChange }) => {
+  return (
+    <input
+      id={id}
+      type="text"
+      className={classNames("border", "rounded", "py-1", "px-2", className)}
+      onChange={onChange}
+      value={value}
+    />
+  );
+};
+
+const Label = ({ htmlFor, label, children, className }) => {
+  return (
+    <label
+      htmlFor={htmlFor}
+      className={classNames(
+        "text-md",
+        "font-grey-900",
+        "mb-1",
+        "block",
+        className
+      )}
+    >
+      {children}
+    </label>
+  );
+};
+
 /**
  * Compare accounts calculator
  */
 export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
-  const query = queryString.parse(window.location.search);
+  const query = serverQuery || queryString.parse(window.location.search);
+  const [searchQuery, setSearchQuery] = useState(query.searchQuery);
+
+  const matchedAccounts = accounts.filter(
+    (a) =>
+      !searchQuery ||
+      a.productName.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1 ||
+      a.providerName.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1
+  );
+
   const pagination = usePagination({
     currentPage: (query.page && parseInt(query.page)) || 1,
     pageSize: 2,
-    totalItems: accounts.length,
+    totalItems: matchedAccounts.length,
   });
 
   useEffect(() => {
@@ -46,14 +83,6 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
       console.log("setting page " + page);
     }
   });
-
-  const SearchInput = () => {
-    return (
-      <div className="">
-        <input type="text" />
-      </div>
-    );
-  };
 
   const FilterSection = ({ title, values }) => {
     return (
@@ -153,51 +182,70 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
   return (
     <div className="flex space-x-3">
       <div className="border border-solid border-grey-500 overflow-hidden rounded-md">
-        <div className="mb-3 bg-gray-100 pl-3 py-5 font-bold text-lg text-gray-900">
-          Refine your search
-        </div>
-        <div className="p-3">
-          <div className="space-y-5">
-            <Errors label="Account or provider name" errors={[]}>
-              <SearchInput />
-            </Errors>
-            <FilterSection
-              title="Account type"
-              values={[
-                "Children's accounts",
-                "Current accounts",
-                "Fee-free basic accounts",
-                "Graduate accounts",
-                "Packaged accounts",
-                "Premier accounts",
-                "Prepaid card accounts",
-                "Student accounts",
-                "Young person's accounts",
-              ]}
-            />
-            <FilterSection
-              title="Account features"
-              values={[
-                "Cheque book available",
-                "No monthly fee",
-                "Open to new customers",
-                "Overdraft facilities",
-                "Supports 7-day switching",
-              ]}
-            />
-            <FilterSection
-              title="Account access"
-              values={[
-                "Branch banking",
-                "Internet banking",
-                "Mobile app banking",
-                "Post Office banking",
-              ]}
-            />
+        <form
+          method="get"
+          action={"?" + queryString.stringify(query)}
+          onSubmit={(e) => {
+            e.preventDefault();
 
-            <Button title="Apply filters" />
+            query.searchQuery = searchQuery;
+            window.location.search = queryString.stringify(query);
+          }}
+        >
+          <div className="mb-3 bg-gray-100 pl-3 py-5 font-bold text-lg text-gray-900">
+            Refine your search
           </div>
-        </div>
+          <div className="p-3">
+            <div className="space-y-5">
+              <div className="">
+                <Label htmlFor="search">Account or provider name</Label>
+                <TextInput
+                  id={"search"}
+                  className="w-full"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                  }}
+                />
+              </div>
+              <FilterSection
+                title="Account type"
+                values={[
+                  "Children's accounts",
+                  "Current accounts",
+                  "Fee-free basic accounts",
+                  "Graduate accounts",
+                  "Packaged accounts",
+                  "Premier accounts",
+                  "Prepaid card accounts",
+                  "Student accounts",
+                  "Young person's accounts",
+                ]}
+              />
+              <FilterSection
+                title="Account features"
+                values={[
+                  "Cheque book available",
+                  "No monthly fee",
+                  "Open to new customers",
+                  "Overdraft facilities",
+                  "Supports 7-day switching",
+                ]}
+              />
+              <FilterSection
+                title="Account access"
+                values={[
+                  "Branch banking",
+                  "Internet banking",
+                  "Mobile app banking",
+                  "Post Office banking",
+                ]}
+              />
+
+              <Button title="Apply filters" />
+            </div>
+          </div>
+        </form>
       </div>
       <div className="p-3">
         <div className="flex mb-5">
@@ -221,7 +269,7 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
           </div>
         </div>
         <div className="mb-3 space-y-3">
-          {accounts
+          {matchedAccounts
             .slice(pagination.startIndex, pagination.endIndex)
             .map((account) => (
               <div

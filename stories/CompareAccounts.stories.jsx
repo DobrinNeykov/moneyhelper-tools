@@ -31,7 +31,7 @@ faker.seed(123);
 
 export const Default = Template.bind({});
 Default.args = {
-  accounts: [...Array(200).keys()].map((i) => ({
+  accounts: [...Array(175).keys()].map((i) => ({
     productLandingPageURL: "#",
     providerName: faker.company.companyName(),
     productName: takeRandomItem(productNames),
