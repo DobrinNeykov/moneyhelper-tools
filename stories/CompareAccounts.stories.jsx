@@ -27,6 +27,8 @@ const takeRandomItem = (items) => {
   return items[Math.floor(Math.random() * items.length)];
 };
 
+faker.seed(123);
+
 export const Default = Template.bind({});
 Default.args = {
   accounts: [...Array(200).keys()].map((i) => ({

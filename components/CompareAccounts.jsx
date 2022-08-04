@@ -1,23 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+import queryString from "query-string";
+// import { usePagination } from "react-use-pagination";
+
 import { Button } from "./Button";
 import { Errors } from "./Errors";
 import { Select } from "./Select";
-import queryString from "query-string";
+
+const usePagination = ({ currentPage, pageSize, totalItems }) => {
+  const totalPages = Math.ceil(totalItems / pageSize);
+
+  return {
+    currentPage,
+    pageSize,
+    totalItems,
+
+    totalPages,
+
+    startIndex: pageSize * (currentPage - 1),
+    endIndex: pageSize * (currentPage - 1) + pageSize,
+
+    nextPage: currentPage + 1,
+    previousPage: currentPage - 1,
+
+    previousEnabled: currentPage > 1,
+    nextEnabled: currentPage <= totalPages,
+  };
+};
 
 /**
  * Compare accounts calculator
  */
 export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
-  const pageSize = 10;
-  const currentPage = 1;
+  const query = queryString.parse(window.location.search);
+  const pagination = usePagination({
+    currentPage: (query.page && parseInt(query.page)) || 1,
+    pageSize: 2,
+    totalItems: accounts.length,
+  });
 
-  const generateSearchForPage = (page) => {
-    const query = serverQuery || {};
-    query.page = page;
-    return "?" + queryString.stringify(query);
-  };
+  useEffect(() => {
+    const page = queryString.parse(window.location.search).page;
+    if (page && page != pagination.currentPage) {
+      console.log("setting page " + page);
+    }
+  });
 
   const SearchInput = () => {
     return (
@@ -43,32 +71,82 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
     );
   };
 
-  const Pagination = ({ totalItems, pageSize, currentPage }) => {
-    const totalPages = Math.ceil(totalItems / pageSize);
-    const pages = [...Array(totalPages).keys()];
-    const previousPage = currentPage == 1 ? currentPage : currentPage - 1;
-    const nextPage = currentPage == totalPages ? currentPage : currentPage + 1;
+  const Pagination = ({ pagination }) => {
+    const generateSearchForPage = (page) => {
+      const query = queryString.parse(window.location.search);
+      query.page = page;
+      return "?" + queryString.stringify(query);
+    };
+
+    const chevronLeft = (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-chevron-left"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
+        />
+      </svg>
+    );
+    const chevronRight = (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        fill="currentColor"
+        class="bi bi-chevron-right"
+        viewBox="0 0 16 16"
+      >
+        <path
+          fill-rule="evenodd"
+          d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
+        />
+      </svg>
+    );
 
     return (
-      <div className="flex space-x-1">
-        <a href={generateSearchForPage(previousPage)} className="underline">
-          Previous
-        </a>
-        {pages.map((page) => {
-          return (
+      <>
+        <div className="flex space-x-2 text-md border-y py-2">
+          {pagination.previousEnabled && (
             <a
-              key={page}
-              href={generateSearchForPage(page + 1)}
-              className="underline"
+              href={generateSearchForPage(pagination.currentPage - 1)}
+              target="_self"
+              className="underline flex items-center space-x-1 text-pink-800"
             >
-              {page + 1}
+              {chevronLeft}
+              <div>Previous Page</div>
             </a>
-          );
-        })}
-        <a href={generateSearchForPage(nextPage)} className="underline">
-          Next
-        </a>
-      </div>
+          )}
+          {pagination.previousEnabled || (
+            <div className="underline text-gray-400 cursor-not-allowed flex items-center space-x-1">
+              {chevronLeft}
+              <div>Previous</div>
+            </div>
+          )}
+          <div className="text-gray-800 flex-grow text-center">
+            Page {pagination.currentPage} of {pagination.totalPages}
+          </div>
+          <a
+            href={generateSearchForPage(pagination.currentPage + 1)}
+            target="_self"
+            className="underline flex items-center space-x-1 text-pink-800"
+          >
+            <div>Next Page</div>
+            {chevronRight}
+          </a>
+          {pagination.nextEnabled || (
+            <div className="underline text-gray-400 cursor-not-allowed flex items-center space-x-1">
+              <div>Next</div>
+              {chevronRight}
+            </div>
+          )}
+        </div>
+      </>
     );
   };
 
@@ -124,7 +202,10 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
       <div className="p-3">
         <div className="flex mb-5">
           <div className="flex-grow">
-            <div className="">Showing 1 - 5 of {accounts.length} accounts</div>
+            <div className="">
+              Showing {pagination.startIndex + 1} - {pagination.endIndex} of{" "}
+              {pagination.totalItems} accounts
+            </div>
             <div className="">Last updated: 19 April 2022</div>
           </div>
           <div className="flex items-center space-x-4">
@@ -141,7 +222,7 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
         </div>
         <div className="mb-3 space-y-3">
           {accounts
-            .slice(currentPage * pageSize, currentPage * pageSize + pageSize)
+            .slice(pagination.startIndex, pagination.endIndex)
             .map((account) => (
               <div
                 key={account.providerName}
@@ -236,11 +317,7 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
               </div>
             ))}
         </div>
-        <Pagination
-          currentPage={currentPage}
-          totalItems={accounts.length}
-          pageSize={pageSize}
-        />
+        <Pagination pagination={pagination} />
       </div>
     </div>
   );
