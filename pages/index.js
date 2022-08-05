@@ -18,6 +18,9 @@ export default function Home() {
           <li>
             <Link href="/stamp-duty-calculator">Stamp Duty Calculator</Link>
           </li>
+          <li>
+            <Link href="/graph-ql-integration">GraphQL Integration</Link>
+          </li>
         </ul>
       </main>
     </div>
