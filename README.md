@@ -6,7 +6,7 @@ This is the repository for MoneyHelper Tools/Calculators
 
 - All tools in this project work without JS, which means using `<form>` pretty much everywhere data is stored.
 - Designs are managed with Tailwind
-- Icons are SVGs and taken from https://icons.getbootstrap.com/
+- Icons are SVGs and taken from https://icones.netlify.app/collection/mdi
 
 ## Quick Start
 
