@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import queryString from "query-string";
@@ -7,31 +7,68 @@ import { Button } from "./Button";
 import { Errors } from "./Errors";
 import { Select } from "./Select";
 
-const usePagination = ({ currentPage, pageSize, totalItems }) => {
+import { faker } from "@faker-js/faker";
+
+const generateAccounts = () => {
+  const productNames = [
+    "Student Plus account",
+    "Current Rewards account",
+    "Basic account",
+    "Children's account",
+    "Premier Plus Rewards account",
+    "Eco Saver Plus account",
+    "Current account",
+    "Premier account",
+    "Basic account",
+  ];
+
+  let nextItemIndex = 0;
+  const takeNextItem = (items) => {
+    if (nextItemIndex == items.length) {
+      nextItemIndex = 0;
+    }
+    return items[nextItemIndex];
+  };
+
+  faker.seed(123);
+
+  return [...Array(175).keys()].map((i) => ({
+    productLandingPageURL: "#",
+    providerName: faker.company.companyName(),
+    productName: takeNextItem(productNames),
+    monthlyCharge: takeNextItem([0, 5, 2]),
+    minimumMonthlyCredit: takeNextItem([1200, 0, 1000]),
+    unauthODMonthlyCap: takeNextItem([0, 34.95, 45, 19.99, null]),
+    representativeAPR: takeNextItem([9.99, 0, null, 9.99, 14.99, 29.99]),
+  }));
+};
+
+const usePagination = ({ page, pageSize, totalItems }) => {
   const totalPages = Math.ceil(totalItems / pageSize);
 
   return {
-    currentPage,
+    page,
     pageSize,
     totalItems,
 
     totalPages,
 
-    startIndex: pageSize * (currentPage - 1),
-    endIndex: pageSize * (currentPage - 1) + pageSize,
+    startIndex: pageSize * (page - 1),
+    endIndex: pageSize * (page - 1) + pageSize,
 
-    nextPage: currentPage + 1,
-    previousPage: currentPage - 1,
+    nextPage: page + 1,
+    previousPage: page - 1,
 
-    previousEnabled: currentPage > 1,
-    nextEnabled: currentPage <= totalPages,
+    previousEnabled: page > 1,
+    nextEnabled: page < totalPages,
   };
 };
 
-const TextInput = ({ id, value, className, onChange }) => {
+const TextInput = ({ id, name, value, className, onChange }) => {
   return (
     <input
       id={id}
+      name={name}
       type="text"
       className={classNames("border", "rounded", "py-1", "px-2", className)}
       onChange={onChange}
@@ -60,28 +97,23 @@ const Label = ({ htmlFor, label, children, className }) => {
 /**
  * Compare accounts calculator
  */
-export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
-  const query = serverQuery || queryString.parse(window.location.search);
-  const [searchQuery, setSearchQuery] = useState(query.searchQuery);
+export const CompareAccounts = ({ page, query, ...props }) => {
+  const [queryValue, setQueryValue] = useState(query);
 
-  const matchedAccounts = accounts.filter(
-    (a) =>
-      !searchQuery ||
-      a.productName.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1 ||
-      a.providerName.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1
-  );
+  const matchedAccounts = generateAccounts().filter((a) => {
+    if (!query) {
+      return true;
+    }
 
-  const pagination = usePagination({
-    currentPage: (query.page && parseInt(query.page)) || 1,
-    pageSize: 2,
-    totalItems: matchedAccounts.length,
+    const needle = query.toLowerCase();
+    const haystack = [a.productName, a.providerName].join(" ").toLowerCase();
+    return haystack.indexOf(needle) > -1;
   });
 
-  useEffect(() => {
-    const page = queryString.parse(window.location.search).page;
-    if (page && page != pagination.currentPage) {
-      console.log("setting page " + page);
-    }
+  const pagination = usePagination({
+    page,
+    pageSize: 5,
+    totalItems: matchedAccounts.length,
   });
 
   const FilterSection = ({ title, values }) => {
@@ -102,9 +134,7 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
 
   const Pagination = ({ pagination }) => {
     const generateSearchForPage = (page) => {
-      const query = queryString.parse(window.location.search);
-      query.page = page;
-      return "?" + queryString.stringify(query);
+      return "?" + queryString.stringify({ q: query, p: page });
     };
 
     const chevronLeft = (
@@ -113,11 +143,10 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
         width="16"
         height="16"
         fill="currentColor"
-        class="bi bi-chevron-left"
         viewBox="0 0 16 16"
       >
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"
         />
       </svg>
@@ -128,11 +157,10 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
         width="16"
         height="16"
         fill="currentColor"
-        class="bi bi-chevron-right"
         viewBox="0 0 16 16"
       >
         <path
-          fill-rule="evenodd"
+          fillRule="evenodd"
           d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z"
         />
       </svg>
@@ -143,7 +171,7 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
         <div className="flex space-x-2 text-md border-y py-2">
           {pagination.previousEnabled && (
             <a
-              href={generateSearchForPage(pagination.currentPage - 1)}
+              href={generateSearchForPage(pagination.page - 1)}
               target="_self"
               className="underline flex items-center space-x-1 text-pink-800"
             >
@@ -158,16 +186,18 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
             </div>
           )}
           <div className="text-gray-800 flex-grow text-center">
-            Page {pagination.currentPage} of {pagination.totalPages}
+            Page {pagination.page} of {pagination.totalPages}
           </div>
-          <a
-            href={generateSearchForPage(pagination.currentPage + 1)}
-            target="_self"
-            className="underline flex items-center space-x-1 text-pink-800"
-          >
-            <div>Next Page</div>
-            {chevronRight}
-          </a>
+          {pagination.nextEnabled && (
+            <a
+              href={generateSearchForPage(pagination.page + 1)}
+              target="_self"
+              className="underline flex items-center space-x-1 text-pink-800"
+            >
+              <div>Next Page</div>
+              {chevronRight}
+            </a>
+          )}
           {pagination.nextEnabled || (
             <div className="underline text-gray-400 cursor-not-allowed flex items-center space-x-1">
               <div>Next</div>
@@ -184,13 +214,7 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
       <div className="border border-solid border-grey-500 overflow-hidden rounded-md">
         <form
           method="get"
-          action={"?" + queryString.stringify(query)}
-          onSubmit={(e) => {
-            e.preventDefault();
-
-            query.searchQuery = searchQuery;
-            window.location.search = queryString.stringify(query);
-          }}
+          action={"?" + queryString.stringify({ p: page, q: query })}
         >
           <div className="mb-3 bg-gray-100 pl-3 py-5 font-bold text-lg text-gray-900">
             Refine your search
@@ -201,11 +225,10 @@ export const CompareAccounts = ({ serverQuery, accounts, ...props }) => {
                 <Label htmlFor="search">Account or provider name</Label>
                 <TextInput
                   id={"search"}
+                  name="q"
                   className="w-full"
-                  value={searchQuery}
-                  onChange={(e) => {
-                    setSearchQuery(e.target.value);
-                  }}
+                  value={queryValue}
+                  onChange={(e) => setQueryValue(e.target.value)}
                 />
               </div>
               <FilterSection
