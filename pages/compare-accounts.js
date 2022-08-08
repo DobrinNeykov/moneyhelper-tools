@@ -3,6 +3,7 @@ import { CompareAccounts } from "../components/CompareAccounts";
 const CompareAccountsPage = ({ serverQuery }) => {
   return (
     <CompareAccounts
+      refineSearch={!!serverQuery.refineSearch}
       page={serverQuery.p ? parseInt(serverQuery.p) : 1}
       query={serverQuery.q}
     />
