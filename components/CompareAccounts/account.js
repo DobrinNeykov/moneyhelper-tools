@@ -8,6 +8,10 @@ class Account {
     this._json = json;
   }
 
+  get id() {
+    return this._json.id;
+  }
+
   get providerName() {
     return this._json.providerName;
   }

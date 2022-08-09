@@ -3,12 +3,12 @@ class AccountFinder {
     this._accounts = accounts;
   }
 
-  find({ query }) {
-    if (!query) {
+  find(serverQuery) {
+    if (!serverQuery.q) {
       return this._accounts.items;
     }
 
-    const needle = query.toLowerCase();
+    const needle = serverQuery.q.toLowerCase();
 
     return this._accounts.items.filter((a) => {
       const haystack = [a.name, a.providerName].join(" ").toLowerCase();

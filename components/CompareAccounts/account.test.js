@@ -6,12 +6,14 @@ import { GBP } from "@dinero.js/currencies";
 describe("Account", () => {
   it("has some fields", () => {
     const account = new Account({
+      id: "2323",
       providerName: "The Provider",
       productName: "The Name",
       representativeAPR: "APR",
       unauthODMonthlyCap: "Cap",
     });
 
+    expect(account.id).toEqual("2323");
     expect(account.providerName).toEqual("The Provider");
     expect(account.name).toEqual("The Name");
     expect(account.representativeAPR).toEqual("APR");

@@ -1,13 +1,7 @@
-import { CompareAccounts } from "../components/CompareAccounts";
+import CompareAccounts from "../components/CompareAccounts";
 
 const CompareAccountsPage = ({ serverQuery }) => {
-  return (
-    <CompareAccounts
-      refineSearch={!!serverQuery.refineSearch}
-      page={serverQuery.p ? parseInt(serverQuery.p) : 1}
-      query={serverQuery.q}
-    />
-  );
+  return <CompareAccounts serverQuery={serverQuery} />;
 };
 
 export default CompareAccountsPage;
