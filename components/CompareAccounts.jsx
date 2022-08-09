@@ -188,7 +188,6 @@ export const CompareAccounts = ({ refineSearch, page, query, ...props }) => {
           {pagination.previousEnabled && (
             <a
               href={generateSearchForPage(pagination.page - 1)}
-              target="_self"
               className="underline flex items-center space-x-1 text-pink-800"
             >
               {chevronLeft}
@@ -207,7 +206,6 @@ export const CompareAccounts = ({ refineSearch, page, query, ...props }) => {
           {pagination.nextEnabled && (
             <a
               href={generateSearchForPage(pagination.page + 1)}
-              target="_self"
               className="underline flex items-center space-x-1 text-pink-800"
             >
               <div>Next Page</div>
