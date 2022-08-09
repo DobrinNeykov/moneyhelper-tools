@@ -7,6 +7,11 @@ import { Button } from "./Button";
 import { Errors } from "./Errors";
 import { Select } from "./Select";
 
+import AccountList from "./account-list";
+import AccountFinder from "./account-finder";
+
+import formatMoney from "./formatMoney";
+
 import { faker } from "@faker-js/faker";
 
 import jsonAccounts from "../accounts.json";
@@ -62,67 +67,15 @@ const Label = ({ htmlFor, label, children, className }) => {
   );
 };
 
-class AccountList {
-  constructor(json) {
-    this._json = json;
-    this._items = json.items.map((j) => new Account(j));
-  }
-
-  get items() {
-    return this._items;
-  }
-}
-
-class Account {
-  constructor(json) {
-    this._json = json;
-  }
-
-  get providerName() {
-    return this._json.providerName;
-  }
-
-  get name() {
-    return this._json.productName;
-  }
-
-  get url() {
-    const prefix = "https://";
-    if (this._json.productLandingPageURL.indexOf(prefix) === 0) {
-      return this._json.productLandingPageURL;
-    } else {
-      return [prefix, this._json.productLandingPageURL].join("");
-    }
-  }
-
-  get monthlyCharge() {
-    return this._json.monthlyCharge;
-  }
-
-  get representativeAPR() {
-    return this._json.representativeAPR;
-  }
-
-  get unauthODMonthlyCap() {
-    return this._json.unauthODMonthlyCap;
-  }
-}
-
 /**
  * Compare accounts calculator
  */
 export const CompareAccounts = ({ refineSearch, page, query, ...props }) => {
   const [queryValue, setQueryValue] = useState(query);
 
-  const accounts = new AccountList(jsonAccounts).items.filter((a) => {
-    if (!query) {
-      return true;
-    }
-
-    const needle = query.toLowerCase();
-    const haystack = [a.name, a.providerName].join(" ").toLowerCase();
-    return haystack.indexOf(needle) > -1;
-  });
+  const allAccounts = new AccountList(jsonAccounts);
+  const accountFinder = new AccountFinder(allAccounts);
+  const accounts = accountFinder.find({ query });
 
   const pagination = usePagination({
     page,
@@ -385,7 +338,9 @@ export const CompareAccounts = ({ refineSearch, page, query, ...props }) => {
               <div className="divide-x-2 flex mb-3">
                 <div className="pr-4">
                   <div className="">Monthly account fee</div>
-                  <div className="font-bold">£{account.monthlyCharge}</div>
+                  <div className="font-bold">
+                    {formatMoney(account.monthlyFee)}
+                  </div>
                 </div>
                 <div className="px-4">
                   <div className="">Min. monthly deposit requirement</div>

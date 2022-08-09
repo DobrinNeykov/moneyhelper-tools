@@ -13,37 +13,37 @@ export default class StampDuty {
 
   calculate() {
     return {
-      tax: this.#taxDue(),
-      percentage: this.#taxPercentage(),
-      total: this.#totalDue(),
+      tax: this.taxDue(),
+      percentage: this.taxPercentage(),
+      total: this.totalDue(),
     };
   }
 
-  #calculateTaxForBand(band) {
+  calculateTaxForBand(band) {
     if (this.price < band.start) {
       return 0;
     }
 
     let rate = band.rate;
 
-    if (this.#isAdditionalHomeTaxable()) {
+    if (this.isAdditionalHomeTaxable()) {
       rate += this.SECOND_HOME_ADDITIONAL_TAX;
     }
 
     const isPriceInBand = band.end == null || this.price <= band.end;
     let upperLimit = isPriceInBand ? this.price : band.end;
-    let taxAmount = upperLimit - this.#roundDownToNearestHundred(band.start);
+    let taxAmount = upperLimit - this.roundDownToNearestHundred(band.start);
 
-    return this.#roundDownToNearestHundred((taxAmount * rate) / 100);
+    return this.roundDownToNearestHundred((taxAmount * rate) / 100);
   }
 
-  #taxDue() {
-    const taxes = this.#bands().map((band) => this.#calculateTaxForBand(band));
+  taxDue() {
+    const taxes = this.bands().map((band) => this.calculateTaxForBand(band));
 
-    return this.#sum(taxes);
+    return this.sum(taxes);
   }
 
-  #sum(items) {
+  sum(items) {
     let result = 0;
     for (let i = 0; i < items.length; i++) {
       result += items[i];
@@ -51,30 +51,30 @@ export default class StampDuty {
     return result;
   }
 
-  #totalDue() {
-    return this.price + this.#taxDue();
+  totalDue() {
+    return this.price + this.taxDue();
   }
 
-  #taxPercentage() {
-    return (this.#taxDue() / this.price) * 100;
+  taxPercentage() {
+    return (this.taxDue() / this.price) * 100;
   }
 
-  #isAdditionalHomeBuyer() {
+  isAdditionalHomeBuyer() {
     return this.buyerType === "additionalHome";
   }
 
-  #isAdditionalHomeTaxable() {
+  isAdditionalHomeTaxable() {
     return (
-      this.#isAdditionalHomeBuyer() && this.price >= this.SECOND_HOME_THRESHOLD
+      this.isAdditionalHomeBuyer() && this.price >= this.SECOND_HOME_THRESHOLD
     );
   }
 
-  #isFirstTimeBuyer() {
+  isFirstTimeBuyer() {
     return this.buyerType === "firstTimeBuyer";
   }
 
-  #bands() {
-    if (this.#isUsingFirstTimeBuyerRate()) {
+  bands() {
+    if (this.isUsingFirstTimeBuyerRate()) {
       return [
         { start: 0, end: 30000000, rate: 0 },
         { start: 30000001, end: 92500000, rate: 5 },
@@ -92,14 +92,14 @@ export default class StampDuty {
     }
   }
 
-  #roundDownToNearestHundred(value) {
+  roundDownToNearestHundred(value) {
     const remainder = value % 100;
     return value - remainder;
   }
 
-  #isUsingFirstTimeBuyerRate() {
+  isUsingFirstTimeBuyerRate() {
     return (
-      this.#isFirstTimeBuyer() && this.price <= this.FIRST_TIME_BUYER_THRESHOLD
+      this.isFirstTimeBuyer() && this.price <= this.FIRST_TIME_BUYER_THRESHOLD
     );
   }
 }
