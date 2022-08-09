@@ -9,39 +9,7 @@ import { Select } from "./Select";
 
 import { faker } from "@faker-js/faker";
 
-const generateAccounts = () => {
-  const productNames = [
-    "Student Plus account",
-    "Current Rewards account",
-    "Basic account",
-    "Children's account",
-    "Premier Plus Rewards account",
-    "Eco Saver Plus account",
-    "Current account",
-    "Premier account",
-    "Basic account",
-  ];
-
-  let nextItemIndex = 0;
-  const takeNextItem = (items) => {
-    if (nextItemIndex == items.length) {
-      nextItemIndex = 0;
-    }
-    return items[nextItemIndex];
-  };
-
-  faker.seed(123);
-
-  return [...Array(175).keys()].map((i) => ({
-    productLandingPageURL: "#",
-    providerName: faker.company.companyName(),
-    productName: takeNextItem(productNames),
-    monthlyCharge: takeNextItem([0, 5, 2]),
-    minimumMonthlyCredit: takeNextItem([1200, 0, 1000]),
-    unauthODMonthlyCap: takeNextItem([0, 34.95, 45, 19.99, null]),
-    representativeAPR: takeNextItem([9.99, 0, null, 9.99, 14.99, 29.99]),
-  }));
-};
+import jsonAccounts from "../accounts.json";
 
 const usePagination = ({ page, pageSize, totalItems }) => {
   const totalPages = Math.ceil(totalItems / pageSize);
@@ -94,26 +62,72 @@ const Label = ({ htmlFor, label, children, className }) => {
   );
 };
 
+class AccountList {
+  constructor(json) {
+    this._json = json;
+    this._items = json.items.map((j) => new Account(j));
+  }
+
+  get items() {
+    return this._items;
+  }
+}
+
+class Account {
+  constructor(json) {
+    this._json = json;
+  }
+
+  get providerName() {
+    return this._json.providerName;
+  }
+
+  get name() {
+    return this._json.productName;
+  }
+
+  get url() {
+    const prefix = "https://";
+    if (this._json.productLandingPageURL.indexOf(prefix) === 0) {
+      return this._json.productLandingPageURL;
+    } else {
+      return [prefix, this._json.productLandingPageURL].join("");
+    }
+  }
+
+  get monthlyCharge() {
+    return this._json.monthlyCharge;
+  }
+
+  get representativeAPR() {
+    return this._json.representativeAPR;
+  }
+
+  get unauthODMonthlyCap() {
+    return this._json.unauthODMonthlyCap;
+  }
+}
+
 /**
  * Compare accounts calculator
  */
 export const CompareAccounts = ({ refineSearch, page, query, ...props }) => {
   const [queryValue, setQueryValue] = useState(query);
 
-  const matchedAccounts = generateAccounts().filter((a) => {
+  const accounts = new AccountList(jsonAccounts).items.filter((a) => {
     if (!query) {
       return true;
     }
 
     const needle = query.toLowerCase();
-    const haystack = [a.productName, a.providerName].join(" ").toLowerCase();
+    const haystack = [a.name, a.providerName].join(" ").toLowerCase();
     return haystack.indexOf(needle) > -1;
   });
 
   const pagination = usePagination({
     page,
     pageSize: 5,
-    totalItems: matchedAccounts.length,
+    totalItems: accounts.length,
   });
 
   const FilterSection = ({ title, values }) => {
@@ -326,7 +340,7 @@ export const CompareAccounts = ({ refineSearch, page, query, ...props }) => {
   const Accounts = () => {
     return (
       <div className="mb-3 space-y-3">
-        {matchedAccounts
+        {accounts
           .slice(pagination.startIndex, pagination.endIndex)
           .map((account) => (
             <div
@@ -339,7 +353,8 @@ export const CompareAccounts = ({ refineSearch, page, query, ...props }) => {
                 </div>
                 <div className="">
                   <a
-                    href={account.productLandingPageURL}
+                    href={account.url}
+                    target="_blank"
                     className="underline text-pink-900 flex items-center space-x-1"
                   >
                     <div>Visit provider website</div>
@@ -368,9 +383,7 @@ export const CompareAccounts = ({ refineSearch, page, query, ...props }) => {
                   </a>
                 </div>
               </div>
-              <div className="text-lg text-gray-900 mb-4">
-                {account.productName}
-              </div>
+              <div className="text-lg text-gray-900 mb-4">{account.name}</div>
               <div className="divide-x-2 flex mb-3">
                 <div className="pr-4">
                   <div className="">Monthly account fee</div>
