@@ -10,6 +10,7 @@ import { Select } from "../Select";
 
 import AccountList from "./account-list";
 import AccountFinder from "./account-finder";
+import { listAccountTypes } from "./account-mapping";
 
 import formatMoney from "./formatMoney";
 
@@ -117,17 +118,7 @@ const RefineSearch = ({ serverQuery, refineSearch }) => {
           <FilterSection
             serverQuery={serverQuery}
             title="Account type"
-            values={[
-              "Children's accounts",
-              "Current accounts",
-              "Fee-free basic accounts",
-              "Graduate accounts",
-              "Packaged accounts",
-              "Premier accounts",
-              "Prepaid card accounts",
-              "Student accounts",
-              "Young person's accounts",
-            ]}
+            values={listAccountTypes()}
           />
           <FilterSection
             serverQuery={serverQuery}
@@ -409,8 +400,8 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
   const query = serverQuery.q;
 
   const allAccounts = new AccountList(jsonAccounts);
-  const accountFinder = new AccountFinder(allAccounts);
-  const accounts = accountFinder.find(serverQuery);
+  const accountFinder = new AccountFinder(serverQuery, allAccounts);
+  const accounts = accountFinder.find();
 
   const pagination = usePagination({
     page,

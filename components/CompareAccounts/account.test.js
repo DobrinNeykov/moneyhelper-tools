@@ -52,7 +52,7 @@ describe("Account", () => {
       "Packaged accounts"
     );
     expect(new Account({ accountType: "young person" }).type).toEqual(
-      "Young person's accounts"
+      "Children's and young person's accounts (under 18)"
     );
     expect(new Account({ accountType: "graduate" }).type).toEqual(
       "Graduate accounts"

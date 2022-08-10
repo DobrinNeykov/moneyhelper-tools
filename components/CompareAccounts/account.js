@@ -3,6 +3,8 @@ import { GBP } from "@dinero.js/currencies";
 
 import numeral from "numeral";
 
+import { accountTypeLabelFromDefaqtoAccountType } from "./account-mapping";
+
 class Account {
   constructor(json) {
     this._json = json;
@@ -30,52 +32,10 @@ class Account {
   }
 
   get type() {
-    const accountTypes = [
-      {
-        nameInDefaqtoAPI: "standard",
-        label: "Standard current accounts",
-      },
-      {
-        nameInDefaqtoAPI: "fee free basic account",
-        label: "Fee-free basic bank accounts",
-      },
-      {
-        nameInDefaqtoAPI: "student",
-        label: "Student accounts",
-      },
-      {
-        nameInDefaqtoAPI: "premier",
-        label: "Premier accounts",
-      },
-      {
-        nameInDefaqtoAPI: "e-money account",
-        label: "Prepaid cards",
-      },
-      {
-        nameInDefaqtoAPI: "added value",
-        label: "Packaged accounts",
-      },
-      {
-        nameInDefaqtoAPI: "young person",
-        label: "Young person's accounts",
-      },
-      {
-        nameInDefaqtoAPI: "graduate",
-        label: "Graduate accounts",
-      },
-    ];
-
-    const mapping = accountTypes.filter(
-      (a) => a.nameInDefaqtoAPI === this._json.accountType
-    )[0];
-
-    if (mapping) {
-      return mapping.label;
-    } else {
-      throw (
-        "no label for defaqto account type '" + this._json.accountType + "'"
-      );
-    }
+    const label = accountTypeLabelFromDefaqtoAccountType(
+      this._json.accountType
+    );
+    return label;
   }
 
   get representativeAPR() {
