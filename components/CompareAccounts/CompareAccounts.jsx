@@ -10,7 +10,7 @@ import { Select } from "../Select";
 
 import AccountList from "./account-list";
 import AccountFinder from "./account-finder";
-import { listAccountTypes } from "./account-mapping";
+import { listAccountTypes, listAccountFeatures } from "./account-mapping";
 
 import formatMoney from "./formatMoney";
 
@@ -123,13 +123,7 @@ const RefineSearch = ({ serverQuery, refineSearch }) => {
           <FilterSection
             serverQuery={serverQuery}
             title="Account features"
-            values={[
-              "Cheque book available",
-              "No monthly fee",
-              "Open to new customers",
-              "Overdraft facilities",
-              "Supports 7-day switching",
-            ]}
+            values={listAccountFeatures()}
           />
           <FilterSection
             serverQuery={serverQuery}

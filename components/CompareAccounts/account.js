@@ -63,14 +63,30 @@ class Account {
     };
   }
 
-  get accountFeatures() {
-    return {
-      chequeBook: this._json.chequeBook === "Yes",
-      noMonthlyFee: isZero(this.monthlyFee),
-      openToNewCustomers: !(this._json.existingCustomer === "true"),
-      overdraftFacility: this._json.overdraftFacility === "true",
-      supportsSevenDaySwitching: this._json.bacsSwitchService === "true",
-    };
+  get features() {
+    const results = [];
+
+    if (this._json.chequeBook === "Yes") {
+      results.push("Cheque book available");
+    }
+
+    if (isZero(this.monthlyFee)) {
+      results.push("No monthly fee");
+    }
+
+    if (this._json.existingCustomer !== "true") {
+      results.push("Open to new customers");
+    }
+
+    if (this._json.overdraftFacility === "true") {
+      results.push("Overdraft facilities");
+    }
+
+    if (this._json.bacsSwitchService === "true") {
+      results.push("Supports 7-day switching");
+    }
+
+    return results;
   }
 }
 

@@ -33,7 +33,7 @@ describe("AccountFinder", () => {
     expect(result[0].name).toEqual("Match me");
   });
 
-  it("filters accounts when filters are present", () => {
+  it("filters accounts by type", () => {
     const accounts = new AccountList({
       items: [
         { accountType: "standard" },
@@ -48,5 +48,25 @@ describe("AccountFinder", () => {
 
     expect(result).toHaveLength(1);
     expect(result[0].name).toEqual("Young Person Account");
+  });
+
+  it("filters accounts by features", () => {
+    const accounts = new AccountList({
+      items: [
+        { productName: "Account without switch service" },
+        {
+          productName: "Account with switch service",
+          bacsSwitchService: "true",
+        },
+      ],
+    });
+
+    const query = { "supports-7-day-switching": "on" };
+
+    const finder = new AccountFinder(query, accounts);
+    const result = finder.find();
+
+    expect(result).toHaveLength(1);
+    expect(result[0].name).toEqual("Account with switch service");
   });
 });

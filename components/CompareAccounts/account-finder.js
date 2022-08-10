@@ -1,5 +1,5 @@
 import slug from "slug";
-import { listAccountTypes } from "./account-mapping";
+import { listAccountTypes, listAccountFeatures } from "./account-mapping";
 
 class AccountFinder {
   constructor(serverQuery, accounts) {
@@ -9,9 +9,12 @@ class AccountFinder {
 
   requestedAccountTypes() {
     const types = listAccountTypes();
-    console.log(types);
-    console.log(this._serverQuery);
     return types.filter((t) => !!this._serverQuery[slug(t)]);
+  }
+
+  requestedAccountFeatures() {
+    const features = listAccountFeatures();
+    return features.filter((f) => !!this._serverQuery[slug(f)]);
   }
 
   find() {
@@ -27,10 +30,15 @@ class AccountFinder {
     }
 
     const accountTypes = this.requestedAccountTypes();
-    console.log(accountTypes);
     if (accountTypes.length !== 0) {
-      // keep only matches that have account types in the list
       matches = matches.filter((a) => accountTypes.indexOf(a.type) !== -1);
+    }
+
+    const accountFeatures = this.requestedAccountFeatures();
+    if (accountFeatures.length !== 0) {
+      matches = matches.filter((a) =>
+        accountFeatures.some((r) => a.features.includes(r))
+      );
     }
 
     return matches;

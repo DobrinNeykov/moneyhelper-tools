@@ -90,45 +90,39 @@ describe("Account", () => {
   });
 
   it("has account features", () => {
-    expect(
-      new Account({ chequeBook: "Yes" }).accountFeatures.chequeBook
-    ).toBeTruthy();
-    expect(
-      new Account({ chequeBook: "Other?" }).accountFeatures.chequeBook
-    ).toBeFalsy();
+    expect(new Account({ chequeBook: "Yes" }).features).toContain(
+      "Cheque book available"
+    );
+    expect(new Account({ chequeBook: "Other" }).features).not.toContain(
+      "Cheque book available"
+    );
 
-    expect(
-      new Account({ monthlyCharge: "0.00" }).accountFeatures.noMonthlyFee
-    ).toBeTruthy();
-    expect(
-      new Account({ monthlyCharge: "1.99" }).accountFeatures.noMonthlyFee
-    ).toBeFalsy();
+    expect(new Account({ monthlyCharge: "0.00" }).features).toContain(
+      "No monthly fee"
+    );
+    expect(new Account({ monthlyCharge: "1.99" }).features).not.toContain(
+      "No monthly fee"
+    );
 
-    expect(
-      new Account({ existingCustomer: "false" }).accountFeatures
-        .openToNewCustomers
-    ).toBeTruthy();
-    expect(
-      new Account({ existingCustomer: "true" }).accountFeatures
-        .openToNewCustomers
-    ).toBeFalsy();
+    expect(new Account({ existingCustomer: "false" }).features).toContain(
+      "Open to new customers"
+    );
+    expect(new Account({ existingCustomer: "true" }).features).not.toContain(
+      "Open to new customers"
+    );
 
-    expect(
-      new Account({ overdraftFacility: "true" }).accountFeatures
-        .overdraftFacility
-    ).toBeTruthy();
-    expect(
-      new Account({ overdraftFacility: "false" }).accountFeatures
-        .overdraftFacility
-    ).toBeFalsy();
+    expect(new Account({ overdraftFacility: "true" }).features).toContain(
+      "Overdraft facilities"
+    );
+    expect(new Account({ overdraftFacility: "false" }).features).not.toContain(
+      "Overdraft facilities"
+    );
 
-    expect(
-      new Account({ bacsSwitchService: "true" }).accountFeatures
-        .supportsSevenDaySwitching
-    ).toBeTruthy();
-    expect(
-      new Account({ bacsSwitchService: "false" }).accountFeatures
-        .supportsSevenDaySwitching
-    ).toBeFalsy();
+    expect(new Account({ bacsSwitchService: "true" }).features).toContain(
+      "Supports 7-day switching"
+    );
+    expect(new Account({ bacsSwitchService: "false" }).features).not.toContain(
+      "Supports 7-day switching"
+    );
   });
 });

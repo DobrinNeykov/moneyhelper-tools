@@ -37,6 +37,16 @@ const listAccountTypes = () => {
   return accountTypes.map((at) => at.label);
 };
 
+const listAccountFeatures = () => {
+  return [
+    "Cheque book available",
+    "No monthly fee",
+    "Open to new customers",
+    "Overdraft facilities",
+    "Supports 7-day switching",
+  ];
+};
+
 const accountTypeLabelFromDefaqtoAccountType = (nameInDefaqtoAPI) => {
   const label = accountTypes.filter(
     (a) => a.nameInDefaqtoAPI === nameInDefaqtoAPI
@@ -48,4 +58,8 @@ const accountTypeLabelFromDefaqtoAccountType = (nameInDefaqtoAPI) => {
     throw "no label for defaqto account type '" + nameInDefaqtoAPI + "'";
   }
 };
-export { listAccountTypes, accountTypeLabelFromDefaqtoAccountType };
+export {
+  listAccountTypes,
+  listAccountFeatures,
+  accountTypeLabelFromDefaqtoAccountType,
+};
