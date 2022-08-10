@@ -15,6 +15,7 @@ import {
   listAccountFeatures,
   listAccountAccess,
 } from "./account-mapping";
+import Filters from "./filters";
 
 import formatMoney from "./formatMoney";
 
@@ -384,6 +385,54 @@ const Accounts = ({ accounts, pagination }) => {
   );
 };
 
+const ActiveFilters = ({ filters }) => {
+  const Filter = ({ filter }) => {
+    const filtersWithoutFilter = filters.withoutFilter(filter);
+
+    return (
+      <div className="inline-block border-2 rounded shadow px-2 py-1">
+        <div className="flex items-center text-pink-800 space-x-2">
+          <div>{filter}</div>
+          <a href={filtersWithoutFilter.href}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              role="img"
+              width="16"
+              preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    );
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="flex space-x-2">
+        <div>{filters.count} active filters </div>
+        <a
+          href="?"
+          className="underline flex items-center space-x-1 text-pink-800"
+        >
+          Clear all
+        </a>
+      </div>
+      <div className="space-x-2">
+        {filters.accountTypes.map((a) => (
+          <Filter key={a} filter={a} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 /**
  * Compare accounts calculator
  */
@@ -391,6 +440,7 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
   const refineSearch = !!serverQuery.refineSearch;
   const page = serverQuery.p ? parseInt(serverQuery.p) : 1;
   const query = serverQuery.q;
+  const filters = new Filters(serverQuery);
 
   const allAccounts = new AccountList(jsonAccounts);
   const accountFinder = new AccountFinder(serverQuery, allAccounts);
@@ -409,9 +459,10 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
           <RefineSearch serverQuery={serverQuery} refineSearch={refineSearch} />
         </div>
         <div className="space-y-4">
+          {filters.count > 0 && <ActiveFilters filters={filters} />}
           <SortBar pagination={pagination} />
           <Accounts accounts={accounts} pagination={pagination} />
-          <Pagination pagination={pagination} query={query} />
+          <Pagination pagination={pagination} query={filters.query} />
         </div>
       </div>
     </form>
