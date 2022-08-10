@@ -47,6 +47,15 @@ const listAccountFeatures = () => {
   ];
 };
 
+const listAccountAccess = () => {
+  return [
+    "Branch banking",
+    "Internet banking",
+    "Mobile app banking",
+    "Post Office banking",
+  ];
+};
+
 const accountTypeLabelFromDefaqtoAccountType = (nameInDefaqtoAPI) => {
   const label = accountTypes.filter(
     (a) => a.nameInDefaqtoAPI === nameInDefaqtoAPI
@@ -61,5 +70,6 @@ const accountTypeLabelFromDefaqtoAccountType = (nameInDefaqtoAPI) => {
 export {
   listAccountTypes,
   listAccountFeatures,
+  listAccountAccess,
   accountTypeLabelFromDefaqtoAccountType,
 };

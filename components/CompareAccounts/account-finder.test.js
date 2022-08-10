@@ -69,4 +69,22 @@ describe("AccountFinder", () => {
     expect(result).toHaveLength(1);
     expect(result[0].name).toEqual("Account with switch service");
   });
+
+  it("filters accounts by access", () => {
+    const accounts = new AccountList({
+      items: [
+        { productName: "Account without internet banking" },
+        {
+          productName: "Account with internet banking",
+          internetBanking: "true",
+        },
+      ],
+    });
+
+    const query = { "internet-banking": "on" };
+    const finder = new AccountFinder(query, accounts);
+    const result = finder.find();
+    expect(result).toHaveLength(1);
+    expect(result[0].name).toEqual("Account with internet banking");
+  });
 });

@@ -10,7 +10,11 @@ import { Select } from "../Select";
 
 import AccountList from "./account-list";
 import AccountFinder from "./account-finder";
-import { listAccountTypes, listAccountFeatures } from "./account-mapping";
+import {
+  listAccountTypes,
+  listAccountFeatures,
+  listAccountAccess,
+} from "./account-mapping";
 
 import formatMoney from "./formatMoney";
 
@@ -128,12 +132,7 @@ const RefineSearch = ({ serverQuery, refineSearch }) => {
           <FilterSection
             serverQuery={serverQuery}
             title="Account access"
-            values={[
-              "Branch banking",
-              "Internet banking",
-              "Mobile app banking",
-              "Post Office banking",
-            ]}
+            values={listAccountAccess()}
           />
 
           <Button title="Apply filters" />

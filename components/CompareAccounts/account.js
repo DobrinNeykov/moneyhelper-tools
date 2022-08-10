@@ -52,15 +52,24 @@ class Account {
     return dinero({ amount: cents, currency: GBP });
   }
 
-  get accountAccess() {
+  get access() {
+    const results = [];
     const trueValue = "true";
 
-    return {
-      branchBanking: this._json.branchBanking === trueValue,
-      internetBanking: this._json.internetBanking === trueValue,
-      mobilePhoneBanking: this._json.mobilePhoneApp === trueValue,
-      postOfficeBanking: this._json.postOfficeBanking === trueValue,
-    };
+    if (this._json.branchBanking === trueValue) {
+      results.push("Branch banking");
+    }
+    if (this._json.internetBanking === trueValue) {
+      results.push("Internet banking");
+    }
+    if (this._json.mobilePhoneApp === trueValue) {
+      results.push("Mobile app banking");
+    }
+    if (this._json.postOfficeBanking === trueValue) {
+      results.push("Post Office banking");
+    }
+
+    return results;
   }
 
   get features() {

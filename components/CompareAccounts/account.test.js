@@ -76,17 +76,23 @@ describe("Account", () => {
   });
 
   it("has account access details", () => {
-    const account = new Account({
+    const account1 = new Account({
       branchBanking: "true",
       internetBanking: "true",
       mobilePhoneApp: "true",
       postOfficeBanking: "true",
     });
 
-    expect(account.accountAccess.branchBanking).toBeTruthy();
-    expect(account.accountAccess.internetBanking).toBeTruthy();
-    expect(account.accountAccess.mobilePhoneBanking).toBeTruthy();
-    expect(account.accountAccess.postOfficeBanking).toBeTruthy();
+    expect(account1.access).toContain("Branch banking");
+    expect(account1.access).toContain("Internet banking");
+    expect(account1.access).toContain("Mobile app banking");
+    expect(account1.access).toContain("Post Office banking");
+
+    const account2 = new Account({});
+    expect(account2.access).not.toContain("Branch banking");
+    expect(account2.access).not.toContain("Internet banking");
+    expect(account2.access).not.toContain("Mobile app banking");
+    expect(account2.access).not.toContain("Post Office banking");
   });
 
   it("has account features", () => {
