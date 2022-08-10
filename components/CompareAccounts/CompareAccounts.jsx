@@ -148,7 +148,7 @@ const CheckBox = ({ id, name, label, initialValue }) => {
 
   return (
     <div key={name} className="flex">
-      <div className="mr-2">
+      <div className="mr-2 flex items-center">
         <input
           id={id}
           name={name}
