@@ -13,8 +13,6 @@ import AccountFinder from "./account-finder";
 
 import formatMoney from "./formatMoney";
 
-import { faker } from "@faker-js/faker";
-
 import jsonAccounts from "../../accounts.json";
 
 const usePagination = ({ page, pageSize, totalItems }) => {
