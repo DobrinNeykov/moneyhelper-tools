@@ -155,9 +155,10 @@ const CheckBox = ({ id, name, label, initialValue }) => {
           type="checkbox"
           checked={checked}
           onChange={(e) => setChecked(e.target.checked)}
+          className="w-4 h-4 rounded accent-pink-600"
         />
       </div>
-      <label htmlFor={name} className="">
+      <label htmlFor={name} className="text-lg">
         {label}
       </label>
     </div>
