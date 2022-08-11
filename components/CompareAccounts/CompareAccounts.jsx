@@ -351,7 +351,7 @@ const AccountExpandedView = ({ account }) => {
     <div className="space-y-4">
       <button
         type="button"
-        className="underline text-pink-900 flex items-center"
+        className="underline text-pink-900 flex items-center outline-none"
         onClick={() => setShowExpanded((se) => !se)}
       >
         <div>{showExpanded ? "Hide" : "Show"} all account fees and charges</div>
