@@ -340,23 +340,26 @@ const AccountCheckboxes = ({ title, fields }) => {
   );
 };
 
-const AccountExpandedView = ({ account }) => {
-  const [showExpanded, setShowExpanded] = useState(true);
+const ExpandableSection = ({ title, expandedTitle, children }) => {
+  const [expanded, setExpanded] = useState(true);
 
   useEffect(() => {
-    setShowExpanded(false);
+    setExpanded(false);
   }, []);
 
   return (
-    <div className="space-y-4">
+    <>
       <button
         type="button"
-        className="underline text-pink-900 flex items-center outline-none"
-        onClick={() => setShowExpanded((se) => !se)}
+        className={classNames(
+          "underline text-lg text-pink-900 flex items-center outline-none",
+          { "mb-4": expanded }
+        )}
+        onClick={() => setExpanded((se) => !se)}
       >
-        <div>{showExpanded ? "Hide" : "Show"} all account fees and charges</div>
+        <div>{expanded ? expandedTitle || title : title}</div>
         <div>
-          {showExpanded || (
+          {expanded || (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
@@ -372,7 +375,7 @@ const AccountExpandedView = ({ account }) => {
               ></path>
             </svg>
           )}
-          {showExpanded && (
+          {expanded && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
@@ -390,8 +393,19 @@ const AccountExpandedView = ({ account }) => {
           )}
         </div>
       </button>
-      {showExpanded && (
-        <div className="animate-in zoom-in">
+      {expanded && <div className="animate-in zoom-in mb-8">{children}</div>}
+    </>
+  );
+};
+
+const AccountExpandedView = ({ account }) => {
+  return (
+    <div className="space-y-4">
+      <ExpandableSection
+        title="Show all account fees and charges"
+        expandedTitle="Hide all account fees and charges"
+      >
+        <div className="space-y-4">
           <AccountCheckboxes
             title="Account access options"
             fields={listAccountAccess().map((a) => ({
@@ -407,32 +421,42 @@ const AccountExpandedView = ({ account }) => {
             }))}
           />
           <div>
+            <div className="mb-3 text-lg font-bold">Account fees and costs</div>
             {account.expanded.map((group) => (
-              <div key={group.title} className="border">
-                <div className="font-bold">{group.title}</div>
-                {group.sections.map((section) => (
-                  <div key={section.title}>
-                    <div>{section.title}</div>
-                    <div>
-                      {section.items.map((item) => (
-                        <div key={item.title}>
-                          {item.type === "detail" && (
-                            <div>
-                              <div>{item.title}</div>
-                              <div>{item.value}</div>
+              <div key={group.title} className="">
+                <ExpandableSection title={group.title}>
+                  <div className="space-y-4">
+                    {group.sections.map((section, i) => (
+                      <div key={i}>
+                        {section.title && (
+                          <div className="text-lg font-bold mb-3">
+                            {section.title}
+                          </div>
+                        )}
+                        <div className="space-y-4">
+                          {section.items.map((item, i) => (
+                            <div key={i}>
+                              {item.type === "detail" && (
+                                <div className="border-b grid grid-cols-2">
+                                  <div className="">{item.title}</div>
+                                  <div>{item.value}</div>
+                                </div>
+                              )}
+                              {item.type === "read-more" && (
+                                <div>{item.value}</div>
+                              )}
                             </div>
-                          )}
-                          {item.type === "read-more" && <div>{item.value}</div>}
+                          ))}
                         </div>
-                      ))}
-                    </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </ExpandableSection>
               </div>
             ))}
           </div>
         </div>
-      )}
+      </ExpandableSection>
     </div>
   );
 };
