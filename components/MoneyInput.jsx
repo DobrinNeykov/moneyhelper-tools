@@ -1,7 +1,6 @@
 import React, { useId } from "react";
 import PropTypes from "prop-types";
 import NumberFormat from "react-number-format";
-import styles from "./MoneyInput.module.css";
 import classNames from "classnames";
 
 /**
@@ -52,7 +51,7 @@ export const MoneyInput = ({
           "ml-0",
           "h-auto",
           "focus:outline-purple-700",
-          styles.outline
+          "focus:shadow-focus-outline"
         )}
         value={defaultValue}
         thousandSeparator={true}

@@ -28,6 +28,7 @@ module.exports = {
       },
       boxShadow: {
         "bottom-gray": "0px 3px 0px rgba(0, 11, 59, 0.25)",
+        "focus-outline": "0px 0px 0px 4px rgba(240, 240, 90, 1)",
       },
     },
   },
