@@ -9,13 +9,11 @@ describe("Account", () => {
       id: "2323",
       providerName: "The Provider",
       productName: "The Name",
-      unauthODMonthlyCap: "Cap",
     });
 
     expect(account.id).toEqual("2323");
     expect(account.providerName).toEqual("The Provider");
     expect(account.name).toEqual("The Name");
-    expect(account.unauthODMonthlyCap).toEqual("Cap");
   });
 
   it("builds a url with a valid scheme, if required", () => {
@@ -121,6 +119,55 @@ describe("Account", () => {
     ).toBeTruthy();
   });
 
+  it("has an unauthODMonthlyCap", () => {
+    expect(
+      equal(
+        new Account({ unauthODMonthlyCap: "0" }).unauthODMonthlyCap,
+        dinero({ amount: 0, currency: GBP })
+      )
+    ).toBeTruthy();
+
+    expect(
+      equal(
+        new Account({ unauthODMonthlyCap: "32.01" }).unauthODMonthlyCap,
+        dinero({ amount: 3201, currency: GBP })
+      )
+    ).toBeTruthy();
+  });
+
+  it("has a debitCardIssueFee", () => {
+    expect(
+      equal(
+        new Account({ debitCardIssueFee: "0" }).debitCardIssueFee,
+        dinero({ amount: 0, currency: GBP })
+      )
+    ).toBeTruthy();
+
+    expect(
+      equal(
+        new Account({ debitCardIssueFee: "21.01" }).debitCardIssueFee,
+        dinero({ amount: 2101, currency: GBP })
+      )
+    ).toBeTruthy();
+  });
+
+  it("has a debitCardReplacementFee", () => {
+    expect(
+      equal(
+        new Account({ debitCardReplacemntFee: "0" }).debitCardReplacementFee,
+        dinero({ amount: 0, currency: GBP })
+      )
+    ).toBeTruthy();
+
+    expect(
+      equal(
+        new Account({ debitCardReplacemntFee: "12.08" })
+          .debitCardReplacementFee,
+        dinero({ amount: 1208, currency: GBP })
+      )
+    ).toBeTruthy();
+  });
+
   it("has a representativeAPR", () => {
     expect(new Account({ representativeAPR: "43" }).representativeAPR).toEqual(
       "43%"
@@ -129,6 +176,16 @@ describe("Account", () => {
     expect(new Account({ representativeAPR: "" }).representativeAPR).toEqual(
       "0%"
     );
+  });
+
+  it("has a unauthorisedOverdraftEar", () => {
+    expect(
+      new Account({ unauthorisedOverdraftEar: "42" }).unauthorisedOverdraftEar
+    ).toEqual("42%");
+
+    expect(
+      new Account({ unauthorisedOverdraftEar: "" }).unauthorisedOverdraftEar
+    ).toEqual("0%");
   });
 
   it("has account access details", () => {
@@ -198,6 +255,14 @@ describe("Account", () => {
       arrangedODExample1: "3.22",
       arrangedODExample2: "3.56",
       arrangedODDetail: "arranged od detail",
+      unauthorisedOverdraftEar: "43.54",
+      unauthODMonthlyCap: "32.31",
+      unarrangedODDetail: "unarranged od detail",
+      unpaidItemDetail: "unpaid item detail",
+      paidItemDetail: "paid item detail",
+      debitCardIssueFee: "12.33",
+      debitCardReplacemntFee: "17.31",
+      debitCardReplacemntFeeBrochure: "replacement fee brochure",
     });
 
     expect(account.expanded).toEqual([
@@ -252,6 +317,63 @@ describe("Account", () => {
               {
                 type: "read-more",
                 value: "arranged od detail",
+              },
+            ],
+          },
+          {
+            title: "Unarranged overdraft",
+            items: [
+              {
+                type: "detail",
+                title: "Annual interest rate (APR/EAR)",
+                value: "43.54%",
+              },
+              {
+                type: "detail",
+                title: "Monthly Maximum Charge",
+                value: "£32.31",
+              },
+              {
+                type: "read-more",
+                value: "unarranged od detail",
+              },
+            ],
+          },
+          {
+            title: "Other related fees",
+            items: [
+              {
+                type: "detail",
+                title: "Refusing a payment due to a lack of funds",
+                value: "unpaid item detail",
+              },
+              {
+                type: "detail",
+                title: "Allowing a payment despite a lack of funds",
+                value: "paid item detail",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Debit card fees",
+        sections: [
+          {
+            items: [
+              {
+                type: "detail",
+                title: "Card issue fee",
+                value: "£12.33",
+              },
+              {
+                type: "detail",
+                title: "Card replacement fee",
+                value: "£17.31",
+              },
+              {
+                type: "read-more",
+                value: "replacement fee brochure",
               },
             ],
           },

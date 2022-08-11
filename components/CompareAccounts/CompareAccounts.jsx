@@ -504,7 +504,9 @@ const Accounts = ({ accounts, pagination }) => {
               </div>
               <div className="pl-4">
                 <div className="">Unarranged overdraft max. monthly charge</div>
-                <div className="font-bold">£{account.unauthODMonthlyCap}</div>
+                <div className="font-bold">
+                  {formatMoney(account.unauthODMonthlyCap)}
+                </div>
               </div>
             </div>
 

@@ -43,6 +43,10 @@ class Account {
     return `${this._json.representativeAPR || 0}%`;
   }
 
+  get unauthorisedOverdraftEar() {
+    return `${this._json.unauthorisedOverdraftEar || 0}%`;
+  }
+
   get unauthODMonthlyCap() {
     return this._json.unauthODMonthlyCap;
   }
@@ -67,6 +71,25 @@ class Account {
 
   get arrangedODExample2() {
     const float = numeral(this._json.arrangedODExample2);
+    const cents = Math.round(float.value() * 100);
+    return dinero({ amount: cents, currency: GBP });
+  }
+
+  get unauthODMonthlyCap() {
+    const float = numeral(this._json.unauthODMonthlyCap);
+    const cents = Math.round(float.value() * 100);
+    return dinero({ amount: cents, currency: GBP });
+  }
+
+  get debitCardIssueFee() {
+    const float = numeral(this._json.debitCardIssueFee);
+    const cents = Math.round(float.value() * 100);
+    return dinero({ amount: cents, currency: GBP });
+  }
+
+  get debitCardReplacementFee() {
+    // Yes, there is a typo in this field value.
+    const float = numeral(this._json.debitCardReplacemntFee);
     const cents = Math.round(float.value() * 100);
     return dinero({ amount: cents, currency: GBP });
   }
@@ -170,6 +193,63 @@ class Account {
               {
                 type: "read-more",
                 value: this._json.arrangedODDetail,
+              },
+            ],
+          },
+          {
+            title: "Unarranged overdraft",
+            items: [
+              {
+                type: "detail",
+                title: "Annual interest rate (APR/EAR)",
+                value: this.unauthorisedOverdraftEar,
+              },
+              {
+                type: "detail",
+                title: "Monthly Maximum Charge",
+                value: formatMoney(this.unauthODMonthlyCap),
+              },
+              {
+                type: "read-more",
+                value: this._json.unarrangedODDetail,
+              },
+            ],
+          },
+          {
+            title: "Other related fees",
+            items: [
+              {
+                type: "detail",
+                title: "Refusing a payment due to a lack of funds",
+                value: this._json.unpaidItemDetail,
+              },
+              {
+                type: "detail",
+                title: "Allowing a payment despite a lack of funds",
+                value: this._json.paidItemDetail,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Debit card fees",
+        sections: [
+          {
+            items: [
+              {
+                type: "detail",
+                title: "Card issue fee",
+                value: formatMoney(this.debitCardIssueFee),
+              },
+              {
+                type: "detail",
+                title: "Card replacement fee",
+                value: formatMoney(this.debitCardReplacementFee),
+              },
+              {
+                type: "read-more",
+                value: this._json.debitCardReplacemntFeeBrochure,
               },
             ],
           },
