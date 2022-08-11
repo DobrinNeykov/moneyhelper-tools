@@ -377,6 +377,52 @@ describe("Account", () => {
               },
             ],
           },
+          {
+            title: "In pounds in the UK",
+            items: [],
+          },
+          {
+            title: "In a foreign currency outside of the UK",
+            items: [],
+          },
+        ],
+      },
+      {
+        title: "Cash withdrawal fees",
+        sections: [
+          {
+            title: "In pounds in the UK",
+            items: [],
+          },
+          {
+            title: "In a foreign currency outside of the UK",
+            items: [],
+          },
+        ],
+      },
+      {
+        title: "Payment fees",
+        sections: [
+          {
+            title: "Sending money within the UK",
+            items: [],
+          },
+          {
+            title: "Sending money outside of the UK",
+            items: [],
+          },
+          {
+            title: "Receiving money from outside of the UK",
+            items: [],
+          },
+        ],
+      },
+      {
+        title: "Other fees",
+        sections: [
+          {
+            items: [],
+          },
         ],
       },
     ]);
