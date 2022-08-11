@@ -4,6 +4,7 @@ import { GBP } from "@dinero.js/currencies";
 import numeral from "numeral";
 
 import { accountTypeLabelFromDefaqtoAccountType } from "./account-mapping";
+import formatMoney from "./formatMoney";
 
 class Account {
   constructor(json) {
@@ -39,7 +40,7 @@ class Account {
   }
 
   get representativeAPR() {
-    return this._json.representativeAPR;
+    return `${this._json.representativeAPR || 0}%`;
   }
 
   get unauthODMonthlyCap() {
@@ -48,6 +49,24 @@ class Account {
 
   get monthlyFee() {
     const float = numeral(this._json.monthlyCharge);
+    const cents = Math.round(float.value() * 100);
+    return dinero({ amount: cents, currency: GBP });
+  }
+
+  get minimumMonthlyCredit() {
+    const float = numeral(this._json.minimumMonthlyCredit);
+    const cents = Math.round(float.value() * 100);
+    return dinero({ amount: cents, currency: GBP });
+  }
+
+  get arrangedODExample1() {
+    const float = numeral(this._json.arrangedODExample1);
+    const cents = Math.round(float.value() * 100);
+    return dinero({ amount: cents, currency: GBP });
+  }
+
+  get arrangedODExample2() {
+    const float = numeral(this._json.arrangedODExample2);
     const cents = Math.round(float.value() * 100);
     return dinero({ amount: cents, currency: GBP });
   }
@@ -96,6 +115,67 @@ class Account {
     }
 
     return results;
+  }
+
+  get expanded() {
+    return [
+      {
+        title: "General account fees",
+        sections: [
+          {
+            items: [
+              {
+                type: "detail",
+                title: "Maintaining the account",
+                value: formatMoney(this.monthlyFee),
+              },
+              {
+                type: "read-more",
+                value: this._json.monthlyChargeBrochure,
+              },
+              {
+                type: "detail",
+                title: "Minimum monthly deposit",
+                value: formatMoney(this.minimumMonthlyCredit),
+              },
+              {
+                type: "read-more",
+                value: this._json.minimumMonthlyCreditBrochure,
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Overdraft fees",
+        sections: [
+          {
+            title: "Arranged overdraft",
+            items: [
+              {
+                type: "detail",
+                title: "Annual interest rate (APR)",
+                value: this.representativeAPR,
+              },
+              {
+                type: "detail",
+                title: "Example - £ overdrawn for 7 days",
+                value: formatMoney(this.arrangedODExample1),
+              },
+              {
+                type: "detail",
+                title: "Example - £ overdrawn for 30 days",
+                value: formatMoney(this.arrangedODExample2),
+              },
+              {
+                type: "read-more",
+                value: this._json.arrangedODDetail,
+              },
+            ],
+          },
+        ],
+      },
+    ];
   }
 }
 

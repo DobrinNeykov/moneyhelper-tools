@@ -9,14 +9,12 @@ describe("Account", () => {
       id: "2323",
       providerName: "The Provider",
       productName: "The Name",
-      representativeAPR: "APR",
       unauthODMonthlyCap: "Cap",
     });
 
     expect(account.id).toEqual("2323");
     expect(account.providerName).toEqual("The Provider");
     expect(account.name).toEqual("The Name");
-    expect(account.representativeAPR).toEqual("APR");
     expect(account.unauthODMonthlyCap).toEqual("Cap");
   });
 
@@ -59,7 +57,7 @@ describe("Account", () => {
     );
   });
 
-  it("has a monthly fee", () => {
+  it("has a monthlyFee", () => {
     expect(
       equal(
         new Account({ monthlyCharge: "0.00" }).monthlyFee,
@@ -73,6 +71,64 @@ describe("Account", () => {
         dinero({ amount: 12298, currency: GBP })
       )
     ).toBeTruthy();
+  });
+
+  it("has a minimumMonthlyCredit", () => {
+    expect(
+      equal(
+        new Account({ minimumMonthlyCredit: "0" }).minimumMonthlyCredit,
+        dinero({ amount: 0, currency: GBP })
+      )
+    ).toBeTruthy();
+
+    expect(
+      equal(
+        new Account({ minimumMonthlyCredit: "122" }).minimumMonthlyCredit,
+        dinero({ amount: 12200, currency: GBP })
+      )
+    ).toBeTruthy();
+  });
+
+  it("has an arrangedODExample1", () => {
+    expect(
+      equal(
+        new Account({ arrangedODExample1: "0" }).arrangedODExample1,
+        dinero({ amount: 0, currency: GBP })
+      )
+    ).toBeTruthy();
+
+    expect(
+      equal(
+        new Account({ arrangedODExample1: "122.09" }).arrangedODExample1,
+        dinero({ amount: 12209, currency: GBP })
+      )
+    ).toBeTruthy();
+  });
+
+  it("has an arrangedODExample2", () => {
+    expect(
+      equal(
+        new Account({ arrangedODExample2: "0" }).arrangedODExample2,
+        dinero({ amount: 0, currency: GBP })
+      )
+    ).toBeTruthy();
+
+    expect(
+      equal(
+        new Account({ arrangedODExample2: "8.22" }).arrangedODExample2,
+        dinero({ amount: 822, currency: GBP })
+      )
+    ).toBeTruthy();
+  });
+
+  it("has a representativeAPR", () => {
+    expect(new Account({ representativeAPR: "43" }).representativeAPR).toEqual(
+      "43%"
+    );
+
+    expect(new Account({ representativeAPR: "" }).representativeAPR).toEqual(
+      "0%"
+    );
   });
 
   it("has account access details", () => {
@@ -130,5 +186,77 @@ describe("Account", () => {
     expect(new Account({ bacsSwitchService: "false" }).features).not.toContain(
       "Supports 7-day switching"
     );
+  });
+
+  it("has expanded account details", () => {
+    const account = new Account({
+      monthlyCharge: "12.11",
+      monthlyChargeBrochure: "this is some text bla bla",
+      minimumMonthlyCredit: "10",
+      minimumMonthlyCreditBrochure: "minimum monthly credit brochure",
+      representativeAPR: "45",
+      arrangedODExample1: "3.22",
+      arrangedODExample2: "3.56",
+      arrangedODDetail: "arranged od detail",
+    });
+
+    expect(account.expanded).toEqual([
+      {
+        title: "General account fees",
+        sections: [
+          {
+            items: [
+              {
+                type: "detail",
+                title: "Maintaining the account",
+                value: "£12.11",
+              },
+              {
+                type: "read-more",
+                value: "this is some text bla bla",
+              },
+              {
+                type: "detail",
+                title: "Minimum monthly deposit",
+                value: "£10.00",
+              },
+              {
+                type: "read-more",
+                value: "minimum monthly credit brochure",
+              },
+            ],
+          },
+        ],
+      },
+      {
+        title: "Overdraft fees",
+        sections: [
+          {
+            title: "Arranged overdraft",
+            items: [
+              {
+                type: "detail",
+                title: "Annual interest rate (APR)",
+                value: "45%",
+              },
+              {
+                type: "detail",
+                title: "Example - £ overdrawn for 7 days",
+                value: "£3.22",
+              },
+              {
+                type: "detail",
+                title: "Example - £ overdrawn for 30 days",
+                value: "£3.56",
+              },
+              {
+                type: "read-more",
+                value: "arranged od detail",
+              },
+            ],
+          },
+        ],
+      },
+    ]);
   });
 });

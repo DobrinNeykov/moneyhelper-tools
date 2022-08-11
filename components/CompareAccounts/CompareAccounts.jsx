@@ -406,6 +406,31 @@ const AccountExpandedView = ({ account }) => {
               checked: account.features.includes(a),
             }))}
           />
+          <div>
+            {account.expanded.map((group) => (
+              <div key={group.title} className="border">
+                <div className="font-bold">{group.title}</div>
+                {group.sections.map((section) => (
+                  <div key={section.title}>
+                    <div>{section.title}</div>
+                    <div>
+                      {section.items.map((item) => (
+                        <div key={item.title}>
+                          {item.type === "detail" && (
+                            <div>
+                              <div>{item.title}</div>
+                              <div>{item.value}</div>
+                            </div>
+                          )}
+                          {item.type === "read-more" && <div>{item.value}</div>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
@@ -469,11 +494,13 @@ const Accounts = ({ accounts, pagination }) => {
               </div>
               <div className="px-4">
                 <div className="">Min. monthly deposit requirement</div>
-                <div className="font-bold">£{account.minimumMonthlyCredit}</div>
+                <div className="font-bold">
+                  {formatMoney(account.minimumMonthlyCredit)}
+                </div>
               </div>
               <div className="px-4">
                 <div className="">Arranged overdraft interest rate</div>
-                <div className="font-bold">{account.representativeAPR}%</div>
+                <div className="font-bold">{account.representativeAPR}</div>
               </div>
               <div className="pl-4">
                 <div className="">Unarranged overdraft max. monthly charge</div>
