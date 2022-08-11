@@ -29,6 +29,7 @@ module.exports = {
       boxShadow: {
         "bottom-gray": "0px 3px 0px rgba(0, 11, 59, 0.25)",
         "focus-outline": "0px 0px 0px 4px rgba(240, 240, 90, 1)",
+        "select-focus": "0 0 0 1px #8200d1, 0 0 0 6px #f0f05a",
       },
     },
   },

@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import styles from "./Select.module.css";
 
 /**
  * Select component
@@ -10,7 +9,6 @@ export const Select = ({
   id,
   name,
   value,
-  label,
   emptyItemText,
   options,
   onChange,
@@ -21,17 +19,15 @@ export const Select = ({
   const hasErrors = errors && errors.length > 0;
 
   return (
-    <div className={styles.container}>
-      <div className={styles.inner}>
-        <div className={styles.border}>
-          <span className={styles.arrow}>
+    <div className="">
+      <div className="relative block focus-within:border-purple-600 border-transparent border focus-within:rounded focus-within:shadow-select-focus">
+        <div className="">
+          <span className="flex absolute pointer-events-none items-center inset-y-0 right-0 w-10 pl-2 text-white bg-pink-600 rounded-r shadow-bottom-gray focus:shadow-none">
             <svg
-              className={styles.svg}
               width="24"
               height="24"
               viewBox="0 0 18 18"
-              stroke="current"
-              fill="current"
+              fill="currentColor"
               xmlns="http://www.w3.org/2000/svg"
             >
               <g clipPath="url(#clip0_45_392)">
@@ -48,7 +44,7 @@ export const Select = ({
             id={id}
             name={name}
             value={value}
-            className={styles.select}
+            className="text-gray-500 border-gray-400 border-y border-l w-full outline-none block text-md h-10 px-3 bg-white rounded focus:border-white"
             onChange={(e) => {
               if (onChange) {
                 onChange(e.target.value);
@@ -71,7 +67,6 @@ export const Select = ({
 Select.propTypes = {
   id: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
   value: PropTypes.string,
   emptyItemText: PropTypes.string.isRequired,
   required: PropTypes.bool,
@@ -87,10 +82,6 @@ Select.propTypes = {
    * The name
    */
   name: PropTypes.string,
-  /**
-   * The label
-   */
-  label: PropTypes.string,
   /**
    * The selected value
    */
