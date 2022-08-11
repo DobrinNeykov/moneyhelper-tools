@@ -28,6 +28,49 @@ describe("Account", () => {
     expect(accountWithScheme.url).toEqual("https://www.blah.com");
   });
 
+  it("has money fields", () => {
+    // money (support "Infinity" as null)
+    const expectMoneyField = (name) => {
+      expect(
+        equal(
+          new Account({ [name]: "0.00" })[name],
+          dinero({ amount: 0, currency: GBP })
+        )
+      ).toBeTruthy();
+
+      expect(
+        equal(
+          new Account({ [name]: "21.98" })[name],
+          dinero({ amount: 2198, currency: GBP })
+        )
+      ).toBeTruthy();
+
+      expect(new Account({ [name]: "Infinity" })[name]).toBeNull();
+    };
+
+    expectMoneyField("transactionFee");
+    expectMoneyField("debitEU50Cost");
+    expectMoneyField("debitWorld50Cost");
+    expectMoneyField("atmMaxFreeWithdrawalUK");
+    expectMoneyField("atmWithdrawalCharge");
+    expectMoneyField("atmEU50Cost");
+    expectMoneyField("atmWorld50Cost");
+    expectMoneyField("directDebitCharge");
+    expectMoneyField("standingOrderCharge");
+    expectMoneyField("bacsCharge");
+    expectMoneyField("fasterPaymentsCharge");
+    expectMoneyField("chapsCharge");
+    expectMoneyField("payOutEUMinChrg");
+    expectMoneyField("payOutEUMaxChrg");
+    expectMoneyField("payOutWorldMinChrg");
+    expectMoneyField("payOutWorldMaxChrg");
+    expectMoneyField("payInEUMinChrg");
+    expectMoneyField("payInEUMaxChrg");
+    expectMoneyField("payInWorldMinChrg");
+    expectMoneyField("payInWorldMaxChrg");
+    expectMoneyField("stoppedChequeCharge");
+  });
+
   it("has a human readable account type", () => {
     expect(new Account({ accountType: "standard" }).type).toEqual(
       "Standard current accounts"
@@ -188,6 +231,17 @@ describe("Account", () => {
     ).toEqual("0%");
   });
 
+  it("has an atmWithdrawalChargePercent", () => {
+    expect(
+      new Account({ atmWithdrawalChargePercent: "23" })
+        .atmWithdrawalChargePercent
+    ).toEqual("23%");
+
+    expect(
+      new Account({ atmWithdrawalChargePercent: "" }).atmWithdrawalChargePercent
+    ).toEqual("0%");
+  });
+
   it("has account access details", () => {
     const account1 = new Account({
       branchBanking: "true",
@@ -263,6 +317,34 @@ describe("Account", () => {
       debitCardIssueFee: "12.33",
       debitCardReplacemntFee: "17.31",
       debitCardReplacemntFeeBrochure: "replacement fee brochure",
+      transactionFee: "23.64",
+      debitEU50Cost: "43.33",
+      debitWorld50Cost: "65.23",
+      atmMaxFreeWithdrawalUK: "512.34",
+      atmWithdrawalCharge: "453.32",
+      atmEU50Cost: "23.34",
+      atmWorld50Cost: "54.32",
+      directDebitCharge: "434.22",
+      standingOrderCharge: "33.22",
+      bacsCharge: "11.23",
+      fasterPaymentsCharge: "65.56",
+      chapsCharge: "54.44",
+      payOutEUMinChrg: "67.23",
+      payOutEUMaxChrg: "32.11",
+      payOutWorldMinChrg: "64.23",
+      payOutWorldMaxChrg: "23.21",
+      payInEUMinChrg: "54.42",
+      payInEUMaxChrg: "43.31",
+      payInWorldMinChrg: "65.21",
+      payInWorldMaxChrg: "53.23",
+      stoppedChequeCharge: "23.11",
+      transactionFeeBrochure: "text 1",
+      intDebitCardPayDetail: "text 2",
+      ukCashWithdrawalDetail: "text 3",
+      intCashWithdrawDetail: "text 4",
+      intPaymentsOutDetail: "text 5",
+      intPaymentsInDetail: "text 6",
+      otherChargesBrochure: "text 7",
     });
 
     expect(account.expanded).toEqual([
@@ -379,11 +461,36 @@ describe("Account", () => {
           },
           {
             title: "In pounds in the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "£ cost per debit card transaction",
+                value: "£23.64",
+              },
+              {
+                type: "read-more",
+                value: "text 1",
+              },
+            ],
           },
           {
             title: "In a foreign currency outside of the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "Example - £50 debit card transaction in the EU",
+                value: "£43.33",
+              },
+              {
+                type: "detail",
+                title: "Example - £50 debit card transaction worldwide",
+                value: "£65.23",
+              },
+              {
+                type: "read-more",
+                value: "text 2",
+              },
+            ],
           },
         ],
       },
@@ -392,11 +499,46 @@ describe("Account", () => {
         sections: [
           {
             title: "In pounds in the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "Limit of fee-free cash withdrawals",
+                value: "£512.34",
+              },
+              {
+                type: "detail",
+                title: "£ cost per withdrawal",
+                value: "£453.32",
+              },
+              {
+                type: "detail",
+                title: "% cost per withdrawal",
+                value: "0%",
+              },
+              {
+                type: "read-more",
+                value: "text 3",
+              },
+            ],
           },
           {
             title: "In a foreign currency outside of the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "Example - withdrawing £50 in the EU",
+                value: "£23.34",
+              },
+              {
+                type: "detail",
+                title: "Example - withdrawing £50 worldwide",
+                value: "£54.32",
+              },
+              {
+                type: "read-more",
+                value: "text 4",
+              },
+            ],
           },
         ],
       },
@@ -405,15 +547,71 @@ describe("Account", () => {
         sections: [
           {
             title: "Sending money within the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "Direct debit",
+                value: "£434.22",
+              },
+              {
+                type: "detail",
+                title: "Standing order",
+                value: "£33.22",
+              },
+              {
+                type: "detail",
+                title: "BACS payment",
+                value: "£11.23",
+              },
+              {
+                type: "detail",
+                title: "Faster Payments",
+                value: "£65.56",
+              },
+              {
+                type: "detail",
+                title: "CHAPS",
+                value: "£54.44",
+              },
+            ],
           },
           {
             title: "Sending money outside of the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "To the EU",
+                value: "£67.23 - £32.11",
+              },
+              {
+                type: "detail",
+                title: "To worldwide",
+                value: "£64.23 - £23.21",
+              },
+              {
+                type: "read-more",
+                value: "text 5",
+              },
+            ],
           },
           {
             title: "Receiving money from outside of the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "From the EU",
+                value: "£54.42 - £43.31",
+              },
+              {
+                type: "detail",
+                title: "From worldwide",
+                value: "£65.21 - £53.23",
+              },
+              {
+                type: "read-more",
+                value: "text 6",
+              },
+            ],
           },
         ],
       },
@@ -421,7 +619,17 @@ describe("Account", () => {
         title: "Other fees",
         sections: [
           {
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "Cancelling a cheque",
+                value: "£23.11",
+              },
+              {
+                type: "read-more",
+                value: "text 7",
+              },
+            ],
           },
         ],
       },

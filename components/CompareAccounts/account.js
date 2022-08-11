@@ -9,6 +9,39 @@ import formatMoney from "./formatMoney";
 class Account {
   constructor(json) {
     this._json = json;
+
+    this.addMoneyField("transactionFee");
+    this.addMoneyField("debitEU50Cost");
+    this.addMoneyField("debitWorld50Cost");
+    this.addMoneyField("atmMaxFreeWithdrawalUK");
+    this.addMoneyField("atmWithdrawalCharge");
+    this.addMoneyField("atmEU50Cost");
+    this.addMoneyField("atmWorld50Cost");
+    this.addMoneyField("directDebitCharge");
+    this.addMoneyField("standingOrderCharge");
+    this.addMoneyField("bacsCharge");
+    this.addMoneyField("fasterPaymentsCharge");
+    this.addMoneyField("chapsCharge");
+    this.addMoneyField("payOutEUMinChrg");
+    this.addMoneyField("payOutEUMaxChrg");
+    this.addMoneyField("payOutWorldMinChrg");
+    this.addMoneyField("payOutWorldMaxChrg");
+    this.addMoneyField("payInEUMinChrg");
+    this.addMoneyField("payInEUMaxChrg");
+    this.addMoneyField("payInWorldMinChrg");
+    this.addMoneyField("payInWorldMaxChrg");
+    this.addMoneyField("stoppedChequeCharge");
+  }
+
+  addMoneyField(name) {
+    if (this._json[name] === "Infinity") {
+      this[name] = null;
+      return;
+    }
+
+    const float = numeral(this._json[name]);
+    const cents = Math.round(float.value() * 100);
+    this[name] = dinero({ amount: cents, currency: GBP });
   }
 
   get id() {
@@ -45,6 +78,10 @@ class Account {
 
   get unauthorisedOverdraftEar() {
     return `${this._json.unauthorisedOverdraftEar || 0}%`;
+  }
+
+  get atmWithdrawalChargePercent() {
+    return `${this._json.atmWithdrawalChargePercent || 0}%`;
   }
 
   get unauthODMonthlyCap() {
@@ -255,11 +292,36 @@ class Account {
           },
           {
             title: "In pounds in the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "£ cost per debit card transaction",
+                value: formatMoney(this.transactionFee),
+              },
+              {
+                type: "read-more",
+                value: this._json.transactionFeeBrochure,
+              },
+            ],
           },
           {
             title: "In a foreign currency outside of the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "Example - £50 debit card transaction in the EU",
+                value: formatMoney(this.debitEU50Cost),
+              },
+              {
+                type: "detail",
+                title: "Example - £50 debit card transaction worldwide",
+                value: formatMoney(this.debitWorld50Cost),
+              },
+              {
+                type: "read-more",
+                value: this._json.intDebitCardPayDetail,
+              },
+            ],
           },
         ],
       },
@@ -268,11 +330,46 @@ class Account {
         sections: [
           {
             title: "In pounds in the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "Limit of fee-free cash withdrawals",
+                value: formatMoney(this.atmMaxFreeWithdrawalUK),
+              },
+              {
+                type: "detail",
+                title: "£ cost per withdrawal",
+                value: formatMoney(this.atmWithdrawalCharge),
+              },
+              {
+                type: "detail",
+                title: "% cost per withdrawal",
+                value: this.atmWithdrawalChargePercent,
+              },
+              {
+                type: "read-more",
+                value: this._json.ukCashWithdrawalDetail,
+              },
+            ],
           },
           {
             title: "In a foreign currency outside of the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "Example - withdrawing £50 in the EU",
+                value: formatMoney(this.atmEU50Cost),
+              },
+              {
+                type: "detail",
+                title: "Example - withdrawing £50 worldwide",
+                value: formatMoney(this.atmWorld50Cost),
+              },
+              {
+                type: "read-more",
+                value: this._json.intCashWithdrawDetail,
+              },
+            ],
           },
         ],
       },
@@ -281,15 +378,84 @@ class Account {
         sections: [
           {
             title: "Sending money within the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "Direct debit",
+                value: formatMoney(this.directDebitCharge),
+              },
+              {
+                type: "detail",
+                title: "Standing order",
+                value: formatMoney(this.standingOrderCharge),
+              },
+              {
+                type: "detail",
+                title: "BACS payment",
+                value: formatMoney(this.bacsCharge),
+              },
+              {
+                type: "detail",
+                title: "Faster Payments",
+                value: formatMoney(this.fasterPaymentsCharge),
+              },
+              {
+                type: "detail",
+                title: "CHAPS",
+                value: formatMoney(this.chapsCharge),
+              },
+            ],
           },
           {
             title: "Sending money outside of the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "To the EU",
+                value:
+                  formatMoney(this.payOutEUMinChrg) +
+                  " - " +
+                  formatMoney(this.payOutEUMaxChrg),
+              },
+              {
+                type: "detail",
+                title: "To worldwide",
+                value: "fdsfsd",
+                value:
+                  formatMoney(this.payOutWorldMinChrg) +
+                  " - " +
+                  formatMoney(this.payOutWorldMaxChrg),
+              },
+              {
+                type: "read-more",
+                value: this._json.intPaymentsOutDetail,
+              },
+            ],
           },
           {
             title: "Receiving money from outside of the UK",
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "From the EU",
+                value:
+                  formatMoney(this.payInEUMinChrg) +
+                  " - " +
+                  formatMoney(this.payInEUMaxChrg),
+              },
+              {
+                type: "detail",
+                title: "From worldwide",
+                value:
+                  formatMoney(this.payInWorldMinChrg) +
+                  " - " +
+                  formatMoney(this.payInWorldMaxChrg),
+              },
+              {
+                type: "read-more",
+                value: this._json.intPaymentsInDetail,
+              },
+            ],
           },
         ],
       },
@@ -297,7 +463,17 @@ class Account {
         title: "Other fees",
         sections: [
           {
-            items: [],
+            items: [
+              {
+                type: "detail",
+                title: "Cancelling a cheque",
+                value: formatMoney(this.stoppedChequeCharge),
+              },
+              {
+                type: "read-more",
+                value: this._json.otherChargesBrochure,
+              },
+            ],
           },
         ],
       },
