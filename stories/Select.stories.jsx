@@ -13,24 +13,14 @@ export default {
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
 const Template = (args) => <Select {...args} />;
 
-export const Required = Template.bind({});
+export const Default = Template.bind({});
 // More on args: https://storybook.js.org/docs/react/writing-stories/args
-Required.args = {
+Default.args = {
   label: "The Label",
   id: "id1",
   name: "name1",
   emptyItemText: "Please choose an item",
   required: true,
-  options: [{ text: "Some text", value: "Some value" }],
-};
-
-export const Optional = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-Optional.args = {
-  label: "The Label",
-  id: "id1",
-  name: "name1",
-  emptyItemText: "Please choose an item",
   options: [{ text: "Some text", value: "Some value" }],
 };
 
