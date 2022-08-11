@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import queryString from "query-string";
@@ -340,6 +340,78 @@ const AccountCheckboxes = ({ title, fields }) => {
   );
 };
 
+const AccountExpandedView = ({ account }) => {
+  const [showExpanded, setShowExpanded] = useState(true);
+
+  useEffect(() => {
+    setShowExpanded(false);
+  }, []);
+
+  return (
+    <div className="space-y-4">
+      <button
+        type="button"
+        className="underline text-pink-900 flex items-center"
+        onClick={() => setShowExpanded((se) => !se)}
+      >
+        <div>{showExpanded ? "Hide" : "Show"} all account fees and charges</div>
+        <div>
+          {showExpanded || (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              role="img"
+              width="32"
+              height="32"
+              preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M7.41 8.58L12 13.17l4.59-4.59L18 10l-6 6l-6-6l1.41-1.42Z"
+              ></path>
+            </svg>
+          )}
+          {showExpanded && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              role="img"
+              width="32"
+              height="32"
+              preserveAspectRatio="xMidYMid meet"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6l-6 6l1.41 1.41Z"
+              ></path>
+            </svg>
+          )}
+        </div>
+      </button>
+      {showExpanded && (
+        <div className="animate-in zoom-in">
+          <AccountCheckboxes
+            title="Account access options"
+            fields={listAccountAccess().map((a) => ({
+              label: a,
+              checked: account.access.includes(a),
+            }))}
+          />
+          <AccountCheckboxes
+            title="Account features"
+            fields={listAccountFeatures().map((a) => ({
+              label: a,
+              checked: account.features.includes(a),
+            }))}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Accounts = ({ accounts, pagination }) => {
   return (
     <div className="mb-3 space-y-3">
@@ -408,39 +480,8 @@ const Accounts = ({ accounts, pagination }) => {
                 <div className="font-bold">£{account.unauthODMonthlyCap}</div>
               </div>
             </div>
-            <div className="space-y-4">
-              <button className="underline text-pink-900 flex items-center space-x-1">
-                <div>Show all account fees and charges</div>
-                <div>
-                  <svg
-                    width="14"
-                    height="8"
-                    viewBox="0 0 14 8"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M-8.74228e-08 5.5L2 7.5L5.9 3.6C6.5 3 7.4 3 8 3.6L12 7.5L14 5.5L9.8 1.3C8.2 -0.3 5.7 -0.3 4.1 1.3L-8.74228e-08 5.5Z"
-                      fill="#AE0060"
-                    />
-                  </svg>
-                </div>
-              </button>
-              <AccountCheckboxes
-                title="Account access options"
-                fields={listAccountAccess().map((a) => ({
-                  label: a,
-                  checked: account.access.includes(a),
-                }))}
-              />
-              <AccountCheckboxes
-                title="Account features"
-                fields={listAccountFeatures().map((a) => ({
-                  label: a,
-                  checked: account.features.includes(a),
-                }))}
-              />
-            </div>
+
+            <AccountExpandedView account={account} />
           </div>
         ))}
     </div>
