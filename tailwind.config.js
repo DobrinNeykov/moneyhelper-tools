@@ -20,6 +20,9 @@ module.exports = {
         purple: {
           700: "#8200D1",
         },
+        slate: {
+          400: "#9da1ca",
+        },
         pink: {
           600: "#c82a87",
           800: "#ae0060",

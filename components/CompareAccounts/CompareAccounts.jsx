@@ -76,7 +76,7 @@ const RefineSearch = ({ serverQuery, refineSearch }) => {
   const [queryValue, setQueryValue] = useState(serverQuery.q);
 
   return (
-    <div className="border border-solid border-grey-500 overflow-hidden rounded-md">
+    <div className="border border-slate-400 border-grey-500 overflow-hidden rounded-md">
       <input type="hidden" name="refineSearch" value="true" />
 
       <button
@@ -463,8 +463,8 @@ const AccountExpandedView = ({ account }) => {
 
 const Accounts = ({ accounts, pagination }) => {
   return (
-    <div className="mb-3 space-y-3">
-      <div className="">
+    <div className="mb-3">
+      <div className="space-y-3">
         {accounts.length === 0 && (
           <div className="border p-3">
             <div className="max-w-lg text-md text-gray-900">
@@ -488,7 +488,7 @@ const Accounts = ({ accounts, pagination }) => {
           .map((account) => (
             <div
               key={account.id}
-              className="border-solid border rounded-bl-3xl py-4 px-6"
+              className="border border-slate-400 rounded-bl-3xl py-4 px-6"
             >
               <div className="flex items-center">
                 <div className="flex-grow text-2xl font-bold text-blue-900 mb-2">
