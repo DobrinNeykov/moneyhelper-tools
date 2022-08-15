@@ -44,7 +44,7 @@ export const Select = ({
             id={id}
             name={name}
             value={value}
-            className="text-gray-500 border-gray-400 border-y border-l w-full outline-none block text-md h-10 px-3 bg-white rounded focus:border-white"
+            className="text-gray-500 border-gray-400 border-y border-l w-full outline-none block text-md h-10 pl-3 pr-8 bg-white rounded focus:border-white"
             onChange={(e) => {
               if (onChange) {
                 onChange(e.target.value);
