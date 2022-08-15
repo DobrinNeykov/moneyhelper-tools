@@ -542,14 +542,12 @@ const Accounts = ({ accounts, pagination }) => {
 };
 
 const ActiveFilters = ({ filters }) => {
-  const Filter = ({ filter }) => {
-    const filtersWithoutFilter = filters.withoutFilter(filter);
-
+  const Filter = ({ title, url }) => {
     return (
       <div className="inline-block border-2 rounded shadow px-2 py-1">
         <div className="flex items-center text-pink-800 space-x-2">
-          <div>{filter}</div>
-          <a href={filtersWithoutFilter.href}>
+          <div>{title}</div>
+          <a href={url}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               aria-hidden="true"
@@ -582,8 +580,20 @@ const ActiveFilters = ({ filters }) => {
       </div>
       <div className="space-x-2">
         {filters.accountTypes.map((a) => (
-          <Filter key={a} filter={a} />
+          <Filter key={a} title={a} url={filters.withoutFilter(a).href} />
         ))}
+        {filters.accountFeatures.map((a) => (
+          <Filter key={a} title={a} url={filters.withoutFilter(a).href} />
+        ))}
+        {filters.accountAccess.map((a) => (
+          <Filter key={a} title={a} url={filters.withoutFilter(a).href} />
+        ))}
+        {filters.query && (
+          <Filter
+            title={`search: "${filters.query}"`}
+            url={filters.withoutQuery().href}
+          />
+        )}
       </div>
     </div>
   );

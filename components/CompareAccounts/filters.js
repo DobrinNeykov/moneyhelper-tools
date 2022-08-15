@@ -48,7 +48,13 @@ class Filters {
     const serverQuery = { ...this._serverQuery };
     delete serverQuery[slug(filter)];
 
-    console.log(serverQuery);
+    return new Filters(serverQuery);
+  }
+
+  withoutQuery() {
+    const serverQuery = { ...this._serverQuery };
+    delete serverQuery["q"];
+
     return new Filters(serverQuery);
   }
 
