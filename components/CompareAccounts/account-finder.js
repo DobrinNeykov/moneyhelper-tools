@@ -1,4 +1,6 @@
 import { getDayOfYear, getHours } from "date-fns";
+import { greaterThan } from "dinero.js";
+import formatMoney from "./formatMoney.js";
 
 import Filters from "./filters";
 
@@ -38,9 +40,43 @@ class AccountFinder {
       );
     }
 
-    if (this._filters.sort === "random") {
+    const order = this._filters.order;
+
+    if (order === "random") {
       return this.shuffle(matches);
+    } else if (order === "provider-name-a-z") {
+      return this.orderByStringField("providerName", matches);
+    } else if (order === "account-name-a-z") {
+      return this.orderByStringField("name", matches);
+    } else if (order === "monthly-account-fee-lowest-first") {
+      return this.orderByMoneyField("monthlyFee", matches);
+    } else if (order === "minimum-monthly-deposit-lowest-first") {
+      return this.orderByMoneyField("minimumMonthlyCredit", matches);
+    } else if (order === "arranged-overdraft-rate-lowest-first") {
+      return this.orderByPercentageField("representativeAPR", matches);
+    } else if (order === "unarranged-maximum-monthly-charge-lowest-first") {
+      return this.orderByMoneyField("unauthODMonthlyCap", matches);
     }
+  }
+
+  orderByStringField(field, array) {
+    return array.slice().sort((a, b) => (a[field] > b[field] ? 1 : -1));
+  }
+
+  orderByPercentageField(field, array) {
+    return array.slice().sort((a, b) => (a[field] > b[field] ? 1 : -1));
+  }
+
+  orderByMoneyField(field, array) {
+    return array.slice().sort((a, b) => {
+      if (greaterThan(b[field], a[field])) {
+        return -1;
+      } else if (greaterThan(a[field], b[field])) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
   }
 
   shuffle(array) {

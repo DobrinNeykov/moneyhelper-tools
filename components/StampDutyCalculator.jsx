@@ -105,8 +105,8 @@ export const StampDutyCalculator = ({ serverQuery }) => {
                     value: "additionalHome",
                   },
                 ]}
-                onChange={(value) => {
-                  setBuyerType(value);
+                onChange={(e) => {
+                  setBuyerType(e.target.value);
                 }}
               />
             </Errors>

@@ -18,6 +18,7 @@ import {
 import Filters from "./filters";
 
 import formatMoney from "./formatMoney";
+import formatPercentage from "./formatPercentage";
 
 import jsonAccounts from "../../accounts.json";
 
@@ -265,7 +266,9 @@ const Pagination = ({ pagination, query }) => {
   );
 };
 
-const SortBar = ({ pagination }) => {
+const SortBar = ({ pagination, filters }) => {
+  const [order, setOrder] = useState(filters.order);
+
   return (
     <div className="flex mb-5">
       <div className="flex-grow">
@@ -284,7 +287,17 @@ const SortBar = ({ pagination }) => {
           id="order"
           name="order"
           hideEmptyItem={true}
-          options={[{ text: "Random", value: "random" }]}
+          value={order}
+          onChange={(e) => setOrder(e.target.value)}
+          options={[
+            "Random",
+            "Provider name A-Z",
+            "Account name A-Z",
+            "Monthly account fee (lowest first)",
+            "Minimum monthly deposit (lowest first)",
+            "Arranged overdraft rate (lowest first)",
+            "Unarranged maximum monthly charge (lowest first)",
+          ].map((v) => ({ text: v, value: slug(v) }))}
         />
         <Button title="Apply" />
       </div>
@@ -545,7 +558,9 @@ const Accounts = ({ accounts, pagination }) => {
                 </div>
                 <div className="px-4">
                   <div className="">Arranged overdraft interest rate</div>
-                  <div className="font-bold">{account.representativeAPR}</div>
+                  <div className="font-bold">
+                    {formatPercentage(account.representativeAPR)}
+                  </div>
                 </div>
                 <div className="pl-4">
                   <div className="">
@@ -650,7 +665,7 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
         </div>
         <div className="space-y-4 flex-grow">
           {filters.count > 0 && <ActiveFilters filters={filters} />}
-          <SortBar pagination={pagination} />
+          <SortBar pagination={pagination} filters={filters} />
           <Accounts accounts={accounts} pagination={pagination} />
           <Pagination pagination={pagination} query={filters.query} />
         </div>

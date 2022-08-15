@@ -207,33 +207,31 @@ describe("Account", () => {
 
   it("has a representativeAPR", () => {
     expect(new Account({ representativeAPR: "43" }).representativeAPR).toEqual(
-      "43%"
+      43
     );
 
-    expect(new Account({ representativeAPR: "" }).representativeAPR).toEqual(
-      "0%"
-    );
+    expect(new Account({ representativeAPR: "" }).representativeAPR).toEqual(0);
   });
 
   it("has a unauthorisedOverdraftEar", () => {
     expect(
       new Account({ unauthorisedOverdraftEar: "42" }).unauthorisedOverdraftEar
-    ).toEqual("42%");
+    ).toEqual(42);
 
     expect(
       new Account({ unauthorisedOverdraftEar: "" }).unauthorisedOverdraftEar
-    ).toEqual("0%");
+    ).toEqual(0);
   });
 
   it("has an atmWithdrawalChargePercent", () => {
     expect(
       new Account({ atmWithdrawalChargePercent: "23" })
         .atmWithdrawalChargePercent
-    ).toEqual("23%");
+    ).toEqual(23);
 
     expect(
       new Account({ atmWithdrawalChargePercent: "" }).atmWithdrawalChargePercent
-    ).toEqual("0%");
+    ).toEqual(0);
   });
 
   it("has account access details", () => {

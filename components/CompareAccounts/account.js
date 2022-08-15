@@ -5,11 +5,13 @@ import numeral from "numeral";
 
 import { accountTypeLabelFromDefaqtoAccountType } from "./account-mapping";
 import formatMoney from "./formatMoney";
+import formatPercentage from "./formatPercentage";
 
 class Account {
   constructor(json) {
     this._json = json;
 
+    this.addMoneyField("monthlyFee", "monthlyCharge");
     this.addMoneyField("transactionFee");
     this.addMoneyField("debitEU50Cost");
     this.addMoneyField("debitWorld50Cost");
@@ -33,13 +35,15 @@ class Account {
     this.addMoneyField("stoppedChequeCharge");
   }
 
-  addMoneyField(name) {
-    if (this._json[name] === "Infinity") {
+  addMoneyField(name, nameInDefaqtoAPI) {
+    nameInDefaqtoAPI = nameInDefaqtoAPI || name;
+
+    if (this._json[nameInDefaqtoAPI] === "Infinity") {
       this[name] = null;
       return;
     }
 
-    const float = numeral(this._json[name]);
+    const float = numeral(this._json[nameInDefaqtoAPI]);
     const cents = Math.round(float.value() * 100);
     this[name] = dinero({ amount: cents, currency: GBP });
   }
@@ -73,25 +77,19 @@ class Account {
   }
 
   get representativeAPR() {
-    return `${this._json.representativeAPR || 0}%`;
+    return numeral(this._json.representativeAPR || 0).value();
   }
 
   get unauthorisedOverdraftEar() {
-    return `${this._json.unauthorisedOverdraftEar || 0}%`;
+    return numeral(this._json.unauthorisedOverdraftEar || 0).value();
   }
 
   get atmWithdrawalChargePercent() {
-    return `${this._json.atmWithdrawalChargePercent || 0}%`;
+    return numeral(this._json.atmWithdrawalChargePercent || 0).value();
   }
 
   get unauthODMonthlyCap() {
     return this._json.unauthODMonthlyCap;
-  }
-
-  get monthlyFee() {
-    const float = numeral(this._json.monthlyCharge);
-    const cents = Math.round(float.value() * 100);
-    return dinero({ amount: cents, currency: GBP });
   }
 
   get minimumMonthlyCredit() {
@@ -215,7 +213,7 @@ class Account {
               {
                 type: "detail",
                 title: "Annual interest rate (APR)",
-                value: this.representativeAPR,
+                value: formatPercentage(this.representativeAPR),
               },
               {
                 type: "detail",
@@ -239,7 +237,7 @@ class Account {
               {
                 type: "detail",
                 title: "Annual interest rate (APR/EAR)",
-                value: this.unauthorisedOverdraftEar,
+                value: formatPercentage(this.unauthorisedOverdraftEar),
               },
               {
                 type: "detail",
@@ -344,7 +342,7 @@ class Account {
               {
                 type: "detail",
                 title: "% cost per withdrawal",
-                value: this.atmWithdrawalChargePercent,
+                value: formatPercentage(this.atmWithdrawalChargePercent),
               },
               {
                 type: "read-more",

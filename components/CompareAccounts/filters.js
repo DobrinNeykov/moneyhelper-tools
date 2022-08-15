@@ -44,7 +44,7 @@ class Filters {
     return result;
   }
 
-  get sort() {
+  get order() {
     return this._serverQuery.order || "random";
   }
 
