@@ -41,7 +41,7 @@ describe("AccountFinder", () => {
       ],
     });
 
-    const query = { "childrens-and-young-persons-accounts-under-18": "on" };
+    const query = { "childrens-and-young-persons-under-18": "on" };
 
     const finder = new AccountFinder(query, accounts);
     const result = finder.find();

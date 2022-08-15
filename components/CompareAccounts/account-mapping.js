@@ -1,35 +1,35 @@
 const accountTypes = [
   {
     nameInDefaqtoAPI: "standard",
-    label: "Standard current accounts",
+    label: "Standard current",
   },
   {
     nameInDefaqtoAPI: "fee free basic account",
-    label: "Fee-free basic bank accounts",
+    label: "Fee-free basic bank",
   },
   {
     nameInDefaqtoAPI: "student",
-    label: "Student accounts",
+    label: "Student",
   },
   {
     nameInDefaqtoAPI: "premier",
-    label: "Premier accounts",
+    label: "Premier",
   },
   {
     nameInDefaqtoAPI: "e-money account",
-    label: "Prepaid cards",
+    label: "E-money",
   },
   {
     nameInDefaqtoAPI: "added value",
-    label: "Packaged accounts",
+    label: "Packaged",
   },
   {
     nameInDefaqtoAPI: "young person",
-    label: "Children's and young person's accounts (under 18)",
+    label: "Children's and young person's (under 18)",
   },
   {
     nameInDefaqtoAPI: "graduate",
-    label: "Graduate accounts",
+    label: "Graduate",
   },
 ];
 

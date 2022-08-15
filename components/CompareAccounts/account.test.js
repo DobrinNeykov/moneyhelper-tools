@@ -73,29 +73,23 @@ describe("Account", () => {
 
   it("has a human readable account type", () => {
     expect(new Account({ accountType: "standard" }).type).toEqual(
-      "Standard current accounts"
+      "Standard current"
     );
     expect(new Account({ accountType: "fee free basic account" }).type).toEqual(
-      "Fee-free basic bank accounts"
+      "Fee-free basic bank"
     );
-    expect(new Account({ accountType: "student" }).type).toEqual(
-      "Student accounts"
-    );
-    expect(new Account({ accountType: "premier" }).type).toEqual(
-      "Premier accounts"
-    );
+    expect(new Account({ accountType: "student" }).type).toEqual("Student");
+    expect(new Account({ accountType: "premier" }).type).toEqual("Premier");
     expect(new Account({ accountType: "e-money account" }).type).toEqual(
-      "Prepaid cards"
+      "E-money"
     );
     expect(new Account({ accountType: "added value" }).type).toEqual(
-      "Packaged accounts"
+      "Packaged"
     );
     expect(new Account({ accountType: "young person" }).type).toEqual(
-      "Children's and young person's accounts (under 18)"
+      "Children's and young person's (under 18)"
     );
-    expect(new Account({ accountType: "graduate" }).type).toEqual(
-      "Graduate accounts"
-    );
+    expect(new Account({ accountType: "graduate" }).type).toEqual("Graduate");
   });
 
   it("has a monthlyFee", () => {
