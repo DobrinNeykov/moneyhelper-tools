@@ -10,6 +10,7 @@ export const Select = ({
   name,
   value,
   emptyItemText,
+  hideEmptyItem,
   options,
   onChange,
   location,
@@ -51,7 +52,7 @@ export const Select = ({
               }
             }}
           >
-            <option value="">{emptyItemText}</option>
+            {!hideEmptyItem && <option value="">{emptyItemText}</option>}
             {options.map(({ text, value }) => (
               <option key={value} value={value}>
                 {text}
@@ -65,27 +66,22 @@ export const Select = ({
 };
 
 Select.propTypes = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  value: PropTypes.string,
-  emptyItemText: PropTypes.string.isRequired,
-  required: PropTypes.bool,
-  options: PropTypes.object,
-};
-
-Select.propTypes = {
   /**
    * The id
    */
-  id: PropTypes.string,
+  id: PropTypes.string.isRequired,
   /**
    * The name
    */
-  name: PropTypes.string,
+  name: PropTypes.string.isRequired,
   /**
    * The selected value
    */
   value: PropTypes.string,
+  /**
+   * Hide the empty item?
+   */
+  hideEmptyItem: PropTypes.bool,
   /**
    * Text for the first empty item
    */

@@ -30,5 +30,6 @@ NoEmptyItem.args = {
   label: "The Label",
   id: "id1",
   name: "name1",
+  hideEmptyItem: true,
   options: [{ text: "Some text", value: "Some value" }],
 };
