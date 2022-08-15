@@ -44,6 +44,10 @@ class Filters {
     return result;
   }
 
+  get sort() {
+    return this._serverQuery.order || "random";
+  }
+
   withoutFilter(filter) {
     const serverQuery = { ...this._serverQuery };
     delete serverQuery[slug(filter)];

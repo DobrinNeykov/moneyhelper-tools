@@ -276,15 +276,17 @@ const SortBar = ({ pagination }) => {
         <div className="">Last updated: 19 April 2022</div>
       </div>
       <div className="flex items-center space-x-4">
-        <label htmlFor="sort-order" className="text-md text-gray-700">
+        <label htmlFor="order" className="text-md text-gray-700">
           Sort by
         </label>
         <Select
           label="Sort by"
-          id="sort-order"
-          options={[{ text: "Random order...", value: "random" }]}
-          value="random"
+          id="order"
+          name="order"
+          hideEmptyItem={true}
+          options={[{ text: "Random", value: "random" }]}
         />
+        <Button title="Apply" />
       </div>
     </div>
   );
