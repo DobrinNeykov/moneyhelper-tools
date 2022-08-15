@@ -2,11 +2,9 @@ import { getDayOfYear, getHours } from "date-fns";
 import { greaterThan } from "dinero.js";
 import formatMoney from "./formatMoney.js";
 
-import Filters from "./filters";
-
 class AccountFinder {
-  constructor(serverQuery, accounts) {
-    this._filters = new Filters(serverQuery);
+  constructor(filters, accounts) {
+    this._filters = filters;
     this._accounts = accounts;
   }
 

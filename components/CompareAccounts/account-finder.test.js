@@ -1,5 +1,6 @@
 import AccountFinder from "./account-finder";
 import AccountList from "./account-list";
+import Filters from "./filters";
 
 describe("AccountFinder", () => {
   it("finds accounts by name", () => {
@@ -7,10 +8,8 @@ describe("AccountFinder", () => {
       items: [{ productName: "Bluey" }, { productName: "Bingo" }],
     });
 
-    const query = { q: "bluey" };
-
-    const finder = new AccountFinder(query, accounts);
-    const result = finder.find();
+    const filters = new Filters({ q: "bluey" });
+    const result = new AccountFinder(filters, accounts).find();
 
     expect(result).toHaveLength(1);
     expect(result[0].name).toEqual("Bluey");
@@ -24,10 +23,8 @@ describe("AccountFinder", () => {
       ],
     });
 
-    const query = { q: "starling" };
-
-    const finder = new AccountFinder(query, accounts);
-    const result = finder.find();
+    const filters = new Filters({ q: "starling" });
+    const result = new AccountFinder(filters, accounts).find();
 
     expect(result).toHaveLength(1);
     expect(result[0].name).toEqual("Match me");
@@ -41,10 +38,10 @@ describe("AccountFinder", () => {
       ],
     });
 
-    const query = { "childrens-and-young-persons-under-18": "on" };
-
-    const finder = new AccountFinder(query, accounts);
-    const result = finder.find();
+    const filters = new Filters({
+      "childrens-and-young-persons-under-18": "on",
+    });
+    const result = new AccountFinder(filters, accounts).find();
 
     expect(result).toHaveLength(1);
     expect(result[0].name).toEqual("Young Person Account");
@@ -61,10 +58,8 @@ describe("AccountFinder", () => {
       ],
     });
 
-    const query = { "supports-7-day-switching": "on" };
-
-    const finder = new AccountFinder(query, accounts);
-    const result = finder.find();
+    const filters = new Filters({ "supports-7-day-switching": "on" });
+    const result = new AccountFinder(filters, accounts).find();
 
     expect(result).toHaveLength(1);
     expect(result[0].name).toEqual("Account with switch service");
@@ -81,9 +76,9 @@ describe("AccountFinder", () => {
       ],
     });
 
-    const query = { "internet-banking": "on" };
-    const finder = new AccountFinder(query, accounts);
-    const result = finder.find();
+    const filters = new Filters({ "internet-banking": "on" });
+    const result = new AccountFinder(filters, accounts).find();
+
     expect(result).toHaveLength(1);
     expect(result[0].name).toEqual("Account with internet banking");
   });
@@ -104,8 +99,8 @@ describe("AccountFinder", () => {
       ],
     });
 
-    const finder = new AccountFinder({}, accounts);
-    const result = finder.find();
+    const result = new AccountFinder(new Filters({}), accounts).find();
+
     expect(result.map((a) => a.name)).not.toEqual([
       "Account 1",
       "Account 2",
@@ -129,8 +124,11 @@ describe("AccountFinder", () => {
       ],
     });
 
-    const finder = new AccountFinder({ order: "provider-name-a-z" }, accounts);
-    const result = finder.find();
+    const result = new AccountFinder(
+      new Filters({ order: "provider-name-a-z" }),
+      accounts
+    ).find();
+
     expect(result.map((a) => a.name)).toEqual([
       "Account 2",
       "Account 3",
@@ -143,8 +141,11 @@ describe("AccountFinder", () => {
       items: [{ productName: "B" }, { productName: "C" }, { productName: "A" }],
     });
 
-    const finder = new AccountFinder({ order: "account-name-a-z" }, accounts);
-    const result = finder.find();
+    const result = new AccountFinder(
+      new Filters({ order: "account-name-a-z" }),
+      accounts
+    ).find();
+
     expect(result.map((a) => a.name)).toEqual(["A", "B", "C"]);
   });
 
@@ -159,7 +160,7 @@ describe("AccountFinder", () => {
     });
 
     const result = new AccountFinder(
-      { order: "monthly-account-fee-lowest-first" },
+      new Filters({ order: "monthly-account-fee-lowest-first" }),
       accounts
     ).find();
 
@@ -177,7 +178,7 @@ describe("AccountFinder", () => {
     });
 
     const result = new AccountFinder(
-      { order: "minimum-monthly-deposit-lowest-first" },
+      new Filters({ order: "minimum-monthly-deposit-lowest-first" }),
       accounts
     ).find();
 
@@ -195,7 +196,7 @@ describe("AccountFinder", () => {
     });
 
     const result = new AccountFinder(
-      { order: "arranged-overdraft-rate-lowest-first" },
+      new Filters({ order: "arranged-overdraft-rate-lowest-first" }),
       accounts
     ).find();
 
@@ -213,7 +214,9 @@ describe("AccountFinder", () => {
     });
 
     const result = new AccountFinder(
-      { order: "unarranged-maximum-monthly-charge-lowest-first" },
+      new Filters({
+        order: "unarranged-maximum-monthly-charge-lowest-first",
+      }),
       accounts
     ).find();
 

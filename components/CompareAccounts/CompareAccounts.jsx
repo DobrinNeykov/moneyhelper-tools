@@ -73,8 +73,8 @@ const Label = ({ htmlFor, label, children, className }) => {
   );
 };
 
-const RefineSearch = ({ serverQuery, refineSearch }) => {
-  const [queryValue, setQueryValue] = useState(serverQuery.q);
+const RefineSearch = ({ filters, refineSearch }) => {
+  const [queryValue, setQueryValue] = useState(filters.query);
 
   return (
     <div className="border border-slate-400 border-grey-500 overflow-hidden rounded-md">
@@ -122,17 +122,17 @@ const RefineSearch = ({ serverQuery, refineSearch }) => {
             />
           </div>
           <FilterSection
-            serverQuery={serverQuery}
+            filters={filters}
             title="Account type"
             values={listAccountTypes()}
           />
           <FilterSection
-            serverQuery={serverQuery}
+            filters={filters}
             title="Account features"
             values={listAccountFeatures()}
           />
           <FilterSection
-            serverQuery={serverQuery}
+            filters={filters}
             title="Account access"
             values={listAccountAccess()}
           />
@@ -166,14 +166,17 @@ const CheckBox = ({ id, name, label, initialValue }) => {
   );
 };
 
-const FilterSection = ({ serverQuery, title, values }) => {
+const FilterSection = ({ filters, title, values }) => {
   return (
     <div className="">
       <div className="mb-3 text-lg font-bold">{title}</div>
       <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:block">
         {values.map((v) => {
           const name = slug(v);
-          const checked = !!serverQuery[name];
+          const checked =
+            filters.accountTypes.includes(v) ||
+            filters.accountFeatures.includes(v) ||
+            filters.accountAccess.includes(v);
 
           return (
             <div key={name} className="flex">
@@ -644,11 +647,10 @@ const ActiveFilters = ({ filters }) => {
 export const CompareAccounts = ({ serverQuery, ...props }) => {
   const refineSearch = !!serverQuery.refineSearch;
   const page = serverQuery.p ? parseInt(serverQuery.p) : 1;
-  const query = serverQuery.q;
   const filters = new Filters(serverQuery);
 
   const allAccounts = new AccountList(jsonAccounts);
-  const accountFinder = new AccountFinder(serverQuery, allAccounts);
+  const accountFinder = new AccountFinder(filters, allAccounts);
   const accounts = accountFinder.find();
 
   const pagination = usePagination({
@@ -661,7 +663,7 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
     <form method="get" className="p-10">
       <div className="w-full lg:flex lg:space-x-4 ">
         <div className="mb-4 lg:w-[300px] lg:min-w-[300px]">
-          <RefineSearch serverQuery={serverQuery} refineSearch={refineSearch} />
+          <RefineSearch filters={filters} refineSearch={refineSearch} />
         </div>
         <div className="space-y-4 flex-grow">
           {filters.count > 0 && <ActiveFilters filters={filters} />}
