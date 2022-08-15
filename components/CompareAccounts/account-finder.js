@@ -11,6 +11,14 @@ class AccountFinder {
   find() {
     let matches = this._accounts.items;
 
+    matches = this.search(matches);
+    matches = this.filter(matches);
+    matches = this.order(matches);
+
+    return matches;
+  }
+
+  search(matches) {
     if (this._filters.query) {
       const needle = this._filters.query.toLowerCase();
       matches = matches.filter((a) => {
@@ -19,25 +27,10 @@ class AccountFinder {
       });
     }
 
-    const accountTypes = this._filters.accountTypes;
-    if (accountTypes.length !== 0) {
-      matches = matches.filter((a) => accountTypes.indexOf(a.type) !== -1);
-    }
+    return matches;
+  }
 
-    const accountFeatures = this._filters.accountFeatures;
-    if (accountFeatures.length !== 0) {
-      matches = matches.filter((a) =>
-        accountFeatures.some((r) => a.features.includes(r))
-      );
-    }
-
-    const accountAccess = this._filters.accountAccess;
-    if (accountAccess.length !== 0) {
-      matches = matches.filter((a) =>
-        accountAccess.some((r) => a.access.includes(r))
-      );
-    }
-
+  order(matches) {
     const order = this._filters.order;
 
     if (order === "random") {
@@ -55,6 +48,30 @@ class AccountFinder {
     } else if (order === "unarranged-maximum-monthly-charge-lowest-first") {
       return this.orderByMoneyField("unauthODMonthlyCap", matches);
     }
+  }
+
+  filter(matches) {
+    const accountTypes = this._filters.accountTypes;
+    const accountFeatures = this._filters.accountFeatures;
+    const accountAccess = this._filters.accountAccess;
+
+    if (
+      accountTypes.length === 0 &&
+      accountFeatures.length === 0 &&
+      accountAccess.length === 0
+    ) {
+      return matches;
+    }
+
+    return matches.filter((a) => {
+      return (
+        (accountTypes.length === 0 || accountTypes.includes(a.type)) &&
+        (accountFeatures.length === 0 ||
+          accountFeatures.every((r) => a.features.includes(r))) &&
+        (accountAccess.length === 0 ||
+          accountAccess.every((r) => a.access.includes(r)))
+      );
+    });
   }
 
   orderByStringField(field, array) {

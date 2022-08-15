@@ -30,57 +30,39 @@ describe("AccountFinder", () => {
     expect(result[0].name).toEqual("Match me");
   });
 
-  it("filters accounts by type", () => {
+  it("filters accounts by type, features, and access", () => {
     const accounts = new AccountList({
       items: [
-        { accountType: "standard" },
-        { productName: "Young Person Account", accountType: "young person" },
+        {
+          productName: "Matching 1",
+          accountType: "young person",
+          bacsSwitchService: "true",
+          internetBanking: "true",
+        },
+        {
+          productName: "Matching 2",
+          accountType: "premier",
+          bacsSwitchService: "true",
+          internetBanking: "true",
+        },
+        {
+          productName: "Not Matching",
+          accountType: "standard",
+        },
       ],
     });
 
     const filters = new Filters({
       "childrens-and-young-persons-under-18": "on",
-    });
-    const result = new AccountFinder(filters, accounts).find();
-
-    expect(result).toHaveLength(1);
-    expect(result[0].name).toEqual("Young Person Account");
-  });
-
-  it("filters accounts by features", () => {
-    const accounts = new AccountList({
-      items: [
-        { productName: "Account without switch service" },
-        {
-          productName: "Account with switch service",
-          bacsSwitchService: "true",
-        },
-      ],
+      premier: "on",
+      "supports-7-day-switching": "on",
+      "internet-banking": "on",
     });
 
-    const filters = new Filters({ "supports-7-day-switching": "on" });
     const result = new AccountFinder(filters, accounts).find();
+    const names = result.map((a) => a.name);
 
-    expect(result).toHaveLength(1);
-    expect(result[0].name).toEqual("Account with switch service");
-  });
-
-  it("filters accounts by access", () => {
-    const accounts = new AccountList({
-      items: [
-        { productName: "Account without internet banking" },
-        {
-          productName: "Account with internet banking",
-          internetBanking: "true",
-        },
-      ],
-    });
-
-    const filters = new Filters({ "internet-banking": "on" });
-    const result = new AccountFinder(filters, accounts).find();
-
-    expect(result).toHaveLength(1);
-    expect(result[0].name).toEqual("Account with internet banking");
+    expect(names).toEqual(["Matching 1", "Matching 2"]);
   });
 
   it("sorts accounts randomly by default", () => {
