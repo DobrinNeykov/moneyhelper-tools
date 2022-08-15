@@ -8,7 +8,8 @@ import classNames from "classnames";
 export const Button = ({ primary, disabled, title, autoFocus, ...props }) => {
   const commonClasses = [
     "cursor-pointer",
-    "p-3",
+    "px-3",
+    "py-2",
     "font-bold",
     "rounded-md",
     "outline-none",
