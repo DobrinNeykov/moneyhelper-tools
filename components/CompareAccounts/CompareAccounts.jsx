@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import PropTypes from "prop-types";
 import classNames from "classnames";
-import queryString from "query-string";
 import slug from "slug";
 import { DebounceInput } from "react-debounce-input";
 
 import { Button } from "../Button";
 import { Errors } from "../Errors";
 import { Select } from "../Select";
+import useFilters from "./useFilters";
 
 import AccountList from "./account-list";
 import AccountFinder from "./account-finder";
@@ -18,7 +18,6 @@ import {
   listAccountFeatures,
   listAccountAccess,
 } from "./account-mapping";
-import Filters from "./filters";
 
 import formatMoney from "./formatMoney";
 import formatPercentage from "./formatPercentage";
@@ -78,7 +77,9 @@ const Label = ({ htmlFor, label, children, className }) => {
   );
 };
 
-const RefineSearch = ({ filters, refineSearch }) => {
+const RefineSearch = ({ refineSearch }) => {
+  const filters = useFilters();
+
   const router = useRouter();
   const [showApply, setShowApply] = useState(true);
 
@@ -125,27 +126,16 @@ const RefineSearch = ({ filters, refineSearch }) => {
               id={"search"}
               name="q"
               className="w-full"
-              value={filters.query}
-              onChange={(e) =>
-                router.push(filters.withQuery(e.target.value).href)
-              }
+              value={filters.searchQuery}
+              onChange={(e) => filters.setSearchQuery(e.target.value)}
             />
           </div>
+          <FilterSection title="Account type" values={listAccountTypes()} />
           <FilterSection
-            filters={filters}
-            title="Account type"
-            values={listAccountTypes()}
-          />
-          <FilterSection
-            filters={filters}
             title="Account features"
             values={listAccountFeatures()}
           />
-          <FilterSection
-            filters={filters}
-            title="Account access"
-            values={listAccountAccess()}
-          />
+          <FilterSection title="Account access" values={listAccountAccess()} />
 
           {showApply && <Button title="Apply filters" />}
         </div>
@@ -174,8 +164,15 @@ const CheckBox = ({ id, name, label, value, onChange }) => {
   );
 };
 
-const FilterSection = ({ filters, title, values }) => {
+const FilterSection = ({ title, values }) => {
   const router = useRouter();
+  const filters = useFilters();
+
+  const handleChange = (e) => {
+    e.target.checked
+      ? filters.setFilter(e.target.name, "on")
+      : filters.removeFilter(e.target.name);
+  };
 
   return (
     <div className="">
@@ -183,10 +180,6 @@ const FilterSection = ({ filters, title, values }) => {
       <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:block">
         {values.map((v) => {
           const name = slug(v);
-          const checked =
-            filters.accountTypes.includes(v) ||
-            filters.accountFeatures.includes(v) ||
-            filters.accountAccess.includes(v);
 
           return (
             <div key={name} className="flex">
@@ -194,12 +187,8 @@ const FilterSection = ({ filters, title, values }) => {
                 id={name}
                 name={name}
                 label={v}
-                value={checked}
-                onChange={(e) =>
-                  e.target.checked
-                    ? router.push(filters.withFilter(v, "on").href)
-                    : router.push(filters.withoutFilter(v).href)
-                }
+                value={filters.isFilterActive(v)}
+                onChange={handleChange}
               />
             </div>
           );
@@ -209,9 +198,11 @@ const FilterSection = ({ filters, title, values }) => {
   );
 };
 
-const Pagination = ({ pagination, filters }) => {
+const Pagination = ({ pagination }) => {
+  const filters = useFilters();
+
   const generateSearchForPage = (page) => {
-    return filters.withPage(page).href;
+    return filters.setPageHref(page);
   };
 
   const chevronLeft = (
@@ -282,8 +273,9 @@ const Pagination = ({ pagination, filters }) => {
   );
 };
 
-const SortBar = ({ pagination, filters }) => {
+const SortBar = ({ pagination }) => {
   const router = useRouter();
+  const filters = useFilters();
   const [showApply, setShowApply] = useState(true);
 
   useEffect(() => setShowApply(false), []);
@@ -307,7 +299,7 @@ const SortBar = ({ pagination, filters }) => {
           name="order"
           hideEmptyItem={true}
           value={filters.order}
-          onChange={(e) => router.push(filters.withOrder(e.target.value).href)}
+          onChange={(e) => filters.setOrder(e.target.value)}
           options={[
             "Random",
             "Provider name A-Z",
@@ -599,13 +591,15 @@ const Accounts = ({ accounts, pagination }) => {
   );
 };
 
-const ActiveFilters = ({ filters }) => {
-  const Filter = ({ title, url }) => {
+const ActiveFilters = ({}) => {
+  const filters = useFilters();
+
+  const Filter = ({ title, href }) => {
     return (
       <div className="inline-block border-2 border-slate-400 shadow-bottom-gray rounded-lg px-2 py-1">
         <div className="flex items-center text-pink-800 space-x-2">
           <div>{title}</div>
-          <Link href={url}>
+          <Link href={href}>
             <a>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -639,18 +633,18 @@ const ActiveFilters = ({ filters }) => {
       </div>
       <div className="space-x-2">
         {filters.accountTypes.map((a) => (
-          <Filter key={a} title={a} url={filters.withoutFilter(a).href} />
+          <Filter key={a} title={a} href={filters.removeFilterHref(a)} />
         ))}
         {filters.accountFeatures.map((a) => (
-          <Filter key={a} title={a} url={filters.withoutFilter(a).href} />
+          <Filter key={a} title={a} href={filters.removeFilterHref(a)} />
         ))}
         {filters.accountAccess.map((a) => (
-          <Filter key={a} title={a} url={filters.withoutFilter(a).href} />
+          <Filter key={a} title={a} href={filters.removeFilterHref(a)} />
         ))}
-        {filters.query && (
+        {filters.searchQuery && (
           <Filter
-            title={`search: "${filters.query}"`}
-            url={filters.withoutQuery().href}
+            title={`search: "${filters.searchQuery}"`}
+            href={filters.removeSearchQueryHref()}
           />
         )}
       </div>
@@ -666,10 +660,10 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
   const [query, setQuery] = useState(serverQuery);
 
   const refineSearch = !!serverQuery.refineSearch;
-  const filters = new Filters(serverQuery);
+  const filters1 = useFilters();
 
   const allAccounts = new AccountList(jsonAccounts);
-  const accountFinder = new AccountFinder(filters, allAccounts);
+  const accountFinder = new AccountFinder(allAccounts, filters1);
   const accounts = accountFinder.find();
 
   useEffect(() => {
@@ -677,7 +671,7 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
   }, [setQuery, router.query]);
 
   const pagination = usePagination({
-    page: filters.page,
+    page: filters1.page,
     pageSize: 5,
     totalItems: accounts.length,
   });
@@ -686,13 +680,13 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
     <form method="get" className="p-10">
       <div className="w-full lg:flex lg:space-x-4 ">
         <div className="mb-4 lg:w-[300px] lg:min-w-[300px]">
-          <RefineSearch filters={filters} refineSearch={refineSearch} />
+          <RefineSearch refineSearch={refineSearch} />
         </div>
         <div className="space-y-4 flex-grow">
-          {filters.count > 0 && <ActiveFilters filters={filters} />}
-          <SortBar pagination={pagination} filters={filters} />
+          {filters1.count > 0 && <ActiveFilters />}
+          <SortBar pagination={pagination} />
           <Accounts accounts={accounts} pagination={pagination} />
-          <Pagination pagination={pagination} filters={filters} />
+          <Pagination pagination={pagination} />
         </div>
       </div>
     </form>

@@ -3,9 +3,9 @@ import { greaterThan } from "dinero.js";
 import formatMoney from "./formatMoney.js";
 
 class AccountFinder {
-  constructor(filters, accounts) {
-    this._filters = filters;
+  constructor(accounts, filters) {
     this._accounts = accounts;
+    this._filters = filters;
   }
 
   find() {
@@ -19,8 +19,8 @@ class AccountFinder {
   }
 
   search(matches) {
-    if (this._filters.query) {
-      const needle = this._filters.query.toLowerCase();
+    if (this._filters.searchQuery) {
+      const needle = this._filters.searchQuery.toLowerCase();
       matches = matches.filter((a) => {
         const haystack = [a.name, a.providerName].join(" ").toLowerCase();
         return haystack.indexOf(needle) > -1;
