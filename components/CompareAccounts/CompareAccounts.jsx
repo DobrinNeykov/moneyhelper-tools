@@ -10,6 +10,7 @@ import { Button } from "../Button";
 import { Errors } from "../Errors";
 import { Select } from "../Select";
 import useFilters from "./useFilters";
+import usePagination from "./usePagination";
 
 import AccountList from "./account-list";
 import AccountFinder from "./account-finder";
@@ -23,27 +24,6 @@ import formatMoney from "./formatMoney";
 import formatPercentage from "./formatPercentage";
 
 import jsonAccounts from "../../accounts.json";
-
-const usePagination = ({ page, pageSize, totalItems }) => {
-  const totalPages = Math.ceil(totalItems / pageSize);
-
-  return {
-    page,
-    pageSize,
-    totalItems,
-
-    totalPages,
-
-    startIndex: pageSize * (page - 1),
-    endIndex: pageSize * (page - 1) + pageSize,
-
-    nextPage: page + 1,
-    previousPage: page - 1,
-
-    previousEnabled: page > 1,
-    nextEnabled: page < totalPages,
-  };
-};
 
 const SearchInput = ({ id, name, value, className, onChange }) => {
   return (
