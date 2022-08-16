@@ -7,7 +7,7 @@ const ActiveFilters = ({}) => {
 
   const Filter = ({ title, href }) => {
     return (
-      <div className="animate-in zoom-in inline-block border-2 border-slate-400 shadow-bottom-gray rounded-lg px-2 py-1">
+      <div className="inline-block border-2 border-slate-400 shadow-bottom-gray rounded-lg px-2 py-1">
         <div className="flex items-center text-pink-800 space-x-2">
           <div>{title}</div>
           <Link href={href}>
