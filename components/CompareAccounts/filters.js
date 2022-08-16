@@ -16,6 +16,10 @@ class Filters {
     return this._serverQuery.q;
   }
 
+  get page() {
+    return this._serverQuery.p ? parseInt(this._serverQuery.p) : 1;
+  }
+
   get accountTypes() {
     const types = listAccountTypes();
     return types.filter((t) => !!this._serverQuery[slug(t)]);
@@ -55,9 +59,37 @@ class Filters {
     return new Filters(serverQuery);
   }
 
+  withOrder(value) {
+    const serverQuery = { ...this._serverQuery };
+    serverQuery.order = value;
+
+    return new Filters(serverQuery);
+  }
+
+  withQuery(value) {
+    const serverQuery = { ...this._serverQuery };
+    serverQuery.q = value;
+
+    return new Filters(serverQuery);
+  }
+
   withoutQuery() {
     const serverQuery = { ...this._serverQuery };
     delete serverQuery["q"];
+
+    return new Filters(serverQuery);
+  }
+
+  withPage(page) {
+    const serverQuery = { ...this._serverQuery };
+    serverQuery.p = page;
+
+    return new Filters(serverQuery);
+  }
+
+  withFilter(name, value) {
+    const serverQuery = { ...this._serverQuery };
+    serverQuery[slug(name)] = value;
 
     return new Filters(serverQuery);
   }

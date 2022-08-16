@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import Link from "next/link";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import queryString from "query-string";
 import slug from "slug";
+import { DebounceInput } from "react-debounce-input";
 
 import { Button } from "../Button";
 import { Errors } from "../Errors";
@@ -43,10 +46,12 @@ const usePagination = ({ page, pageSize, totalItems }) => {
   };
 };
 
-const TextInput = ({ id, name, value, className, onChange }) => {
+const SearchInput = ({ id, name, value, className, onChange }) => {
   return (
-    <input
+    <DebounceInput
       id={id}
+      minLength={2}
+      debounceTimeout={300}
       name={name}
       type="text"
       className={classNames("border", "rounded", "py-1", "px-2", className)}
@@ -74,7 +79,10 @@ const Label = ({ htmlFor, label, children, className }) => {
 };
 
 const RefineSearch = ({ filters, refineSearch }) => {
-  const [queryValue, setQueryValue] = useState(filters.query);
+  const router = useRouter();
+  const [showApply, setShowApply] = useState(true);
+
+  useEffect(() => setShowApply(false), []);
 
   return (
     <div className="border border-slate-400 border-grey-500 overflow-hidden rounded-md">
@@ -113,12 +121,14 @@ const RefineSearch = ({ filters, refineSearch }) => {
         <div className="space-y-5">
           <div className="">
             <Label htmlFor="search">Account or provider name</Label>
-            <TextInput
+            <SearchInput
               id={"search"}
               name="q"
               className="w-full"
-              value={queryValue}
-              onChange={(e) => setQueryValue(e.target.value)}
+              value={filters.query}
+              onChange={(e) =>
+                router.push(filters.withQuery(e.target.value).href)
+              }
             />
           </div>
           <FilterSection
@@ -137,16 +147,14 @@ const RefineSearch = ({ filters, refineSearch }) => {
             values={listAccountAccess()}
           />
 
-          <Button title="Apply filters" />
+          {showApply && <Button title="Apply filters" />}
         </div>
       </div>
     </div>
   );
 };
 
-const CheckBox = ({ id, name, label, initialValue }) => {
-  const [checked, setChecked] = useState(initialValue);
-
+const CheckBox = ({ id, name, label, value, onChange }) => {
   return (
     <div key={name} className="flex">
       <div className="mr-2 flex items-center">
@@ -154,8 +162,8 @@ const CheckBox = ({ id, name, label, initialValue }) => {
           id={id}
           name={name}
           type="checkbox"
-          checked={checked}
-          onChange={(e) => setChecked(e.target.checked)}
+          checked={value}
+          onChange={onChange}
           className="w-4 h-4 rounded accent-pink-600"
         />
       </div>
@@ -167,6 +175,8 @@ const CheckBox = ({ id, name, label, initialValue }) => {
 };
 
 const FilterSection = ({ filters, title, values }) => {
+  const router = useRouter();
+
   return (
     <div className="">
       <div className="mb-3 text-lg font-bold">{title}</div>
@@ -184,7 +194,12 @@ const FilterSection = ({ filters, title, values }) => {
                 id={name}
                 name={name}
                 label={v}
-                initialValue={checked}
+                value={checked}
+                onChange={(e) =>
+                  e.target.checked
+                    ? router.push(filters.withFilter(v, "on").href)
+                    : router.push(filters.withoutFilter(v).href)
+                }
               />
             </div>
           );
@@ -194,9 +209,9 @@ const FilterSection = ({ filters, title, values }) => {
   );
 };
 
-const Pagination = ({ pagination, query }) => {
+const Pagination = ({ pagination, filters }) => {
   const generateSearchForPage = (page) => {
-    return "?" + queryString.stringify({ q: query, p: page });
+    return filters.withPage(page).href;
   };
 
   const chevronLeft = (
@@ -232,13 +247,12 @@ const Pagination = ({ pagination, query }) => {
     <>
       <div className="flex space-x-2 text-md border-y py-2">
         {pagination.previousEnabled && (
-          <a
-            href={generateSearchForPage(pagination.page - 1)}
-            className="underline flex items-center space-x-1 text-pink-800"
-          >
-            {chevronLeft}
-            <div>Previous Page</div>
-          </a>
+          <Link href={generateSearchForPage(pagination.page - 1)}>
+            <a className="underline flex items-center space-x-1 text-pink-800">
+              {chevronLeft}
+              <div>Previous Page</div>
+            </a>
+          </Link>
         )}
         {pagination.previousEnabled || (
           <div className="underline text-gray-400 cursor-not-allowed flex items-center space-x-1">
@@ -250,13 +264,12 @@ const Pagination = ({ pagination, query }) => {
           Page {pagination.page} of {pagination.totalPages}
         </div>
         {pagination.nextEnabled && (
-          <a
-            href={generateSearchForPage(pagination.page + 1)}
-            className="underline flex items-center space-x-1 text-pink-800"
-          >
-            <div>Next Page</div>
-            {chevronRight}
-          </a>
+          <Link href={generateSearchForPage(pagination.page + 1)}>
+            <a className="underline flex items-center space-x-1 text-pink-800">
+              <div>Next Page</div>
+              {chevronRight}
+            </a>
+          </Link>
         )}
         {pagination.nextEnabled || (
           <div className="underline text-gray-400 cursor-not-allowed flex items-center space-x-1">
@@ -270,7 +283,10 @@ const Pagination = ({ pagination, query }) => {
 };
 
 const SortBar = ({ pagination, filters }) => {
-  const [order, setOrder] = useState(filters.order);
+  const router = useRouter();
+  const [showApply, setShowApply] = useState(true);
+
+  useEffect(() => setShowApply(false), []);
 
   return (
     <div className="flex mb-5">
@@ -290,8 +306,8 @@ const SortBar = ({ pagination, filters }) => {
           id="order"
           name="order"
           hideEmptyItem={true}
-          value={order}
-          onChange={(e) => setOrder(e.target.value)}
+          value={filters.order}
+          onChange={(e) => router.push(filters.withOrder(e.target.value).href)}
           options={[
             "Random",
             "Provider name A-Z",
@@ -302,7 +318,7 @@ const SortBar = ({ pagination, filters }) => {
             "Unarranged maximum monthly charge (lowest first)",
           ].map((v) => ({ text: v, value: slug(v) }))}
         />
-        <Button title="Apply" />
+        {showApply && <Button title="Apply" />}
       </div>
     </div>
   );
@@ -493,9 +509,9 @@ const Accounts = ({ accounts, pagination }) => {
               <div>
                 Update your filters and search terms by removing tags in the
                 applied filters section above. Or you can{" "}
-                <a href="?" className="underline text-pink-900">
-                  reset the filters
-                </a>{" "}
+                <Link href="?">
+                  <a className="underline text-pink-900">reset the filters</a>
+                </Link>{" "}
                 and start over.
               </div>
             </div>
@@ -506,7 +522,7 @@ const Accounts = ({ accounts, pagination }) => {
           .map((account) => (
             <div
               key={account.id}
-              className="border border-slate-400 rounded-bl-3xl py-4 px-6"
+              className="border border-slate-400 rounded-bl-3xl py-4 px-6 animate-in zoom-in"
             >
               <div className="flex items-center">
                 <div className="flex-grow text-2xl font-bold text-blue-900 mb-2">
@@ -589,21 +605,23 @@ const ActiveFilters = ({ filters }) => {
       <div className="inline-block border-2 border-slate-400 shadow-bottom-gray rounded-lg px-2 py-1">
         <div className="flex items-center text-pink-800 space-x-2">
           <div>{title}</div>
-          <a href={url}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-              role="img"
-              width="16"
-              preserveAspectRatio="xMidYMid meet"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z"
-              ></path>
-            </svg>
-          </a>
+          <Link href={url}>
+            <a>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                role="img"
+                width="16"
+                preserveAspectRatio="xMidYMid meet"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill="currentColor"
+                  d="M20 6.91L17.09 4L12 9.09L6.91 4L4 6.91L9.09 12L4 17.09L6.91 20L12 14.91L17.09 20L20 17.09L14.91 12L20 6.91Z"
+                ></path>
+              </svg>
+            </a>
+          </Link>
         </div>
       </div>
     );
@@ -613,12 +631,11 @@ const ActiveFilters = ({ filters }) => {
     <div className="space-y-4">
       <div className="flex space-x-2">
         <div>{filters.count} active filters </div>
-        <a
-          href="?"
-          className="underline flex items-center space-x-1 text-pink-800"
-        >
-          Clear all
-        </a>
+        <Link href="?">
+          <a className="underline flex items-center space-x-1 text-pink-800">
+            Clear all
+          </a>
+        </Link>
       </div>
       <div className="space-x-2">
         {filters.accountTypes.map((a) => (
@@ -645,16 +662,22 @@ const ActiveFilters = ({ filters }) => {
  * Compare accounts calculator
  */
 export const CompareAccounts = ({ serverQuery, ...props }) => {
+  const router = useRouter();
+  const [query, setQuery] = useState(serverQuery);
+
   const refineSearch = !!serverQuery.refineSearch;
-  const page = serverQuery.p ? parseInt(serverQuery.p) : 1;
   const filters = new Filters(serverQuery);
 
   const allAccounts = new AccountList(jsonAccounts);
   const accountFinder = new AccountFinder(filters, allAccounts);
   const accounts = accountFinder.find();
 
+  useEffect(() => {
+    setQuery(router.query);
+  }, [setQuery, router.query]);
+
   const pagination = usePagination({
-    page,
+    page: filters.page,
     pageSize: 5,
     totalItems: accounts.length,
   });
@@ -669,7 +692,7 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
           {filters.count > 0 && <ActiveFilters filters={filters} />}
           <SortBar pagination={pagination} filters={filters} />
           <Accounts accounts={accounts} pagination={pagination} />
-          <Pagination pagination={pagination} query={filters.query} />
+          <Pagination pagination={pagination} filters={filters} />
         </div>
       </div>
     </form>
