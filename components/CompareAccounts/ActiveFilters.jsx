@@ -7,7 +7,7 @@ const ActiveFilters = ({}) => {
 
   const Filter = ({ title, href }) => {
     return (
-      <div className="inline-block border-2 border-slate-400 shadow-bottom-gray rounded-lg px-2 py-1">
+      <div className="animate-in zoom-in inline-block border-2 border-slate-400 shadow-bottom-gray rounded-lg px-2 py-1">
         <div className="flex items-center text-pink-800 space-x-2">
           <div>{title}</div>
           <Link href={href}>
@@ -42,7 +42,7 @@ const ActiveFilters = ({}) => {
           </a>
         </Link>
       </div>
-      <div className="space-x-2">
+      <div className="flex flex-wrap gap-2">
         {filters.accountTypes.map((a) => (
           <Filter key={a} title={a} href={filters.removeFilterHref(a)} />
         ))}
