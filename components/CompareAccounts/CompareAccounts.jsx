@@ -40,7 +40,7 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
   });
 
   return (
-    <form method="get" className="p-10">
+    <form method="get" className="p-10 mx-auto max-w-6xl">
       <div className="w-full lg:flex lg:space-x-4 ">
         <div className="mb-4 lg:w-[300px] lg:min-w-[300px]">
           <RefineSearch refineSearch={refineSearch} />
