@@ -25,7 +25,7 @@ const accountTypes = [
   },
   {
     nameInDefaqtoAPI: "young person",
-    label: "Children's and young person's (under 18)",
+    label: "Children/young person",
   },
   {
     nameInDefaqtoAPI: "graduate",
@@ -43,7 +43,7 @@ const listAccountFeatures = () => {
     "No monthly fee",
     "Open to new customers",
     "Overdraft facilities",
-    "Supports 7-day switching",
+    "7-day switching",
   ];
 };
 

@@ -169,7 +169,7 @@ class Account {
     }
 
     if (this._json.bacsSwitchService === "true") {
-      results.push("Supports 7-day switching");
+      results.push("7-day switching");
     }
 
     return results;

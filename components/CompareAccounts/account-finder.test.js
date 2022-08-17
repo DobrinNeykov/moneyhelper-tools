@@ -1,15 +1,27 @@
 import AccountFinder from "./account-finder";
 import AccountList from "./account-list";
-import Filters from "./filters";
 
 describe("AccountFinder", () => {
+  const buildFakeFilters = (props) => {
+    props = props || {};
+
+    props.order = props.order || "random";
+    props.accountTypes = props.accountTypes || [];
+    props.accountFeatures = props.accountFeatures || [];
+    props.accountAccess = props.accountAccess || [];
+
+    return props;
+  };
+
   it("finds accounts by name", () => {
     const accounts = new AccountList({
       items: [{ productName: "Bluey" }, { productName: "Bingo" }],
     });
 
-    const filters = new Filters({ q: "bluey" });
-    const result = new AccountFinder(filters, accounts).find();
+    const result = new AccountFinder(
+      accounts,
+      buildFakeFilters({ searchQuery: "bluey" })
+    ).find();
 
     expect(result).toHaveLength(1);
     expect(result[0].name).toEqual("Bluey");
@@ -23,8 +35,10 @@ describe("AccountFinder", () => {
       ],
     });
 
-    const filters = new Filters({ q: "starling" });
-    const result = new AccountFinder(filters, accounts).find();
+    const result = new AccountFinder(
+      accounts,
+      buildFakeFilters({ searchQuery: "starling" })
+    ).find();
 
     expect(result).toHaveLength(1);
     expect(result[0].name).toEqual("Match me");
@@ -46,23 +60,30 @@ describe("AccountFinder", () => {
           internetBanking: "true",
         },
         {
-          productName: "Not Matching",
+          productName: "Not Matching 1",
           accountType: "standard",
+        },
+        {
+          productName: "Not Matching 2",
+          accountType: "standard",
+          bacsSwitchService: "true",
         },
       ],
     });
 
-    const filters = new Filters({
-      "childrens-and-young-persons-under-18": "on",
-      premier: "on",
-      "supports-7-day-switching": "on",
-      "internet-banking": "on",
+    const filters = buildFakeFilters({
+      accountTypes: ["Children/young person", "Premier"],
+      accountFeatures: ["7-day switching"],
+      accountAccess: ["Internet banking"],
     });
 
-    const result = new AccountFinder(filters, accounts).find();
+    const result = new AccountFinder(accounts, filters).find();
     const names = result.map((a) => a.name);
 
-    expect(names).toEqual(["Matching 1", "Matching 2"]);
+    expect(names).toContain("Matching 1");
+    expect(names).toContain("Matching 2");
+    expect(names).not.toContain("Not Matching 1");
+    expect(names).not.toContain("Not Matching 2");
   });
 
   it("sorts accounts randomly by default", () => {
@@ -81,7 +102,7 @@ describe("AccountFinder", () => {
       ],
     });
 
-    const result = new AccountFinder(new Filters({}), accounts).find();
+    const result = new AccountFinder(accounts, buildFakeFilters()).find();
 
     expect(result.map((a) => a.name)).not.toEqual([
       "Account 1",
@@ -107,8 +128,8 @@ describe("AccountFinder", () => {
     });
 
     const result = new AccountFinder(
-      new Filters({ order: "provider-name-a-z" }),
-      accounts
+      accounts,
+      buildFakeFilters({ order: "provider-name-a-z" })
     ).find();
 
     expect(result.map((a) => a.name)).toEqual([
@@ -124,8 +145,8 @@ describe("AccountFinder", () => {
     });
 
     const result = new AccountFinder(
-      new Filters({ order: "account-name-a-z" }),
-      accounts
+      accounts,
+      buildFakeFilters({ order: "account-name-a-z" })
     ).find();
 
     expect(result.map((a) => a.name)).toEqual(["A", "B", "C"]);
@@ -142,8 +163,8 @@ describe("AccountFinder", () => {
     });
 
     const result = new AccountFinder(
-      new Filters({ order: "monthly-account-fee-lowest-first" }),
-      accounts
+      accounts,
+      buildFakeFilters({ order: "monthly-account-fee-lowest-first" })
     ).find();
 
     expect(result.map((a) => a.name).join("")).toEqual("CDAB");
@@ -160,8 +181,8 @@ describe("AccountFinder", () => {
     });
 
     const result = new AccountFinder(
-      new Filters({ order: "minimum-monthly-deposit-lowest-first" }),
-      accounts
+      accounts,
+      buildFakeFilters({ order: "minimum-monthly-deposit-lowest-first" })
     ).find();
 
     expect(result.map((a) => a.name).join("")).toEqual("CBDA");
@@ -178,8 +199,8 @@ describe("AccountFinder", () => {
     });
 
     const result = new AccountFinder(
-      new Filters({ order: "arranged-overdraft-rate-lowest-first" }),
-      accounts
+      accounts,
+      buildFakeFilters({ order: "arranged-overdraft-rate-lowest-first" })
     ).find();
 
     expect(result.map((a) => a.name).join("")).toEqual("DBAC");
@@ -196,10 +217,10 @@ describe("AccountFinder", () => {
     });
 
     const result = new AccountFinder(
-      new Filters({
+      accounts,
+      buildFakeFilters({
         order: "unarranged-maximum-monthly-charge-lowest-first",
-      }),
-      accounts
+      })
     ).find();
 
     expect(result.map((a) => a.name).join("")).toEqual("CBAD");

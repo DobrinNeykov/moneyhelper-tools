@@ -87,7 +87,7 @@ describe("Account", () => {
       "Packaged"
     );
     expect(new Account({ accountType: "young person" }).type).toEqual(
-      "Children's and young person's (under 18)"
+      "Children/young person"
     );
     expect(new Account({ accountType: "graduate" }).type).toEqual("Graduate");
   });
@@ -284,10 +284,10 @@ describe("Account", () => {
     );
 
     expect(new Account({ bacsSwitchService: "true" }).features).toContain(
-      "Supports 7-day switching"
+      "7-day switching"
     );
     expect(new Account({ bacsSwitchService: "false" }).features).not.toContain(
-      "Supports 7-day switching"
+      "7-day switching"
     );
   });
 
