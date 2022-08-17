@@ -34,6 +34,13 @@ class Account {
     this.addMoneyField("payInWorldMaxChrg");
     this.addMoneyField("stoppedChequeCharge");
     this.addMoneyField("unauthODMonthlyCap");
+    this.addMoneyField("minimumMonthlyCredit");
+    this.addMoneyField("arrangedODExample1");
+    this.addMoneyField("arrangedODExample2");
+    this.addMoneyField("debitCardIssueFee");
+
+    // Yes, there is a typo in this field value.
+    this.addMoneyField("debitCardReplacementFee", "debitCardReplacemntFee");
   }
 
   addMoneyField(name, nameInDefaqtoAPI) {
@@ -87,37 +94,6 @@ class Account {
 
   get atmWithdrawalChargePercent() {
     return numeral(this._json.atmWithdrawalChargePercent || 0).value();
-  }
-
-  get minimumMonthlyCredit() {
-    const float = numeral(this._json.minimumMonthlyCredit);
-    const cents = Math.round(float.value() * 100);
-    return dinero({ amount: cents, currency: GBP });
-  }
-
-  get arrangedODExample1() {
-    const float = numeral(this._json.arrangedODExample1);
-    const cents = Math.round(float.value() * 100);
-    return dinero({ amount: cents, currency: GBP });
-  }
-
-  get arrangedODExample2() {
-    const float = numeral(this._json.arrangedODExample2);
-    const cents = Math.round(float.value() * 100);
-    return dinero({ amount: cents, currency: GBP });
-  }
-
-  get debitCardIssueFee() {
-    const float = numeral(this._json.debitCardIssueFee);
-    const cents = Math.round(float.value() * 100);
-    return dinero({ amount: cents, currency: GBP });
-  }
-
-  get debitCardReplacementFee() {
-    // Yes, there is a typo in this field value.
-    const float = numeral(this._json.debitCardReplacemntFee);
-    const cents = Math.round(float.value() * 100);
-    return dinero({ amount: cents, currency: GBP });
   }
 
   get access() {

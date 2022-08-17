@@ -29,24 +29,27 @@ describe("Account", () => {
   });
 
   it("has money fields", () => {
-    const expectMoneyField = (name) => {
+    const expectMoneyField = (name, nameInDefaqtoAPI) => {
+      nameInDefaqtoAPI = nameInDefaqtoAPI || name;
+
       expect(
         equal(
-          new Account({ [name]: "0.00" })[name],
+          new Account({ [nameInDefaqtoAPI]: "0.00" })[name],
           dinero({ amount: 0, currency: GBP })
         )
       ).toBeTruthy();
 
       expect(
         equal(
-          new Account({ [name]: "21.98" })[name],
+          new Account({ [nameInDefaqtoAPI]: "21.98" })[name],
           dinero({ amount: 2198, currency: GBP })
         )
       ).toBeTruthy();
 
-      expect(new Account({ [name]: "Infinity" })[name]).toBeNull();
+      expect(new Account({ [nameInDefaqtoAPI]: "Infinity" })[name]).toBeNull();
     };
 
+    expectMoneyField("monthlyFee", "monthlyCharge");
     expectMoneyField("transactionFee");
     expectMoneyField("debitEU50Cost");
     expectMoneyField("debitWorld50Cost");
@@ -69,6 +72,13 @@ describe("Account", () => {
     expectMoneyField("payInWorldMaxChrg");
     expectMoneyField("stoppedChequeCharge");
     expectMoneyField("unauthODMonthlyCap");
+    expectMoneyField("minimumMonthlyCredit");
+    expectMoneyField("arrangedODExample1");
+    expectMoneyField("arrangedODExample2");
+    expectMoneyField("debitCardIssueFee");
+
+    // Yes, there is a typo in this field name.
+    expectMoneyField("debitCardReplacementFee", "debitCardReplacemntFee");
   });
 
   it("has a human readable account type", () => {
@@ -90,103 +100,6 @@ describe("Account", () => {
       "Children/young person"
     );
     expect(new Account({ accountType: "graduate" }).type).toEqual("Graduate");
-  });
-
-  it("has a monthlyFee", () => {
-    expect(
-      equal(
-        new Account({ monthlyCharge: "0.00" }).monthlyFee,
-        dinero({ amount: 0, currency: GBP })
-      )
-    ).toBeTruthy();
-
-    expect(
-      equal(
-        new Account({ monthlyCharge: "122.98" }).monthlyFee,
-        dinero({ amount: 12298, currency: GBP })
-      )
-    ).toBeTruthy();
-  });
-
-  it("has a minimumMonthlyCredit", () => {
-    expect(
-      equal(
-        new Account({ minimumMonthlyCredit: "0" }).minimumMonthlyCredit,
-        dinero({ amount: 0, currency: GBP })
-      )
-    ).toBeTruthy();
-
-    expect(
-      equal(
-        new Account({ minimumMonthlyCredit: "122" }).minimumMonthlyCredit,
-        dinero({ amount: 12200, currency: GBP })
-      )
-    ).toBeTruthy();
-  });
-
-  it("has an arrangedODExample1", () => {
-    expect(
-      equal(
-        new Account({ arrangedODExample1: "0" }).arrangedODExample1,
-        dinero({ amount: 0, currency: GBP })
-      )
-    ).toBeTruthy();
-
-    expect(
-      equal(
-        new Account({ arrangedODExample1: "122.09" }).arrangedODExample1,
-        dinero({ amount: 12209, currency: GBP })
-      )
-    ).toBeTruthy();
-  });
-
-  it("has an arrangedODExample2", () => {
-    expect(
-      equal(
-        new Account({ arrangedODExample2: "0" }).arrangedODExample2,
-        dinero({ amount: 0, currency: GBP })
-      )
-    ).toBeTruthy();
-
-    expect(
-      equal(
-        new Account({ arrangedODExample2: "8.22" }).arrangedODExample2,
-        dinero({ amount: 822, currency: GBP })
-      )
-    ).toBeTruthy();
-  });
-
-  it("has a debitCardIssueFee", () => {
-    expect(
-      equal(
-        new Account({ debitCardIssueFee: "0" }).debitCardIssueFee,
-        dinero({ amount: 0, currency: GBP })
-      )
-    ).toBeTruthy();
-
-    expect(
-      equal(
-        new Account({ debitCardIssueFee: "21.01" }).debitCardIssueFee,
-        dinero({ amount: 2101, currency: GBP })
-      )
-    ).toBeTruthy();
-  });
-
-  it("has a debitCardReplacementFee", () => {
-    expect(
-      equal(
-        new Account({ debitCardReplacemntFee: "0" }).debitCardReplacementFee,
-        dinero({ amount: 0, currency: GBP })
-      )
-    ).toBeTruthy();
-
-    expect(
-      equal(
-        new Account({ debitCardReplacemntFee: "12.08" })
-          .debitCardReplacementFee,
-        dinero({ amount: 1208, currency: GBP })
-      )
-    ).toBeTruthy();
   });
 
   it("has a representativeAPR", () => {
