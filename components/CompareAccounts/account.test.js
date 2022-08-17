@@ -76,9 +76,41 @@ describe("Account", () => {
     expectMoneyField("arrangedODExample1");
     expectMoneyField("arrangedODExample2");
     expectMoneyField("debitCardIssueFee");
-
     // Yes, there is a typo in this field name.
     expectMoneyField("debitCardReplacementFee", "debitCardReplacemntFee");
+  });
+
+  it("has text fields", () => {
+    const expectTextField = (name, nameInDefaqtoAPI) => {
+      nameInDefaqtoAPI = nameInDefaqtoAPI || name;
+
+      expect(new Account({ [nameInDefaqtoAPI]: "Some text" })[name]).toEqual(
+        "Some text"
+      );
+
+      expect(
+        new Account({ [nameInDefaqtoAPI]: "Some text with {P}" })[name]
+      ).toEqual("Some text with ");
+    };
+
+    expectTextField("monthlyChargeBrochure");
+    expectTextField("minimumMonthlyCreditBrochure");
+    expectTextField("otherChargesBrochure");
+    expectTextField("intPaymentsInDetail");
+    expectTextField("intPaymentsOutDetail");
+    expectTextField("intCashWithdrawDetail");
+    expectTextField("ukCashWithdrawalDetail");
+    expectTextField("intDebitCardPayDetail");
+    expectTextField("transactionFeeBrochure");
+    // Yes, there is a typo in this field value.
+    expectTextField(
+      "debitCardReplacementFeeBrochure",
+      "debitCardReplacemntFeeBrochure"
+    );
+    expectTextField("unpaidItemDetail");
+    expectTextField("paidItemDetail");
+    expectTextField("unarrangedODDetail");
+    expectTextField("arrangedODDetail");
   });
 
   it("has a human readable account type", () => {

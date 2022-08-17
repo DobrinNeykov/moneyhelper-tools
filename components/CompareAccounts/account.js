@@ -38,9 +38,27 @@ class Account {
     this.addMoneyField("arrangedODExample1");
     this.addMoneyField("arrangedODExample2");
     this.addMoneyField("debitCardIssueFee");
-
     // Yes, there is a typo in this field value.
     this.addMoneyField("debitCardReplacementFee", "debitCardReplacemntFee");
+
+    this.addTextField("monthlyChargeBrochure");
+    this.addTextField("minimumMonthlyCreditBrochure");
+    this.addTextField("otherChargesBrochure");
+    this.addTextField("intPaymentsInDetail");
+    this.addTextField("intPaymentsOutDetail");
+    this.addTextField("intCashWithdrawDetail");
+    this.addTextField("ukCashWithdrawalDetail");
+    this.addTextField("intDebitCardPayDetail");
+    this.addTextField("transactionFeeBrochure");
+    // Yes, there is a typo in this field value.
+    this.addTextField(
+      "debitCardReplacementFeeBrochure",
+      "debitCardReplacemntFeeBrochure"
+    );
+    this.addTextField("unpaidItemDetail");
+    this.addTextField("paidItemDetail");
+    this.addTextField("unarrangedODDetail");
+    this.addTextField("arrangedODDetail");
   }
 
   addMoneyField(name, nameInDefaqtoAPI) {
@@ -54,6 +72,16 @@ class Account {
     const float = numeral(this._json[nameInDefaqtoAPI]);
     const cents = Math.round(float.value() * 100);
     this[name] = dinero({ amount: cents, currency: GBP });
+  }
+
+  addTextField(name, nameInDefaqtoAPI) {
+    nameInDefaqtoAPI = nameInDefaqtoAPI || name;
+
+    const value = this._json[nameInDefaqtoAPI];
+
+    if (value) {
+      this[name] = value.replaceAll("{P}", "");
+    }
   }
 
   get id() {
@@ -156,7 +184,7 @@ class Account {
               },
               {
                 type: "read-more",
-                value: this._json.monthlyChargeBrochure,
+                value: this.monthlyChargeBrochure,
               },
               {
                 type: "detail",
@@ -165,7 +193,7 @@ class Account {
               },
               {
                 type: "read-more",
-                value: this._json.minimumMonthlyCreditBrochure,
+                value: this.minimumMonthlyCreditBrochure,
               },
             ],
           },
@@ -194,7 +222,7 @@ class Account {
               },
               {
                 type: "read-more",
-                value: this._json.arrangedODDetail,
+                value: this.arrangedODDetail,
               },
             ],
           },
@@ -215,7 +243,7 @@ class Account {
               },
               {
                 type: "read-more",
-                value: this._json.unarrangedODDetail,
+                value: this.unarrangedODDetail,
               },
             ],
           },
@@ -225,12 +253,12 @@ class Account {
               {
                 type: "detail",
                 title: "Refusing a payment due to a lack of funds",
-                value: this._json.unpaidItemDetail,
+                value: this.unpaidItemDetail,
               },
               {
                 type: "detail",
                 title: "Allowing a payment despite a lack of funds",
-                value: this._json.paidItemDetail,
+                value: this.paidItemDetail,
               },
             ],
           },
@@ -253,7 +281,7 @@ class Account {
               },
               {
                 type: "read-more",
-                value: this._json.debitCardReplacemntFeeBrochure,
+                value: this.debitCardReplacementFeeBrochure,
               },
             ],
           },
@@ -267,7 +295,7 @@ class Account {
               },
               {
                 type: "read-more",
-                value: this._json.transactionFeeBrochure,
+                value: this.transactionFeeBrochure,
               },
             ],
           },
@@ -286,7 +314,7 @@ class Account {
               },
               {
                 type: "read-more",
-                value: this._json.intDebitCardPayDetail,
+                value: this.intDebitCardPayDetail,
               },
             ],
           },
@@ -317,7 +345,7 @@ class Account {
               },
               {
                 type: "read-more",
-                value: this._json.ukCashWithdrawalDetail,
+                value: this.ukCashWithdrawalDetail,
               },
             ],
           },
@@ -336,7 +364,7 @@ class Account {
               },
               {
                 type: "read-more",
-                value: this._json.intCashWithdrawDetail,
+                value: this.intCashWithdrawDetail,
               },
             ],
           },
@@ -406,7 +434,7 @@ class Account {
               },
               {
                 type: "read-more",
-                value: this._json.intPaymentsOutDetail,
+                value: this.intPaymentsOutDetail,
               },
             ],
           },
@@ -431,7 +459,7 @@ class Account {
               },
               {
                 type: "read-more",
-                value: this._json.intPaymentsInDetail,
+                value: this.intPaymentsInDetail,
               },
             ],
           },
@@ -449,7 +477,7 @@ class Account {
               },
               {
                 type: "read-more",
-                value: this._json.otherChargesBrochure,
+                value: this.otherChargesBrochure,
               },
             ],
           },
