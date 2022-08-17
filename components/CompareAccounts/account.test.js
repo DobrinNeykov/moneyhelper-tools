@@ -29,7 +29,6 @@ describe("Account", () => {
   });
 
   it("has money fields", () => {
-    // money (support "Infinity" as null)
     const expectMoneyField = (name) => {
       expect(
         equal(
@@ -69,6 +68,7 @@ describe("Account", () => {
     expectMoneyField("payInWorldMinChrg");
     expectMoneyField("payInWorldMaxChrg");
     expectMoneyField("stoppedChequeCharge");
+    expectMoneyField("unauthODMonthlyCap");
   });
 
   it("has a human readable account type", () => {
@@ -152,22 +152,6 @@ describe("Account", () => {
       equal(
         new Account({ arrangedODExample2: "8.22" }).arrangedODExample2,
         dinero({ amount: 822, currency: GBP })
-      )
-    ).toBeTruthy();
-  });
-
-  it("has an unauthODMonthlyCap", () => {
-    expect(
-      equal(
-        new Account({ unauthODMonthlyCap: "0" }).unauthODMonthlyCap,
-        dinero({ amount: 0, currency: GBP })
-      )
-    ).toBeTruthy();
-
-    expect(
-      equal(
-        new Account({ unauthODMonthlyCap: "32.01" }).unauthODMonthlyCap,
-        dinero({ amount: 3201, currency: GBP })
       )
     ).toBeTruthy();
   });
@@ -626,5 +610,97 @@ describe("Account", () => {
         ],
       },
     ]);
+  });
+
+  it("special cases payOutEUMaxChrg", () => {
+    expect(
+      new Account({
+        payOutEUMaxChrg: "32.11",
+        payOutEUMinChrg: "67.23",
+      }).expanded[4].sections[1].items[0]
+    ).toEqual({
+      type: "detail",
+      title: "To the EU",
+      value: "£67.23 - £32.11",
+    });
+
+    expect(
+      new Account({
+        payOutEUMaxChrg: "Infinity",
+        payOutEUMinChrg: "67.23",
+      }).expanded[4].sections[1].items[0]
+    ).toEqual({
+      type: "detail",
+      title: "To the EU",
+      value: "Minimum charge: £67.23",
+    });
+  });
+
+  it("special cases payOutWorldMaxChrg", () => {
+    expect(
+      new Account({
+        payOutWorldMinChrg: "19.23",
+        payOutWorldMaxChrg: "31.18",
+      }).expanded[4].sections[1].items[1]
+    ).toEqual({
+      type: "detail",
+      title: "To worldwide",
+      value: "£19.23 - £31.18",
+    });
+
+    expect(
+      new Account({
+        payOutWorldMinChrg: "19.23",
+        payOutWorldMaxChrg: "Infinity",
+      }).expanded[4].sections[1].items[1]
+    ).toEqual({
+      type: "detail",
+      title: "To worldwide",
+      value: "Minimum charge: £19.23",
+    });
+  });
+
+  it("special cases unauthODMonthlyCap", () => {
+    expect(
+      new Account({
+        unauthODMonthlyCap: "19.23",
+      }).expanded[1].sections[1].items[1]
+    ).toEqual({
+      type: "detail",
+      title: "Monthly Maximum Charge",
+      value: "£19.23",
+    });
+
+    expect(
+      new Account({
+        unauthODMonthlyCap: "Infinity",
+      }).expanded[1].sections[1].items[1]
+    ).toEqual({
+      type: "detail",
+      title: "Monthly Maximum Charge",
+      value: "Data not available",
+    });
+  });
+
+  it("special cases atmMaxFreeWithdrawalUK", () => {
+    expect(
+      new Account({
+        atmMaxFreeWithdrawalUK: "12.11",
+      }).expanded[3].sections[0].items[0]
+    ).toEqual({
+      type: "detail",
+      title: "Limit of fee-free cash withdrawals",
+      value: "£12.11",
+    });
+
+    expect(
+      new Account({
+        atmMaxFreeWithdrawalUK: "Infinity",
+      }).expanded[3].sections[0].items[0]
+    ).toEqual({
+      type: "detail",
+      title: "Limit of fee-free cash withdrawals",
+      value: "No limit",
+    });
   });
 });

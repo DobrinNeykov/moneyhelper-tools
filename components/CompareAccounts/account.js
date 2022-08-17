@@ -33,6 +33,7 @@ class Account {
     this.addMoneyField("payInWorldMinChrg");
     this.addMoneyField("payInWorldMaxChrg");
     this.addMoneyField("stoppedChequeCharge");
+    this.addMoneyField("unauthODMonthlyCap");
   }
 
   addMoneyField(name, nameInDefaqtoAPI) {
@@ -88,10 +89,6 @@ class Account {
     return numeral(this._json.atmWithdrawalChargePercent || 0).value();
   }
 
-  get unauthODMonthlyCap() {
-    return this._json.unauthODMonthlyCap;
-  }
-
   get minimumMonthlyCredit() {
     const float = numeral(this._json.minimumMonthlyCredit);
     const cents = Math.round(float.value() * 100);
@@ -106,12 +103,6 @@ class Account {
 
   get arrangedODExample2() {
     const float = numeral(this._json.arrangedODExample2);
-    const cents = Math.round(float.value() * 100);
-    return dinero({ amount: cents, currency: GBP });
-  }
-
-  get unauthODMonthlyCap() {
-    const float = numeral(this._json.unauthODMonthlyCap);
     const cents = Math.round(float.value() * 100);
     return dinero({ amount: cents, currency: GBP });
   }
@@ -242,7 +233,9 @@ class Account {
               {
                 type: "detail",
                 title: "Monthly Maximum Charge",
-                value: formatMoney(this.unauthODMonthlyCap),
+                value: this.unauthODMonthlyCap
+                  ? formatMoney(this.unauthODMonthlyCap)
+                  : "Data not available",
               },
               {
                 type: "read-more",
@@ -332,7 +325,9 @@ class Account {
               {
                 type: "detail",
                 title: "Limit of fee-free cash withdrawals",
-                value: formatMoney(this.atmMaxFreeWithdrawalUK),
+                value: this.atmMaxFreeWithdrawalUK
+                  ? formatMoney(this.atmMaxFreeWithdrawalUK)
+                  : "No limit",
               },
               {
                 type: "detail",
@@ -410,19 +405,28 @@ class Account {
               {
                 type: "detail",
                 title: "To the EU",
-                value:
-                  formatMoney(this.payOutEUMinChrg) +
-                  " - " +
-                  formatMoney(this.payOutEUMaxChrg),
+                value: this.payOutEUMaxChrg
+                  ? [
+                      formatMoney(this.payOutEUMinChrg),
+                      formatMoney(this.payOutEUMaxChrg),
+                    ].join(" - ")
+                  : [
+                      "Minimum charge: ",
+                      formatMoney(this.payOutEUMinChrg),
+                    ].join(""),
               },
               {
                 type: "detail",
                 title: "To worldwide",
-                value: "fdsfsd",
-                value:
-                  formatMoney(this.payOutWorldMinChrg) +
-                  " - " +
-                  formatMoney(this.payOutWorldMaxChrg),
+                value: this.payOutWorldMaxChrg
+                  ? [
+                      formatMoney(this.payOutWorldMinChrg),
+                      formatMoney(this.payOutWorldMaxChrg),
+                    ].join(" - ")
+                  : [
+                      "Minimum charge: ",
+                      formatMoney(this.payOutWorldMinChrg),
+                    ].join(""),
               },
               {
                 type: "read-more",
