@@ -1,4 +1,4 @@
-import { getDayOfYear, getHours } from "date-fns";
+import { getYear, getDayOfYear, getHours } from "date-fns";
 import { greaterThan } from "dinero.js";
 import formatMoney from "./formatMoney.js";
 
@@ -124,7 +124,7 @@ class AccountFinder {
     // This allows us to generate a stable search sort, which will only change every other hour.
     // We add this number to the day of the year so that we get 365 more possible seeds.
     const now = new Date();
-    return getDayOfYear(now) + getHours(now);
+    return getYear(now) + getDayOfYear(now) + getHours(now);
   }
 }
 
