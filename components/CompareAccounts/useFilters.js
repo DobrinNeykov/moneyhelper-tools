@@ -44,6 +44,38 @@ const useFilters = (name, value) => {
     return result;
   };
 
+  const navigateTo = (query, { resetPage }) => {};
+
+  const Query = (query) => {
+    query = query || { ...router.query };
+
+    const withParameter = (name, value) => {
+      query[name] = value;
+      return Query(query);
+    };
+
+    const withoutParameter = (name) => {
+      delete query[name];
+      return Query(query);
+    };
+
+    const resetPage = () => {
+      query.p = 1;
+      return Query(query);
+    };
+
+    const toString = () => {
+      return "?" + queryString.stringify(query);
+    };
+
+    return {
+      withParameter,
+      withoutParameter,
+      resetPage,
+      toString,
+    };
+  };
+
   return {
     count: count(),
     page: router.query.p ? parseInt(router.query.p) : 1,
@@ -52,41 +84,20 @@ const useFilters = (name, value) => {
     accountTypes: accountTypes(),
     accountFeatures: accountFeatures(),
     accountAccess: accountAccess(),
-    setOrder: (value) => {
-      const query = { ...router.query };
-      query.order = value;
-      query.p = 1;
-
-      router.push("?" + queryString.stringify(query));
-    },
-    setFilter: (filter, value) => {
-      const query = { ...router.query };
-      query[slug(filter)] = value;
-      query.p = 1;
-
-      router.push("?" + queryString.stringify(query));
-    },
-    removeFilter: (filter) => {
-      const query = { ...router.query };
-      delete query[slug(filter)];
-      query.p = 1;
-
-      router.push("?" + queryString.stringify(query));
-    },
-    removeFilterHref: (filter) => {
-      const query = { ...router.query };
-      delete query[slug(filter)];
-      query.p = 1;
-
-      return "?" + queryString.stringify(query);
-    },
-    removeSearchQueryHref: () => {
-      const query = { ...router.query };
-      delete query["q"];
-      query.p = 1;
-
-      return "?" + queryString.stringify(query);
-    },
+    setOrder: (value) =>
+      router.push(Query().withParameter("order", value).resetPage().toString()),
+    setFilter: (filter, value) =>
+      router.push(
+        Query().withParameter(slug(filter), value).resetPage().toString()
+      ),
+    removeFilter: (filter) =>
+      router.push(
+        Query().withoutParameter(slug(filter)).resetPage().toString()
+      ),
+    removeFilterHref: (filter) =>
+      Query().withoutParameter(slug(filter)).resetPage().toString(),
+    removeSearchQueryHref: () =>
+      Query().withoutParameter("q").resetPage().toString(),
     isFilterActive: (filter) => {
       const activeFilters = [
         ...accountTypes(),
@@ -95,19 +106,9 @@ const useFilters = (name, value) => {
       ];
       return activeFilters.includes(filter);
     },
-    setSearchQuery: (q) => {
-      const query = { ...router.query };
-      query.q = q;
-      query.p = 1;
-
-      router.push("?" + queryString.stringify(query));
-    },
-    setPageHref: (page) => {
-      const query = { ...router.query };
-      query.p = page;
-
-      return "?" + queryString.stringify(query);
-    },
+    setSearchQuery: (q) =>
+      router.push(Query().withParameter("q", q).resetPage().toString()),
+    setPageHref: (p) => Query().withParameter("p", p).toString(),
   };
 };
 
