@@ -45,7 +45,7 @@ const Pagination = ({ pagination }) => {
           <Link href={generateSearchForPage(pagination.page - 1)}>
             <a className="underline flex items-center space-x-1 text-pink-800">
               {chevronLeft}
-              <div>Previous Page</div>
+              <div>Previous</div>
             </a>
           </Link>
         )}
@@ -61,7 +61,7 @@ const Pagination = ({ pagination }) => {
         {pagination.nextEnabled && (
           <Link href={generateSearchForPage(pagination.page + 1)}>
             <a className="underline flex items-center space-x-1 text-pink-800">
-              <div>Next Page</div>
+              <div>Next</div>
               {chevronRight}
             </a>
           </Link>
