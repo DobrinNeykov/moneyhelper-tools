@@ -55,7 +55,7 @@ const ExpandableSection = ({ title, expandedTitle, children }) => {
           )}
         </div>
       </button>
-      {expanded && <div className="animate-in zoom-in mb-8">{children}</div>}
+      {expanded && <div className="mb-8">{children}</div>}
     </>
   );
 };

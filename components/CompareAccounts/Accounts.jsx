@@ -32,7 +32,7 @@ const Accounts = ({ accounts, pagination }) => {
           .map((account) => (
             <div
               key={account.id}
-              className="border border-slate-400 rounded-bl-3xl py-4 px-6 animate-in zoom-in"
+              className="border border-slate-400 rounded-bl-3xl py-4 px-6"
             >
               <div className="flex items-center">
                 <div className="flex-grow text-2xl font-bold text-blue-900 mb-2">
