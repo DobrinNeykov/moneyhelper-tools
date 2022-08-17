@@ -11,8 +11,8 @@ const AccountExpandedView = ({ account }) => {
   return (
     <div className="space-y-4">
       <ExpandableSection
-        title="Show all account fees and charges"
-        expandedTitle="Hide all account fees and charges"
+        title="View account details and fees"
+        expandedTitle="Hide account details and fees"
       >
         <div className="space-y-4">
           <AccountCheckboxes
