@@ -31,7 +31,7 @@ const RefineSearch = ({ refineSearch }) => {
 
       <button
         type="submit"
-        className="flex items-center w-full text-left block bg-gray-100 px-3 text-center lg:text-left lg:py-5 font-bold text-lg text-gray-900"
+        className="flex items-center w-full text-left block bg-gray-100 px-5 lg:px-6 text-left lg:py-5 font-bold text-lg text-gray-900"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
