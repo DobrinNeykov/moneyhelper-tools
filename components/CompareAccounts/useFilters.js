@@ -55,30 +55,35 @@ const useFilters = (name, value) => {
     setOrder: (value) => {
       const query = { ...router.query };
       query.order = value;
+      query.p = 1;
 
       router.push("?" + queryString.stringify(query));
     },
     setFilter: (filter, value) => {
       const query = { ...router.query };
       query[slug(filter)] = value;
+      query.p = 1;
 
       router.push("?" + queryString.stringify(query));
     },
     removeFilter: (filter) => {
       const query = { ...router.query };
       delete query[slug(filter)];
+      query.p = 1;
 
       router.push("?" + queryString.stringify(query));
     },
     removeFilterHref: (filter) => {
       const query = { ...router.query };
       delete query[slug(filter)];
+      query.p = 1;
 
       return "?" + queryString.stringify(query);
     },
     removeSearchQueryHref: () => {
       const query = { ...router.query };
       delete query["q"];
+      query.p = 1;
 
       return "?" + queryString.stringify(query);
     },
@@ -93,6 +98,7 @@ const useFilters = (name, value) => {
     setSearchQuery: (q) => {
       const query = { ...router.query };
       query.q = q;
+      query.p = 1;
 
       router.push("?" + queryString.stringify(query));
     },
