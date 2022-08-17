@@ -19,7 +19,7 @@ const FilterSection = ({ title, values }) => {
   return (
     <div className="">
       <div className="mb-3 text-lg font-bold">{title}</div>
-      <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:block space-y-1">
+      <div className="grid sm:grid-cols-2 lg:block space-y-3">
         {values.map((v) => {
           const name = slug(v);
 
