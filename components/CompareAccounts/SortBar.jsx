@@ -39,7 +39,9 @@ const SortBar = ({ pagination }) => {
           options={[
             "Random",
             "Provider name A-Z",
+            "Provider name Z-A",
             "Account name A-Z",
+            "Account name Z-A",
             "Monthly account fee (lowest first)",
             "Minimum monthly deposit (lowest first)",
             "Arranged overdraft rate (lowest first)",

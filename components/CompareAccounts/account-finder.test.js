@@ -118,7 +118,7 @@ describe("AccountFinder", () => {
     ]);
   });
 
-  it("sorts accounts by provider name", () => {
+  it("sorts accounts by provider name A-Z", () => {
     const accounts = new AccountList({
       items: [
         { productName: "Account 1", providerName: "C" },
@@ -139,7 +139,28 @@ describe("AccountFinder", () => {
     ]);
   });
 
-  it("sorts accounts by account name", () => {
+  it("sorts accounts by provider name Z-A", () => {
+    const accounts = new AccountList({
+      items: [
+        { productName: "Account 1", providerName: "C" },
+        { productName: "Account 2", providerName: "A" },
+        { productName: "Account 3", providerName: "B" },
+      ],
+    });
+
+    const result = new AccountFinder(
+      accounts,
+      buildFakeFilters({ order: "provider-name-z-a" })
+    ).find();
+
+    expect(result.map((a) => a.name)).toEqual([
+      "Account 1",
+      "Account 3",
+      "Account 2",
+    ]);
+  });
+
+  it("sorts accounts by account name A-Z", () => {
     const accounts = new AccountList({
       items: [{ productName: "B" }, { productName: "C" }, { productName: "A" }],
     });
@@ -150,6 +171,19 @@ describe("AccountFinder", () => {
     ).find();
 
     expect(result.map((a) => a.name)).toEqual(["A", "B", "C"]);
+  });
+
+  it("sorts accounts by account name Z-A", () => {
+    const accounts = new AccountList({
+      items: [{ productName: "B" }, { productName: "C" }, { productName: "A" }],
+    });
+
+    const result = new AccountFinder(
+      accounts,
+      buildFakeFilters({ order: "account-name-z-a" })
+    ).find();
+
+    expect(result.map((a) => a.name)).toEqual(["C", "B", "A"]);
   });
 
   it("sorts accounts by monthly fee", () => {

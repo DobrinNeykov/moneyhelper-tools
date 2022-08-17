@@ -37,8 +37,12 @@ class AccountFinder {
       return this.shuffle(matches);
     } else if (order === "provider-name-a-z") {
       return this.orderByStringField("providerName", matches);
+    } else if (order === "provider-name-z-a") {
+      return this.orderByStringFieldInReverse("providerName", matches);
     } else if (order === "account-name-a-z") {
       return this.orderByStringField("name", matches);
+    } else if (order === "account-name-z-a") {
+      return this.orderByStringFieldInReverse("name", matches);
     } else if (order === "monthly-account-fee-lowest-first") {
       return this.orderByMoneyField("monthlyFee", matches);
     } else if (order === "minimum-monthly-deposit-lowest-first") {
@@ -76,6 +80,10 @@ class AccountFinder {
 
   orderByStringField(field, array) {
     return array.slice().sort((a, b) => (a[field] > b[field] ? 1 : -1));
+  }
+
+  orderByStringFieldInReverse(field, array) {
+    return array.slice().sort((a, b) => (a[field] < b[field] ? 1 : -1));
   }
 
   orderByPercentageField(field, array) {
