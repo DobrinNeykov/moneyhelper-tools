@@ -124,6 +124,24 @@ class Account {
     return numeral(this._json.atmWithdrawalChargePercent || 0).value();
   }
 
+  get details() {
+    return [
+      { title: "Monthly account fee", value: formatMoney(this.monthlyFee) },
+      {
+        title: "Min. monthly deposit requirement",
+        value: formatMoney(this.minimumMonthlyCredit),
+      },
+      {
+        title: "Arranged overdraft interest rate",
+        value: formatPercentage(this.representativeAPR),
+      },
+      {
+        title: "Unarranged overdraft max. monthly charge",
+        value: formatMoney(this.unauthODMonthlyCap),
+      },
+    ];
+  }
+
   get access() {
     const results = [];
     const trueValue = "true";

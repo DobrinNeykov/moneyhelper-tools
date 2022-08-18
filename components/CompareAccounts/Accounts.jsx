@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import classNames from "classnames";
+
 import formatMoney from "./formatMoney";
 import formatPercentage from "./formatPercentage";
 
@@ -72,32 +74,32 @@ const Accounts = ({ accounts, pagination }) => {
                 </div>
               </div>
               <div className="text-lg text-gray-900 mb-4">{account.name}</div>
-              <div className="divide-x-2 flex mb-3">
-                <div className="pr-4">
-                  <div className="">Monthly account fee</div>
-                  <div className="font-bold">
-                    {formatMoney(account.monthlyFee)}
-                  </div>
+
+              <table className="md:hidden table-fixed w-full mb-4">
+                <tbody>
+                  {account.details.map(({ title, value }) => (
+                    <tr key={title} className="border-b border-slate-400">
+                      <td className="py-2 pr-3">{title}</td>
+                      <td className="font-bold">{value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+              <div className="hidden md:block mb-4">
+                <div className="grid grid-cols-4 gap-2 divide-x-2 border-slate-400">
+                  {account.details.map(({ title }) => (
+                    <div key={title} className="first:pl-0 pl-3 px-2">
+                      {title}
+                    </div>
+                  ))}
                 </div>
-                <div className="px-4">
-                  <div className="">Min. monthly deposit requirement</div>
-                  <div className="font-bold">
-                    {formatMoney(account.minimumMonthlyCredit)}
-                  </div>
-                </div>
-                <div className="px-4">
-                  <div className="">Arranged overdraft interest rate</div>
-                  <div className="font-bold">
-                    {formatPercentage(account.representativeAPR)}
-                  </div>
-                </div>
-                <div className="pl-4">
-                  <div className="">
-                    Unarranged overdraft max. monthly charge
-                  </div>
-                  <div className="font-bold">
-                    {formatMoney(account.unauthODMonthlyCap)}
-                  </div>
+                <div className="grid grid-cols-4 gap-2 divide-x-2">
+                  {account.details.map(({ value }) => (
+                    <div key={value} className="first:pl-0 pl-3 px-2 font-bold">
+                      {value}
+                    </div>
+                  ))}
                 </div>
               </div>
 
