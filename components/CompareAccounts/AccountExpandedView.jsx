@@ -10,10 +10,7 @@ import AccountCheckboxes from "./AccountCheckboxes";
 const AccountExpandedView = ({ account }) => {
   return (
     <div className="space-y-4">
-      <ExpandableSection
-        title="View account details and fees"
-        expandedTitle="Hide account details and fees"
-      >
+      <ExpandableSection title="Account details and fees">
         <div className="space-y-4">
           <AccountCheckboxes
             title="Account access options"
