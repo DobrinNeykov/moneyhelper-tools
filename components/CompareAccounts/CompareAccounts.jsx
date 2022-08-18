@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
+import Pagination from "../Pagination";
+
 import RefineSearch from "./RefineSearch";
-import Pagination from "./Pagination";
 import Accounts from "./Accounts";
 import ActiveFilters from "./ActiveFilters";
 import SortBar from "./SortBar";
@@ -49,7 +50,7 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
           {filters.count > 0 && <ActiveFilters />}
           <SortBar pagination={pagination} />
           <Accounts accounts={accounts} pagination={pagination} />
-          <Pagination pagination={pagination} />
+          <Pagination {...pagination} setPageHref={filters.setPageHref} />
         </div>
       </div>
     </form>
