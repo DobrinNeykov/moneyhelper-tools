@@ -20,7 +20,8 @@ const SortBar = ({ pagination }) => {
     <div className="flex mb-5">
       <div className="flex-grow">
         <div className="">
-          Showing {pagination.startIndex + 1} - {pagination.endIndex} of{" "}
+          Showing {pagination.startIndex + 1} -{" "}
+          {Math.min(pagination.endIndex, pagination.totalItems)} of{" "}
           {pagination.totalItems} accounts
         </div>
         <div className="">Last updated: 19 April 2022</div>
