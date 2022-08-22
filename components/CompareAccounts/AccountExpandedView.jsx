@@ -91,7 +91,7 @@ const AccountExpandedView = ({ account }) => {
                               {item.type === "detail" && (
                                 <Detail title={item.title} value={item.value} />
                               )}
-                              {item.type === "read-more" && (
+                              {item.type === "read-more" && item.value && (
                                 <ReadMore value={item.value} />
                               )}
                             </div>

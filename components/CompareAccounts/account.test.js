@@ -88,9 +88,21 @@ describe("Account", () => {
         "Some text"
       );
 
+      // the value has the string "{P}" in it for some reason
       expect(
         new Account({ [nameInDefaqtoAPI]: "Some text with {P}" })[name]
       ).toEqual("Some text with ");
+
+      // the field is just the string "0"
+      expect(new Account({ [nameInDefaqtoAPI]: "0" })[name]).toBeUndefined();
+
+      // the field is just the string "0.00"
+      expect(new Account({ [nameInDefaqtoAPI]: "0.00" })[name]).toBeUndefined();
+
+      // the field is just the string "0 <br /> "
+      expect(
+        new Account({ [nameInDefaqtoAPI]: "0 <br /> " })[name]
+      ).toBeUndefined();
     };
 
     expectTextField("monthlyChargeBrochure");

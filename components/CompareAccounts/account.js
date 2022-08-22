@@ -75,11 +75,11 @@ class Account {
   }
 
   addTextField(name, nameInDefaqtoAPI) {
-    nameInDefaqtoAPI = nameInDefaqtoAPI || name;
+    const value = this._json[nameInDefaqtoAPI || name];
+    const isEmpty =
+      !value || ["0", "0.00", "0.00. <br /> ", "0 <br /> "].includes(value);
 
-    const value = this._json[nameInDefaqtoAPI];
-
-    if (value) {
+    if (!isEmpty) {
       this[name] = value.replaceAll("{P}", "");
     }
   }
