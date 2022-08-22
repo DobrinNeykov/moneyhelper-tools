@@ -76,6 +76,9 @@ const useFilters = (name, value) => {
     };
   };
 
+  const navigateWithoutScrolling = (url) =>
+    router.push(url, undefined, { scroll: false });
+
   return {
     count: count(),
     page: router.query.p ? parseInt(router.query.p) : 1,
@@ -85,13 +88,15 @@ const useFilters = (name, value) => {
     accountFeatures: accountFeatures(),
     accountAccess: accountAccess(),
     setOrder: (value) =>
-      router.push(Query().withParameter("order", value).resetPage().toString()),
+      navigateWithoutScrolling(
+        Query().withParameter("order", value).resetPage().toString()
+      ),
     setFilter: (filter, value) =>
-      router.push(
+      navigateWithoutScrolling(
         Query().withParameter(slug(filter), value).resetPage().toString()
       ),
     removeFilter: (filter) =>
-      router.push(
+      navigateWithoutScrolling(
         Query().withoutParameter(slug(filter)).resetPage().toString()
       ),
     removeFilterHref: (filter) =>
@@ -107,7 +112,9 @@ const useFilters = (name, value) => {
       return activeFilters.includes(filter);
     },
     setSearchQuery: (q) =>
-      router.push(Query().withParameter("q", q).resetPage().toString()),
+      navigateWithoutScrolling(
+        Query().withParameter("q", q).resetPage().toString()
+      ),
     setPageHref: (p) => Query().withParameter("p", p).toString(),
   };
 };
