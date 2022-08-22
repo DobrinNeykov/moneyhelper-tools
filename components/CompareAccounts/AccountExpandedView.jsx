@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 import {
   listAccountTypes,
   listAccountFeatures,
@@ -8,6 +10,50 @@ import ExpandableSection from "./ExpandableSection";
 import AccountCheckboxes from "./AccountCheckboxes";
 
 const AccountExpandedView = ({ account }) => {
+  const Detail = ({ title, value }) => {
+    return (
+      <div className="border-b grid grid-cols-2">
+        <div className="">{title}</div>
+        <div>{value}</div>
+      </div>
+    );
+  };
+
+  const ReadMore = ({ value }) => {
+    const truncate = (str, max = 10) => {
+      const array = str.trim().split(" ");
+
+      return [array.slice(0, max).join(" "), array.slice(max).join(" ")];
+    };
+    const [summary, truncated] = truncate(value);
+
+    const id = useId();
+    return (
+      <div className="">
+        <div className="inline">{summary}</div>
+        {truncated && (
+          <>
+            <input id={id} type="checkbox" className="peer opacity-0 w-0" />
+            <div className="inline peer-focus:hidden">...</div>
+            <div className="hidden peer-focus:inline"> {truncated}</div>{" "}
+            <label
+              htmlFor={id}
+              className="cursor-pointer select-none inline underline text-pink-800 peer-focus:hidden"
+            >
+              [read more]
+            </label>
+            <label
+              htmlFor={id}
+              className="cursor-pointer select-none hidden underline text-pink-800 peer-focus:inline"
+            >
+              [read less]
+            </label>
+          </>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-4">
       <ExpandableSection title="Account details and fees">
@@ -43,13 +89,10 @@ const AccountExpandedView = ({ account }) => {
                           {section.items.map((item, i) => (
                             <div key={i}>
                               {item.type === "detail" && (
-                                <div className="border-b grid grid-cols-2">
-                                  <div className="">{item.title}</div>
-                                  <div>{item.value}</div>
-                                </div>
+                                <Detail title={item.title} value={item.value} />
                               )}
                               {item.type === "read-more" && (
-                                <div>{item.value}</div>
+                                <ReadMore value={item.value} />
                               )}
                             </div>
                           ))}
