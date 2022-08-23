@@ -6,14 +6,7 @@ import classNames from "classnames";
 /**
  * Money Input Component
  */
-export const MoneyInput = ({
-  id,
-  name,
-  defaultValue,
-  label,
-  onChange,
-  errors,
-}) => {
+export const MoneyInput = ({ id, name, defaultValue, onChange, errors }) => {
   const generatedId = useId();
   id = id || generatedId;
 

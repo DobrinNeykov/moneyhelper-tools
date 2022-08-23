@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Button } from "./Button";
 import { Errors } from "./Errors";
 import { MoneyInput } from "./MoneyInput";
@@ -13,7 +12,7 @@ import queryString from "query-string";
 /**
  * Stamp Duty Calculator Component
  */
-export const StampDutyCalculator = ({ serverQuery }) => {
+const StampDutyCalculator = ({ serverQuery }) => {
   const router = useRouter();
 
   const retrievePrice = () => retrieveQueryValue("price");
@@ -66,6 +65,7 @@ export const StampDutyCalculator = ({ serverQuery }) => {
     <form
       method="get"
       {...formAttributes}
+      className="max-w-6xl mx-auto"
       onSubmit={(e) => {
         if (window) {
           e.preventDefault();
@@ -113,6 +113,7 @@ export const StampDutyCalculator = ({ serverQuery }) => {
           </div>
           <div className="mb-8">
             <Errors
+              label="Property price"
               errors={
                 calculated && !price
                   ? ["Enter a property price, for example £200,000"]
@@ -120,7 +121,6 @@ export const StampDutyCalculator = ({ serverQuery }) => {
               }
             >
               <MoneyInput
-                label="Property price"
                 name="price"
                 defaultValue={price || ""}
                 onChange={(value) => {
@@ -161,6 +161,4 @@ export const StampDutyCalculator = ({ serverQuery }) => {
   );
 };
 
-StampDutyCalculator.propTypes = {};
-
-StampDutyCalculator.defaultProps = {};
+export default StampDutyCalculator;
