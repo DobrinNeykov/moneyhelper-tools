@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import classNames from "classnames";
@@ -17,21 +16,23 @@ import Label from "./Label";
 import SearchInput from "./SearchInput";
 import FilterSection from "./FilterSection";
 
-const RefineSearch = ({ refineSearch }) => {
-  const filters = useFilters();
-
-  const router = useRouter();
+const RefineSearch = () => {
+  const [showRefineSearch, setShowRefineSearch] = useState(true);
   const [showApply, setShowApply] = useState(true);
 
-  useEffect(() => setShowApply(false), []);
+  const filters = useFilters();
+
+  useEffect(() => {
+    setShowApply(false);
+    setShowRefineSearch(false);
+  }, []);
 
   return (
     <div className="border border-slate-400 border-grey-500 overflow-hidden rounded-md">
-      <input type="hidden" name="refineSearch" value="true" />
-
       <button
-        type="submit"
+        type="button"
         className="flex items-center w-full text-left block bg-gray-100 px-5 lg:px-6 text-left lg:py-5 font-bold text-lg text-gray-900"
+        onClick={() => setShowRefineSearch((s) => !s)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -53,8 +54,8 @@ const RefineSearch = ({ refineSearch }) => {
         className={classNames(
           "p-6",
           {
-            block: refineSearch,
-            hidden: !refineSearch,
+            block: showRefineSearch,
+            hidden: !showRefineSearch,
           },
           "lg:block"
         )}

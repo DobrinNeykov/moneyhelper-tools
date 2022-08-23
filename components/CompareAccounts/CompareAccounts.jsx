@@ -23,7 +23,6 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
   const router = useRouter();
   const [query, setQuery] = useState(serverQuery);
 
-  const refineSearch = !!serverQuery.refineSearch;
   const filters = useFilters();
 
   const allAccounts = new AccountList(jsonAccounts);
@@ -44,7 +43,7 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
     <form method="get" className="mx-auto">
       <div className="w-full lg:flex lg:space-x-4 ">
         <div className="mb-4 lg:w-[300px] lg:min-w-[300px]">
-          <RefineSearch refineSearch={refineSearch} />
+          <RefineSearch />
         </div>
         <div className="space-y-4 flex-grow">
           {filters.count > 0 && <ActiveFilters />}
