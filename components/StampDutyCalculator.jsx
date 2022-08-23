@@ -65,7 +65,7 @@ const StampDutyCalculator = ({ serverQuery }) => {
     <form
       method="get"
       {...formAttributes}
-      className="max-w-6xl mx-auto"
+      className="mx-auto"
       onSubmit={(e) => {
         if (window) {
           e.preventDefault();
