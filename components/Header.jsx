@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import classNames from "classnames";
 
@@ -21,14 +22,18 @@ const Header = () => {
         </div>
         <div className="text-center text-sm">menu</div>
       </button>
-      <div className="flex items-center justify-center flex-grow text-3xl text-white">
-        <svg width="32" height="32" viewBox="0 0 24 24">
-          <path
-            fill="currentColor"
-            d="M3 3h4v7.5c0 1.93 1.57 3.5 3.5 3.5H13v-4l7 6l-7 6v-4h-2.5C6.36 18 3 14.64 3 10.5V3Z"
-          />
-        </svg>
-        <div className="font-bold">MoneyHelper</div>
+      <div className="flex-grow flex items-center">
+        <Link href="https://moneyhelper.org.uk/">
+          <a className="flex items-center mx-auto text-xl md:text-3xl text-white">
+            <svg width="32" height="32" viewBox="0 0 24 24">
+              <path
+                fill="currentColor"
+                d="M3 3h4v7.5c0 1.93 1.57 3.5 3.5 3.5H13v-4l7 6l-7 6v-4h-2.5C6.36 18 3 14.64 3 10.5V3Z"
+              />
+            </svg>
+            <div className="font-bold">MoneyHelper</div>
+          </a>
+        </Link>
       </div>
       <form
         className="flex items-center"
