@@ -22,20 +22,17 @@ export default function Home() {
           <h1 className="text-4xl font-bold mb-3">
             Welcome to MoneyHelper Tools!
           </h1>
-          <ul className="">
+          <ul className="space-y-4">
             <li>
               <Link href="/stamp-duty-calculator">
-                <a className="text-lg text-gray-700 underline">
+                <a className="text-3xl text-gray-700 underline">
                   Stamp Duty Calculator
                 </a>
               </Link>
             </li>
             <li>
-              <Link
-                href="/compare-accounts"
-                className="text-lg text-gray-700 underline"
-              >
-                <a className="text-lg text-gray-700 underline">
+              <Link href="/compare-accounts">
+                <a className="text-3xl text-gray-700 underline">
                   Compare Accounts
                 </a>
               </Link>
