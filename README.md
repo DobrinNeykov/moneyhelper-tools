@@ -29,6 +29,12 @@ components:
 yarn storybook
 ```
 
+## Testing
+
+```bash
+yarn test
+```
+
 ## Deployment
 
 This project is hosted on [Netlify](https://www.netlify.com/).
