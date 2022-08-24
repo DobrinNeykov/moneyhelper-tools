@@ -53,6 +53,7 @@ const Pagination = ({ page, totalPages, setPageHref }) => {
     return (
       <Link href={setPageHref(p)}>
         <a
+          title={`Go to page number ${p}`}
           className={classNames(
             "sm:block rounded-md px-3 py-2 hover:bg-pink-600 hover:text-white",
             {
@@ -73,7 +74,10 @@ const Pagination = ({ page, totalPages, setPageHref }) => {
   const PreviousLink = () => {
     return (
       <Link href={setPageHref(page - 1)}>
-        <a className="underline rounded-md px-3 py-2 text-pink-800 hover:bg-pink-600 hover:text-white">
+        <a
+          title="Go to the previous page"
+          className="underline rounded-md px-3 py-2 text-pink-800 hover:bg-pink-600 hover:text-white"
+        >
           <div className="flex items-center space-x-1">
             <div>{chevronLeft}</div>
             <div className="">Previous</div>
@@ -86,7 +90,10 @@ const Pagination = ({ page, totalPages, setPageHref }) => {
   const NextLink = () => {
     return (
       <Link href={setPageHref(page + 1)}>
-        <a className="underline rounded-md px-3 py-2 text-pink-800 hover:bg-pink-600 hover:text-white">
+        <a
+          title="Go to the next page"
+          className="underline rounded-md px-3 py-2 text-pink-800 hover:bg-pink-600 hover:text-white"
+        >
           <div className="flex items-center space-x-1">
             <div className="">Next</div>
             <div>{chevronRight}</div>
