@@ -25,7 +25,7 @@ export default function Home() {
 
           <ul className="space-y-8">
             <li>
-              <h2 class="text-3xl font-bold mb-3">Stamp duty calculator</h2>
+              <h2 className="text-3xl font-bold mb-3">Stamp duty calculator</h2>
               <div>
                 <Link href="/stamp-duty-calculator">
                   <a className="text-md text-gray-700 underline">Home page</a>
@@ -40,7 +40,7 @@ export default function Home() {
               </div>
             </li>
             <li>
-              <h2 class="text-3xl font-bold mb-3">Compare accounts</h2>
+              <h2 className="text-3xl font-bold mb-3">Compare accounts</h2>
               <div>
                 <Link href="/compare-accounts">
                   <a className="text-md text-gray-700 underline">Home page</a>
