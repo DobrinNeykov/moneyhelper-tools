@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useState, useEffect, useId } from "react";
 
 import {
   listAccountTypes,
@@ -20,6 +20,10 @@ const AccountExpandedView = ({ account }) => {
   };
 
   const ReadMore = ({ value }) => {
+    const [show, setShow] = useState(true);
+
+    useEffect(() => setShow(false), []);
+
     const truncate = (str, max = 10) => {
       const array = str.trim().split(" ");
 
@@ -29,25 +33,21 @@ const AccountExpandedView = ({ account }) => {
 
     const id = useId();
     return (
-      <div className="">
+      <div className="max-w-lg">
         <div className="inline">{summary}</div>
         {truncated && (
           <>
-            <input id={id} type="checkbox" className="peer opacity-0 w-0" />
-            <div className="inline peer-focus:hidden">...</div>
-            <div className="hidden peer-focus:inline"> {truncated}</div>{" "}
-            <label
+            {show || <div className="inline">...</div>}
+            {show && <div className="inline">&nbsp;{truncated}</div>}
+            &nbsp;
+            <button
               htmlFor={id}
-              className="cursor-pointer select-none inline underline text-pink-800 peer-focus:hidden"
+              type="button"
+              className="select-none inline underline text-pink-800"
+              onClick={() => setShow((s) => !s)}
             >
-              [read more]
-            </label>
-            <label
-              htmlFor={id}
-              className="cursor-pointer select-none hidden underline text-pink-800 peer-focus:inline"
-            >
-              [read less]
-            </label>
+              {show ? "[read less]" : "[read more]"}
+            </button>
           </>
         )}
       </div>
