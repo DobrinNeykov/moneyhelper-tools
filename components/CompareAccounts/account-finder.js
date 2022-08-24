@@ -92,6 +92,12 @@ class AccountFinder {
 
   orderByMoneyField(field, array) {
     return array.slice().sort((a, b) => {
+      if (!a[field]) {
+        return -1;
+      } else if (!b[field]) {
+        return 1;
+      }
+
       if (greaterThan(b[field], a[field])) {
         return -1;
       } else if (greaterThan(a[field], b[field])) {

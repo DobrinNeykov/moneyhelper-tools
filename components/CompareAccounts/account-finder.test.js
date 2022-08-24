@@ -247,6 +247,8 @@ describe("AccountFinder", () => {
         { productName: "B", unauthODMonthlyCap: "89.12" },
         { productName: "C", unauthODMonthlyCap: "2.11" },
         { productName: "D", unauthODMonthlyCap: "8999.99" },
+        { productName: "F", unauthODMonthlyCap: "" },
+        { productName: "E", unauthODMonthlyCap: "Infinity" },
       ],
     });
 
@@ -257,6 +259,6 @@ describe("AccountFinder", () => {
       })
     ).find();
 
-    expect(result.map((a) => a.name).join("")).toEqual("CBAD");
+    expect(result.map((a) => a.name).join("")).toEqual("EFCBAD");
   });
 });
