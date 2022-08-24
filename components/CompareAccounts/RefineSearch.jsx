@@ -29,9 +29,15 @@ const RefineSearch = () => {
 
   return (
     <div className="border border-slate-400 border-grey-500 overflow-hidden rounded-md">
+      <div
+        className="hidden lg:flex items-center w-full text-left block bg-gray-100 px-6 text-left py-5 font-bold text-lg text-gray-900"
+        onClick={() => setShowRefineSearch((s) => !s)}
+      >
+        <div>Refine your search</div>
+      </div>
       <button
         type="button"
-        className="flex items-center w-full text-left block bg-gray-100 px-5 lg:px-6 text-left lg:py-5 font-bold text-lg text-gray-900"
+        className="flex lg:hidden items-center justify-center w-full block bg-gray-100 px-5 lg:px-6 lg:py-5 font-bold text-lg text-gray-900"
         onClick={() => setShowRefineSearch((s) => !s)}
       >
         <svg
@@ -39,7 +45,6 @@ const RefineSearch = () => {
           width="16"
           height="16"
           preserveAspectRatio="xMidYMid meet"
-          className="lg:hidden"
           viewBox="0 0 24 24"
         >
           <path
