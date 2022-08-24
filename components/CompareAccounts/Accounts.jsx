@@ -36,11 +36,11 @@ const Accounts = ({ accounts, pagination }) => {
               key={account.id}
               className="border border-slate-400 rounded-bl-3xl py-4 px-6"
             >
-              <div className="flex items-center">
+              <div className="md:flex items-center">
                 <div className="flex-grow text-2xl font-bold text-blue-900 mb-2">
                   {account.providerName}
                 </div>
-                <div className="">
+                <div className="mb-2">
                   <a
                     href={account.url}
                     target="_blank"
