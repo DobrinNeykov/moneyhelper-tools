@@ -9,7 +9,7 @@ const StampDutyCalculatorPage = ({ serverQuery }) => {
   return (
     <div>
       <Head>
-        <title>Compare Accounts - MoneyHelper Tools</title>
+        <title>Stamp Duty Calculator - MoneyHelper Tools</title>
         <meta name="description" content="MoneyHelper Tools" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
