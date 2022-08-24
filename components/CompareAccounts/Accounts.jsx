@@ -47,7 +47,13 @@ const Accounts = ({ accounts, pagination }) => {
                     rel="noreferrer"
                     className="underline text-pink-900 flex items-center space-x-1"
                   >
-                    <div>Visit provider website</div>
+                    <div>
+                      <span>Visit provider</span>
+                      <div className="sr-only"> {account.providerName} </div>
+                      <span>&nbsp;website</span>
+                      <div className="sr-only"> for account {account.name}</div>
+                    </div>
+
                     <span className="sr-only">(opens in a new window)</span>
                     <div>
                       <svg

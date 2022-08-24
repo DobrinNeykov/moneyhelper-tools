@@ -30,6 +30,7 @@ const FilterSection = ({ title, values }) => {
                 name={name}
                 label={v}
                 value={filters.isFilterActive(v)}
+                description={`Add ${title} search filter "${v}"`}
                 onChange={handleChange}
               />
             </div>

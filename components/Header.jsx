@@ -34,9 +34,11 @@ const Header = () => {
     <div>
       <div className="flex bg-blue-800 space-x-2 py-2 px-4 shadow-bottom-gray">
         <button
+          aria-label="Open menu"
           className="text-center text-white"
           onClick={() => setBurgerOpen((s) => !s)}
         >
+          <div className="sr-only">Search</div>
           <div className="">
             <svg className="mx-auto" width="38" height="38" viewBox="0 0 24 24">
               <path
@@ -77,6 +79,7 @@ const Header = () => {
             />
           )}
           <button
+            aria-label="Search MoneyHelper"
             className={classNames(
               "bg-pink-600 text-white rounded-r p-1 h-10 flex items-center",
               { "rounded-l": !searchOpen }
