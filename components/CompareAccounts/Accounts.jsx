@@ -48,6 +48,7 @@ const Accounts = ({ accounts, pagination }) => {
                     className="underline text-pink-900 flex items-center space-x-1"
                   >
                     <div>Visit provider website</div>
+                    <span className="sr-only">(opens in a new window)</span>
                     <div>
                       <svg
                         width="12"
