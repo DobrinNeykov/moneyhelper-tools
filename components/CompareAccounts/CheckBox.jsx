@@ -1,6 +1,6 @@
 const CheckBox = ({ id, name, label, value, onChange }) => {
   return (
-    <label className="mr-2 flex items-center space-x-2 cursor-pointer">
+    <label className="mr-2 flex items-center space-x-2 cursor-pointer select-none">
       <input
         id={id}
         name={name}
