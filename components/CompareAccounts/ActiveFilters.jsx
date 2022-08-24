@@ -5,13 +5,13 @@ import useFilters from "./useFilters";
 const ActiveFilters = ({}) => {
   const filters = useFilters();
 
-  const Filter = ({ title, href }) => {
+  const Filter = ({ title, href, description }) => {
     return (
       <div className="inline-block border-2 border-slate-400 shadow-bottom-gray rounded-lg px-2 py-1">
         <div className="flex items-center text-pink-800 space-x-2">
           <div>{title}</div>
           <Link href={href}>
-            <a>
+            <a title={description}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 aria-hidden="true"
@@ -44,18 +44,34 @@ const ActiveFilters = ({}) => {
       </div>
       <div className="flex flex-wrap gap-2">
         {filters.accountTypes.map((a) => (
-          <Filter key={a} title={a} href={filters.removeFilterHref(a)} />
+          <Filter
+            key={a}
+            title={a}
+            href={filters.removeFilterHref(a)}
+            description={`Remove filter "${a}"`}
+          />
         ))}
         {filters.accountFeatures.map((a) => (
-          <Filter key={a} title={a} href={filters.removeFilterHref(a)} />
+          <Filter
+            key={a}
+            title={a}
+            href={filters.removeFilterHref(a)}
+            description={`Remove filter "${a}"`}
+          />
         ))}
         {filters.accountAccess.map((a) => (
-          <Filter key={a} title={a} href={filters.removeFilterHref(a)} />
+          <Filter
+            key={a}
+            title={a}
+            href={filters.removeFilterHref(a)}
+            description={`Remove filter "${a}"`}
+          />
         ))}
         {filters.searchQuery && (
           <Filter
             title={`search: "${filters.searchQuery}"`}
             href={filters.removeSearchQueryHref()}
+            description={"Remove search filter"}
           />
         )}
       </div>
