@@ -205,7 +205,7 @@ const StampDutyCalculator = ({ serverQuery }) => {
                 rates.
               </div>
             </div>
-            <table class="table-auto w-full">
+            <table className="table-auto w-full">
               <thead>
                 <tr className="border-b border-slate-400">
                   <th className="py-2 text-left">Purchase price of property</th>
