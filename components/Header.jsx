@@ -31,7 +31,7 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <div className="mb-8">
       <div className="flex bg-blue-800 space-x-2 py-2 px-4 shadow-bottom-gray">
         <button
           aria-label="Open menu"

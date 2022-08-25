@@ -3,6 +3,7 @@ import Head from "next/head";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Content from "../components/Content";
+import H1 from "../components/H1";
 import CompareAccounts from "../components/CompareAccounts";
 
 const CompareAccountsPage = ({ serverQuery }) => {
@@ -15,6 +16,8 @@ const CompareAccountsPage = ({ serverQuery }) => {
       </Head>
 
       <Header />
+
+      <H1>Compare Accounts</H1>
 
       <Content>
         <CompareAccounts serverQuery={serverQuery} />

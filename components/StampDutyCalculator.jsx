@@ -78,6 +78,33 @@ const StampDutyCalculator = ({ serverQuery }) => {
         }
       }}
     >
+      <div className="space-y-4 text-gray-800 mb-10">
+        <div className="border-l-4 border-teal-300 pl-3 text-lg text-gray-800">
+          Calculate the Stamp Duty you will owe if you’re purchasing a
+          residential property in England or Northern Ireland
+        </div>
+        <div>
+          You must pay Stamp Duty Land Tax (SDLT) if you buy a property or land
+          over the current threshold in England and Northern Ireland. This
+          calculator will help you work out how much you must pay.
+        </div>
+        <div>
+          You must pay Stamp Duty Land Tax (SDLT) if you buy a property or land
+          over a certain price in England and Northern Ireland. There are
+          different rules if you’re buying your first home or an additional
+          residential property.
+        </div>
+        <div>
+          You must generally pay the higher SDLT rates when you buy a
+          residential property or a part of one if it will not be the only
+          residential property that you own (or part own) anywhere in the world,
+          you have not sold or given away your previous main home and no one
+          else has a lease on it which has more than 21 years left to run. These
+          rules apply if you’re married to or buying with someone.
+        </div>
+      </div>
+      <div></div>
+      <hr />
       <div className="lg:space-x-8 lg:flex">
         <div className="sm:w-full lg:w-1/2 mb-8">
           <input type="hidden" name="calculated" value="true" />
