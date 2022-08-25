@@ -10,7 +10,7 @@ const Footer = () => {
   };
 
   return (
-    <div>
+    <div className="mt-8">
       <div className="block md:flex border-t border-slate-400 md:bg-gradient-to-r md:from-white md:via-white md:to-gray-100">
         <div className="container mx-auto px-10 md:flex">
           <div className="py-8 w-full md:w-1/2 space-y-12">
