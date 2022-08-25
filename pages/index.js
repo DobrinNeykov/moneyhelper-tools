@@ -38,6 +38,13 @@ export default function Home() {
                   </a>
                 </Link>
               </div>
+              <div>
+                <Link href="/embed-test/stamp-duty-calculator">
+                  <a className="text-md text-gray-700 underline">
+                    Test embeddable tool
+                  </a>
+                </Link>
+              </div>
             </li>
             <li>
               <h2 className="text-3xl font-bold mb-3">Compare accounts</h2>
@@ -50,6 +57,13 @@ export default function Home() {
                 <Link href="/embed/compare-accounts">
                   <a className="text-md text-gray-700 underline">
                     Embeddable tool
+                  </a>
+                </Link>
+              </div>
+              <div>
+                <Link href="/embed-test/compare-accounts">
+                  <a className="text-md text-gray-700 underline">
+                    Test embeddable tool
                   </a>
                 </Link>
               </div>
