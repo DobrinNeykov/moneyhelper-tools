@@ -6,7 +6,7 @@ import {
   listAccountAccess,
 } from "./account-mapping";
 
-import ExpandableSection from "./ExpandableSection";
+import ExpandableSection from "../ExpandableSection";
 import AccountCheckboxes from "./AccountCheckboxes";
 
 const AccountExpandedView = ({ account }) => {
