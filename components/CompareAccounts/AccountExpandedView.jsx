@@ -24,7 +24,7 @@ const AccountExpandedView = ({ account }) => {
 
     useEffect(() => setShow(false), []);
 
-    const truncate = (str, max = 10) => {
+    const truncate = (str, max = 30) => {
       const array = str.trim().split(" ");
 
       return [array.slice(0, max).join(" "), array.slice(max).join(" ")];
@@ -32,9 +32,10 @@ const AccountExpandedView = ({ account }) => {
     const [summary, truncated] = truncate(value);
 
     const id = useId();
+
     return (
-      <div className="max-w-lg">
-        <div className="inline">{summary}</div>
+      <div className="border-b pb-12 italic">
+        <div className="inline">* {summary}</div>
         {truncated && (
           <>
             {show || <div className="inline">...</div>}
@@ -77,7 +78,7 @@ const AccountExpandedView = ({ account }) => {
             {account.expanded.map((group) => (
               <div key={group.title} className="ml-2">
                 <ExpandableSection title={group.title}>
-                  <div className="space-y-4 ml-4">
+                  <div className="space-y-4 ml-4 mb-12">
                     {group.sections.map((section, i) => (
                       <div key={i}>
                         {section.title && (
