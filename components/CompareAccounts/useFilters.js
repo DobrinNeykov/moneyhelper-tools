@@ -9,7 +9,7 @@ import {
   listAccountAccess,
 } from "./account-mapping";
 
-const useFilters = (name, value) => {
+const useFilters = () => {
   const router = useRouter();
 
   const accountTypes = () => {
