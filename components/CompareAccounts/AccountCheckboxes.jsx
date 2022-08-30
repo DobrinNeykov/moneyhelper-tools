@@ -11,8 +11,8 @@ const AccountCheckboxes = ({ title, fields }) => {
                   xmlns="http://www.w3.org/2000/svg"
                   aria-hidden="true"
                   role="img"
-                  width="32"
-                  height="32"
+                  width="24"
+                  height="24"
                   preserveAspectRatio="xMidYMid meet"
                   viewBox="0 0 24 24"
                 >
@@ -28,8 +28,8 @@ const AccountCheckboxes = ({ title, fields }) => {
                   xmlns="http://www.w3.org/2000/svg"
                   aria-hidden="true"
                   role="img"
-                  width="32"
-                  height="32"
+                  width="24"
+                  height="24"
                   preserveAspectRatio="xMidYMid meet"
                   viewBox="0 0 24 24"
                 >
