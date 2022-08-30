@@ -6,7 +6,7 @@ const ExpandableSection = ({ title, children }) => {
   return (
     <>
       <details className="space-y-4">
-        <summary className="bg-inherit text-lg cursor-pointer marker:text-pink-900">
+        <summary className="bg-inherit text-2xl font-bold  cursor-pointer marker:text-pink-900">
           <div className="underline text-lg text-pink-900 inline outline-none select-none">
             {title}
           </div>
