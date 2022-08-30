@@ -10,7 +10,7 @@ const ActiveFilters = ({}) => {
       <div className="inline-block border-2 border-slate-400 shadow-bottom-gray rounded-lg px-2 py-1">
         <div className="flex items-center text-pink-800 space-x-2">
           <div>{title}</div>
-          <Link href={href}>
+          <Link href={href} scroll={false}>
             <a title={description}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -36,7 +36,7 @@ const ActiveFilters = ({}) => {
     <div className="space-y-4">
       <div className="flex space-x-2">
         <div>{filters.count} active filters </div>
-        <Link href="?">
+        <Link href="?" scroll={false}>
           <a className="underline flex items-center space-x-1 text-pink-800">
             Clear all
           </a>
