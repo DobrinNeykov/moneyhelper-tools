@@ -80,7 +80,10 @@ class Account {
       !value || ["0", "0.00", "0.00. <br /> ", "0 <br /> "].includes(value);
 
     if (!isEmpty) {
-      this[name] = value.replaceAll("{P}", "");
+      this[name] = value
+        .replaceAll("{P}", "")
+        .replaceAll("<br/>", "")
+        .replaceAll("<br />", "");
     }
   }
 

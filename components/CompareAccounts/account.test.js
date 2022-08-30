@@ -93,13 +93,23 @@ describe("Account", () => {
         new Account({ [nameInDefaqtoAPI]: "Some text with {P}" })[name]
       ).toEqual("Some text with ");
 
-      // the field is just the string "0"
+      // the value has <br/> in it
+      expect(
+        new Account({ [nameInDefaqtoAPI]: "some<br/>string" })[name]
+      ).toEqual("somestring");
+
+      // the value has <br /> in it
+      expect(
+        new Account({ [nameInDefaqtoAPI]: "some<br />string" })[name]
+      ).toEqual("somestring");
+
+      // the value is just the string "0"
       expect(new Account({ [nameInDefaqtoAPI]: "0" })[name]).toBeUndefined();
 
-      // the field is just the string "0.00"
+      // the value is just the string "0.00"
       expect(new Account({ [nameInDefaqtoAPI]: "0.00" })[name]).toBeUndefined();
 
-      // the field is just the string "0 <br /> "
+      // the value is just the string "0 <br /> "
       expect(
         new Account({ [nameInDefaqtoAPI]: "0 <br /> " })[name]
       ).toBeUndefined();
