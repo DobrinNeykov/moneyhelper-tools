@@ -75,9 +75,9 @@ const AccountExpandedView = ({ account }) => {
           <div>
             <div className="mb-3 text-lg font-bold">Account fees and costs</div>
             {account.expanded.map((group) => (
-              <div key={group.title} className="">
+              <div key={group.title} className="ml-2">
                 <ExpandableSection title={group.title}>
-                  <div className="space-y-4">
+                  <div className="space-y-4 ml-4">
                     {group.sections.map((section, i) => (
                       <div key={i}>
                         {section.title && (
