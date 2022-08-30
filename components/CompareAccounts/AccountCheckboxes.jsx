@@ -1,12 +1,12 @@
 const AccountCheckboxes = ({ title, fields }) => {
   return (
     <div>
-      <div className="mb-3 text-lg font-bold">{title}</div>
+      <div className="mb-3 text-lg font-bold font-gray-700">{title}</div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {fields.map((field) => (
           <div key={field.label} className="flex items-center space-x-2">
             {field.checked ? (
-              <div className="text-blue-900">
+              <div className="text-gray-900">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   aria-hidden="true"
@@ -23,7 +23,7 @@ const AccountCheckboxes = ({ title, fields }) => {
                 </svg>
               </div>
             ) : (
-              <div className="text-pink-800">
+              <div className="text-gray-900">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   aria-hidden="true"
@@ -41,6 +41,11 @@ const AccountCheckboxes = ({ title, fields }) => {
               </div>
             )}
             <div>{field.label}</div>
+            {field.checked ? (
+              <div className="sr-only">&nbsp;(checked)</div>
+            ) : (
+              <div className="sr-only">&nbsp;(not checked)</div>
+            )}
           </div>
         ))}
       </div>
