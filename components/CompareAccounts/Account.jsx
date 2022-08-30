@@ -69,8 +69,8 @@ const Account = ({ account }) => {
           ))}
         </div>
         <div className="grid grid-cols-4 gap-2 divide-x-2">
-          {account.details.map(({ value }) => (
-            <div key={value} className="first:pl-0 pl-3 px-2 font-bold">
+          {account.details.map(({ value }, i) => (
+            <div key={i} className="first:pl-0 pl-3 px-2 font-bold">
               {value}
             </div>
           ))}
