@@ -4,9 +4,9 @@ const Account = ({ account }) => {
   return (
     <div className="border border-slate-400 rounded-bl-3xl py-4 px-6">
       <div className="md:flex items-center">
-        <div className="flex-grow text-2xl font-bold text-blue-900 mb-2">
+        <h2 className="flex-grow text-3xl font-bold text-blue-900 mb-2">
           {account.providerName}
-        </div>
+        </h2>
         <div className="mb-2">
           <a
             href={account.url}
