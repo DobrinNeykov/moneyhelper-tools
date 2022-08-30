@@ -21,17 +21,12 @@ import jsonAccounts from "../../accounts.json";
  */
 export const CompareAccounts = ({ serverQuery, ...props }) => {
   const router = useRouter();
-  const [query, setQuery] = useState(serverQuery);
 
   const filters = useFilters();
 
   const allAccounts = new AccountList(jsonAccounts);
   const accountFinder = new AccountFinder(allAccounts, filters);
   const accounts = accountFinder.find();
-
-  useEffect(() => {
-    setQuery(router.query);
-  }, [setQuery, router.query]);
 
   const pagination = usePagination({
     page: filters.page,
