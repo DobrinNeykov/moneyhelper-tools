@@ -58,7 +58,7 @@ const Header = () => {
                   d="M3 3h4v7.5c0 1.93 1.57 3.5 3.5 3.5H13v-4l7 6l-7 6v-4h-2.5C6.36 18 3 14.64 3 10.5V3Z"
                 />
               </svg>
-              <h1 className="font-bold">MoneyHelper</h1>
+              <div className="font-bold">MoneyHelper</div>
             </a>
           </Link>
         </div>
