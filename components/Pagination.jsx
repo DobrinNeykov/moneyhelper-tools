@@ -116,7 +116,7 @@ const Pagination = ({ page, totalPages, setPageHref }) => {
           {nextEnabled && <NextLink />}
         </div>
       </div>
-      <div className="flex md:hidden">
+      <div className="flex sm:hidden">
         {previousEnabled && <PreviousLink />}
         <div className="flex-grow"></div>
         {nextEnabled && <NextLink />}
