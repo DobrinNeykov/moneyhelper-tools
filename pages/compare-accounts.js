@@ -6,7 +6,7 @@ import Content from "../components/Content";
 import H1 from "../components/H1";
 import CompareAccounts from "../components/CompareAccounts";
 
-const CompareAccountsPage = ({ serverQuery }) => {
+const CompareAccountsPage = () => {
   return (
     <div>
       <Head>
@@ -20,7 +20,7 @@ const CompareAccountsPage = ({ serverQuery }) => {
       <H1>Compare Accounts</H1>
 
       <Content>
-        <CompareAccounts serverQuery={serverQuery} />
+        <CompareAccounts />
       </Content>
 
       <Footer />
@@ -32,8 +32,6 @@ export default CompareAccountsPage;
 
 export const getServerSideProps = (context) => {
   return {
-    props: {
-      serverQuery: context.query,
-    },
+    props: {},
   };
 };

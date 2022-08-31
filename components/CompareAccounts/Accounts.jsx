@@ -7,11 +7,11 @@ import formatPercentage from "./formatPercentage";
 
 import Account from "./Account";
 
-const Accounts = ({ accounts, pagination }) => {
+const Accounts = ({ accounts, totalItems }) => {
   return (
     <div className="mb-3">
       <div className="space-y-3">
-        {accounts.length === 0 && (
+        {totalItems === 0 && (
           <div className="border p-3">
             <div className="max-w-lg text-md text-gray-900">
               <div className="mb-3">
@@ -29,11 +29,9 @@ const Accounts = ({ accounts, pagination }) => {
             </div>
           </div>
         )}
-        {accounts
-          .slice(pagination.startIndex, pagination.endIndex)
-          .map((account) => (
-            <Account key={account.id} account={account} />
-          ))}
+        {accounts.map((account) => (
+          <Account key={account.id} account={account} />
+        ))}
       </div>
     </div>
   );

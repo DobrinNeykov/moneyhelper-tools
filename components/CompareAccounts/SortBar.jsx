@@ -9,7 +9,7 @@ import useFilters from "./useFilters";
 import { Select } from "../Select";
 import { Button } from "../Button";
 
-const SortBar = ({ pagination }) => {
+const SortBar = ({ startIndex, endIndex, totalItems }) => {
   const router = useRouter();
   const filters = useFilters();
   const [showApply, setShowApply] = useState(true);
@@ -20,9 +20,8 @@ const SortBar = ({ pagination }) => {
     <div className="flex gap-x-8 gap-y-3 flex-col lg:flex-row">
       <div className="flex flex-grow flex-col">
         <div className="text-sm text-gray-700">
-          Showing {pagination.startIndex + 1} -{" "}
-          {Math.min(pagination.endIndex, pagination.totalItems)} of{" "}
-          {pagination.totalItems} accounts
+          Showing {startIndex + 1} - {Math.min(endIndex, totalItems)} of{" "}
+          {totalItems} accounts
           <br />
           Last updated: 19 April 2022
         </div>

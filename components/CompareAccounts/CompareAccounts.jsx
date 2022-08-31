@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-
 import Pagination from "../Pagination";
 
 import RefineSearch from "./RefineSearch";
@@ -19,9 +17,7 @@ import jsonAccounts from "../../accounts.json";
 /**
  * Compare accounts calculator
  */
-export const CompareAccounts = ({ serverQuery, ...props }) => {
-  const router = useRouter();
-
+export const CompareAccounts = () => {
   const filters = useFilters();
 
   const allAccounts = new AccountList(jsonAccounts);
@@ -30,7 +26,6 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
 
   const pagination = usePagination({
     page: filters.page,
-    pageSize: 5,
     totalItems: accounts.length,
   });
 
@@ -42,9 +37,23 @@ export const CompareAccounts = ({ serverQuery, ...props }) => {
         </div>
         <div className="space-y-4 flex-grow">
           {filters.count > 0 && <ActiveFilters />}
-          <SortBar pagination={pagination} />
-          <Accounts accounts={accounts} pagination={pagination} />
-          <Pagination {...pagination} setPageHref={filters.setPageHref} />
+          <SortBar
+            startIndex={pagination.startIndex}
+            endIndex={pagination.endIndex}
+            totalItems={pagination.totalItems}
+          />
+          <Accounts
+            accounts={accounts.slice(
+              pagination.startIndex,
+              pagination.endIndex
+            )}
+            totalItems={pagination.totalItems}
+          />
+          <Pagination
+            page={pagination.page}
+            totalPages={pagination.totalPages}
+            setPageHref={filters.setPageHref}
+          />
         </div>
       </div>
     </form>

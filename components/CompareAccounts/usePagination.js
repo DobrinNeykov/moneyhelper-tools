@@ -1,5 +1,6 @@
 const usePagination = ({ page, pageSize, totalItems }) => {
   const totalPages = Math.ceil(totalItems / pageSize);
+  pageSize = pageSize || 5;
 
   return {
     page,
