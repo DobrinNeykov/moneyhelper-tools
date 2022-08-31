@@ -18,10 +18,8 @@ const CompareAccountsPage = () => {
       <Header />
 
       <H1>Compare Accounts</H1>
+
       <Content>
-        <p className="text-lg mb-12">
-          This tools compares bank accounts in the UK
-        </p>
         <CompareAccounts />
       </Content>
 
