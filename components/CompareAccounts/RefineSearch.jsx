@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 import classNames from "classnames";
 
-import useFilters from "./useFilters";
+import pageFilters from "./pageFilters";
 
 import {
   listAccountTypes,
@@ -20,7 +21,8 @@ const RefineSearch = () => {
   const [showRefineSearch, setShowRefineSearch] = useState(true);
   const [showApply, setShowApply] = useState(true);
 
-  const filters = useFilters();
+  const router = useRouter();
+  const filters = pageFilters(router);
 
   useEffect(() => {
     setShowApply(false);

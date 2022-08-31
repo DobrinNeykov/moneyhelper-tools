@@ -1,26 +1,14 @@
 import { getYear, getDayOfYear, getHours } from "date-fns";
-import { greaterThan } from "dinero.js";
+import { dinero, greaterThan } from "dinero.js";
 import formatMoney from "./formatMoney.js";
 
-class AccountFinder {
-  constructor(accounts, filters) {
-    this._accounts = accounts;
-    this._filters = filters;
-  }
-
-  find() {
-    let matches = this._accounts.items;
-
-    matches = this.search(matches);
-    matches = this.filter(matches);
-    matches = this.order(matches);
-
-    return matches;
-  }
-
-  search(matches) {
-    if (this._filters.searchQuery) {
-      const needle = this._filters.searchQuery.toLowerCase();
+const findAccounts = (
+  accounts,
+  { searchQuery, order, accountTypes, accountFeatures, accountAccess }
+) => {
+  const searchMatches = (matches) => {
+    if (searchQuery) {
+      const needle = searchQuery.toLowerCase();
       matches = matches.filter((a) => {
         const haystack = [a.name, a.providerName].join(" ").toLowerCase();
         return haystack.indexOf(needle) > -1;
@@ -28,37 +16,31 @@ class AccountFinder {
     }
 
     return matches;
-  }
+  };
 
-  order(matches) {
-    const order = this._filters.order;
-
+  const orderMatches = (matches) => {
     if (order === "random") {
-      return this.shuffle(matches);
+      return shuffle(matches);
     } else if (order === "provider-name-a-z") {
-      return this.orderByStringField("providerName", matches);
+      return orderByStringField("providerName", matches);
     } else if (order === "provider-name-z-a") {
-      return this.orderByStringFieldInReverse("providerName", matches);
+      return orderByStringFieldInReverse("providerName", matches);
     } else if (order === "account-name-a-z") {
-      return this.orderByStringField("name", matches);
+      return orderByStringField("name", matches);
     } else if (order === "account-name-z-a") {
-      return this.orderByStringFieldInReverse("name", matches);
+      return orderByStringFieldInReverse("name", matches);
     } else if (order === "monthly-account-fee-lowest-first") {
-      return this.orderByMoneyField("monthlyFee", matches);
+      return orderByMoneyField("monthlyFee", matches);
     } else if (order === "minimum-monthly-deposit-lowest-first") {
-      return this.orderByMoneyField("minimumMonthlyCredit", matches);
+      return orderByMoneyField("minimumMonthlyCredit", matches);
     } else if (order === "arranged-overdraft-rate-lowest-first") {
-      return this.orderByPercentageField("representativeAPR", matches);
+      return orderByPercentageField("representativeAPR", matches);
     } else if (order === "unarranged-maximum-monthly-charge-lowest-first") {
-      return this.orderByMoneyField("unauthODMonthlyCap", matches);
+      return orderByMoneyField("unauthODMonthlyCap", matches);
     }
-  }
+  };
 
-  filter(matches) {
-    const accountTypes = this._filters.accountTypes;
-    const accountFeatures = this._filters.accountFeatures;
-    const accountAccess = this._filters.accountAccess;
-
+  const filterMatches = (matches) => {
     if (
       accountTypes.length === 0 &&
       accountFeatures.length === 0 &&
@@ -76,21 +58,21 @@ class AccountFinder {
           accountAccess.every((r) => a.access.includes(r)))
       );
     });
-  }
+  };
 
-  orderByStringField(field, array) {
+  const orderByStringField = (field, array) => {
     return array.slice().sort((a, b) => (a[field] > b[field] ? 1 : -1));
-  }
+  };
 
-  orderByStringFieldInReverse(field, array) {
+  const orderByStringFieldInReverse = (field, array) => {
     return array.slice().sort((a, b) => (a[field] < b[field] ? 1 : -1));
-  }
+  };
 
-  orderByPercentageField(field, array) {
+  const orderByPercentageField = (field, array) => {
     return array.slice().sort((a, b) => (a[field] > b[field] ? 1 : -1));
-  }
+  };
 
-  orderByMoneyField(field, array) {
+  const orderByMoneyField = (field, array) => {
     return array.slice().sort((a, b) => {
       if (!a[field]) {
         return -1;
@@ -98,18 +80,18 @@ class AccountFinder {
         return 1;
       }
 
-      if (greaterThan(b[field], a[field])) {
+      if (greaterThan(dinero(b[field]), dinero(a[field]))) {
         return -1;
-      } else if (greaterThan(a[field], b[field])) {
+      } else if (greaterThan(dinero(a[field]), dinero(b[field]))) {
         return 1;
       } else {
         return 0;
       }
     });
-  }
+  };
 
-  shuffle(array) {
-    let seed = this.generateSeed();
+  const shuffle = (array) => {
+    let seed = generateSeed();
     var m = array.length;
     var t;
     var i;
@@ -117,7 +99,7 @@ class AccountFinder {
     // While there remain elements to shuffle…
     while (m) {
       // Pick a remaining element…
-      i = Math.floor(this.random(seed) * m--); // <-- MODIFIED LINE
+      i = Math.floor(random(seed) * m--); // <-- MODIFIED LINE
 
       // And swap it with the current element.
       t = array[m];
@@ -127,19 +109,27 @@ class AccountFinder {
     }
 
     return array;
-  }
+  };
 
-  random(seed) {
+  const random = (seed) => {
     const x = Math.sin(seed++) * 10000;
     return x - Math.floor(x);
-  }
+  };
 
-  generateSeed() {
+  const generateSeed = () => {
     // This allows us to generate a stable search sort, which will only change every other hour.
     // We add this number to the day of the year so that we get 365 more possible seeds.
     const now = new Date();
     return getYear(now) + getDayOfYear(now) + getHours(now);
-  }
-}
+  };
 
-export default AccountFinder;
+  let matches = accounts;
+
+  matches = searchMatches(matches);
+  matches = filterMatches(matches);
+  matches = orderMatches(matches);
+
+  return matches;
+};
+
+export default findAccounts;

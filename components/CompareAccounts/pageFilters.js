@@ -9,9 +9,7 @@ import {
   listAccountAccess,
 } from "./account-mapping";
 
-const useFilters = () => {
-  const router = useRouter();
-
+const pageFilters = (router) => {
   const accountTypes = () => {
     const types = listAccountTypes();
     return types.filter((t) => !!router.query[slug(t)]);
@@ -43,8 +41,6 @@ const useFilters = () => {
 
     return result;
   };
-
-  const navigateTo = (query, { resetPage }) => {};
 
   const Query = (query) => {
     query = query || { ...router.query };
@@ -119,4 +115,4 @@ const useFilters = () => {
   };
 };
 
-export default useFilters;
+export default pageFilters;

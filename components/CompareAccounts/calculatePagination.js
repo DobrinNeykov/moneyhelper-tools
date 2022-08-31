@@ -1,4 +1,4 @@
-const usePagination = ({ page, pageSize, totalItems }) => {
+const calculatePagination = ({ page, pageSize, totalItems }) => {
   pageSize = pageSize || 5;
 
   const totalPages = Math.ceil(totalItems / pageSize);
@@ -21,4 +21,4 @@ const usePagination = ({ page, pageSize, totalItems }) => {
   };
 };
 
-export default usePagination;
+export default calculatePagination;

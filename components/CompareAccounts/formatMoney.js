@@ -1,4 +1,4 @@
-import { toFormat } from "dinero.js";
+import { dinero, toFormat } from "dinero.js";
 
 const formatMoney = (money) => {
   if (!money) {
@@ -6,7 +6,7 @@ const formatMoney = (money) => {
   }
 
   return toFormat(
-    money,
+    dinero(money),
     ({ amount, currency }) => `£${amount.toFixed(currency.exponent)}`
   );
 };

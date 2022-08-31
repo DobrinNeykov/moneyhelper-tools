@@ -4,14 +4,14 @@ import { useRouter } from "next/router";
 
 import slug from "slug";
 
-import useFilters from "./useFilters";
+import pageFilters from "./pageFilters";
 
 import { Select } from "../Select";
 import { Button } from "../Button";
 
 const SortBar = ({ startIndex, endIndex, totalItems }) => {
   const router = useRouter();
-  const filters = useFilters();
+  const filters = pageFilters(router);
   const [showApply, setShowApply] = useState(true);
 
   useEffect(() => setShowApply(false), []);

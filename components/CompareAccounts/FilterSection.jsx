@@ -4,11 +4,11 @@ import slug from "slug";
 
 import CheckBox from "./CheckBox";
 
-import useFilters from "./useFilters";
+import pageFilters from "./pageFilters";
 
 const FilterSection = ({ title, values }) => {
   const router = useRouter();
-  const filters = useFilters();
+  const filters = pageFilters(router);
 
   const handleChange = (e) => {
     e.target.checked

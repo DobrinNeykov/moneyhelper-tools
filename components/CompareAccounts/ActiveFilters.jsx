@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 
-import useFilters from "./useFilters";
+import pageFilters from "./pageFilters";
 
 const ActiveFilters = ({}) => {
-  const filters = useFilters();
+  const router = useRouter();
+  const filters = pageFilters(router);
 
   const Filter = ({ title, href, description }) => {
     return (

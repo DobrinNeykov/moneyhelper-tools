@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import Pagination from "../Pagination";
 
 import RefineSearch from "./RefineSearch";
@@ -6,27 +7,19 @@ import Accounts from "./Accounts";
 import ActiveFilters from "./ActiveFilters";
 import SortBar from "./SortBar";
 
-import useFilters from "./useFilters";
-import usePagination from "./usePagination";
-
-import AccountList from "./account-list";
-import AccountFinder from "./account-finder";
-
-import jsonAccounts from "../../accounts.json";
+import pageFilters from "./pageFilters";
+import calculatePagination from "./calculatePagination";
 
 /**
  * Compare accounts calculator
  */
-export const CompareAccounts = () => {
-  const filters = useFilters();
+export const CompareAccounts = ({ accounts, totalItems }) => {
+  const router = useRouter();
+  const filters = pageFilters(router);
 
-  const allAccounts = new AccountList(jsonAccounts);
-  const accountFinder = new AccountFinder(allAccounts, filters);
-  const accounts = accountFinder.find();
-
-  const pagination = usePagination({
+  const pagination = calculatePagination({
     page: filters.page,
-    totalItems: accounts.length,
+    totalItems,
   });
 
   return (
@@ -42,13 +35,7 @@ export const CompareAccounts = () => {
             endIndex={pagination.endIndex}
             totalItems={pagination.totalItems}
           />
-          <Accounts
-            accounts={accounts.slice(
-              pagination.startIndex,
-              pagination.endIndex
-            )}
-            totalItems={pagination.totalItems}
-          />
+          <Accounts accounts={accounts} totalItems={pagination.totalItems} />
           <Pagination
             page={pagination.page}
             totalPages={pagination.totalPages}

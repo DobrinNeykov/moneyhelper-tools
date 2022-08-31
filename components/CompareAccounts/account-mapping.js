@@ -57,12 +57,12 @@ const listAccountAccess = () => {
 };
 
 const accountTypeLabelFromDefaqtoAccountType = (nameInDefaqtoAPI) => {
-  const label = accountTypes.filter(
+  const accountType = accountTypes.filter(
     (a) => a.nameInDefaqtoAPI === nameInDefaqtoAPI
-  )[0].label;
+  )[0];
 
-  if (label) {
-    return label;
+  if (accountType) {
+    return accountType.label;
   } else {
     throw "no label for defaqto account type '" + nameInDefaqtoAPI + "'";
   }
