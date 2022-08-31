@@ -28,7 +28,7 @@ const useFilters = () => {
   };
 
   const searchQuery = () => {
-    return router.query.q;
+    return router.query.q || "";
   };
 
   const count = () => {
