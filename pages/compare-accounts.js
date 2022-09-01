@@ -6,7 +6,7 @@ import Content from "../components/Content";
 import H1 from "../components/H1";
 
 import CompareAccounts from "../components/CompareAccounts";
-import compareAccountsGetServerSideProps from "./compareAccountsGetServerSideProps";
+import compareAccountsGetServerSideProps from "../components/compareAccountsGetServerSideProps";
 
 const Page = ({ accounts, totalItems }) => {
   return (
