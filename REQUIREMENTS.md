@@ -16,3 +16,7 @@ This should serve as a source of truth for requirements for this project.
 ## Compare Accounts
 
 - [ ] Displays all fields that we are required to display
+  - list of fields goes here
+- [x] Displays accounts initially ordered randomly
+  - [x] Use a random seed so that the data is stable sorted
+  - [x] Change the seed every hour so that no providers are favoured
