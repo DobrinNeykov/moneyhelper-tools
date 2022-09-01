@@ -19,7 +19,7 @@ yarn install
 Create `.env.local` with the following contents:
 
 ```
-ACCOUNTS_API=https://leafy-youtiao-f12358.netlify.app/api/accounts
+ACCOUNTS_API=https://moneyhelper-accounts-api.netlify.app/api/accounts
 ```
 
 To work on tools run the development server:
