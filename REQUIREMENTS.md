@@ -20,3 +20,4 @@ This should serve as a source of truth for requirements for this project.
 - [x] Displays accounts initially ordered randomly
   - [x] Use a random seed so that the data is stable sorted
   - [x] Change the seed every hour so that no providers are favoured
+  - [x] Test
