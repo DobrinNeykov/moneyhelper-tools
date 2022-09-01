@@ -32,3 +32,6 @@ yarn-error.log*
 .vercel
 
 account-dump.json
+
+# Local Netlify folder
+.netlify
