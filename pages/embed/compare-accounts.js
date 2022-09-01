@@ -1,5 +1,5 @@
 import CompareAccounts from "../../components/CompareAccounts";
-import compareAccountsGetServerSideProps from "./compareAccountsGetServerSideProps";
+import compareAccountsGetServerSideProps from "../compareAccountsGetServerSideProps";
 
 const Page = ({ accounts, totalItems }) => {
   return <CompareAccounts accounts={accounts} totalItems={totalItems} />;
