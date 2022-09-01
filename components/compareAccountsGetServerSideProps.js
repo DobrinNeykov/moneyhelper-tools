@@ -2,10 +2,23 @@ import hydrateAccountsFromJson from "../components/CompareAccounts/hydrateAccoun
 import findAccounts from "../components/CompareAccounts/findAccounts";
 import calculatePagination from "../components/CompareAccounts/calculatePagination";
 import pageFilters from "../components/CompareAccounts/pageFilters";
+import cacheData from "memory-cache";
 
 const compareAccountsGetServerSideProps = async (context) => {
-  const response = await fetch(process.env.ACCOUNTS_API);
-  const jsonAccounts = await response.json();
+  const fetchWithCache = async (url, options) => {
+    const value = cacheData.get(url);
+    if (value) {
+      return value;
+    } else {
+      const hours = 12;
+      const response = await fetch(url, options);
+      const data = await response.json();
+      cacheData.put(url, data, hours * 1000 * 60 * 60);
+      return data;
+    }
+  };
+
+  const jsonAccounts = await fetchWithCache(process.env.ACCOUNTS_API);
   const allAccounts = hydrateAccountsFromJson(jsonAccounts);
 
   const filters = pageFilters(context);
